@@ -58,7 +58,7 @@
 											"top": 245,
 											"width": 280,
 											"height": 13,
-											"text": "Problem"
+											"text": "problem"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -178,7 +178,7 @@
 											"top": 253,
 											"width": 280,
 											"height": 13,
-											"text": "TestCase"
+											"text": "test_case"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -383,7 +383,7 @@
 											"top": 909,
 											"width": 280,
 											"height": 13,
-											"text": "Submission"
+											"text": "submission"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -531,11 +531,11 @@
 											},
 											"font": "Arial;13;1",
 											"parentStyle": true,
-											"left": 952,
+											"left": 944,
 											"top": 909,
 											"width": 280,
 											"height": 13,
-											"text": "Student"
+											"text": "student"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -558,23 +558,39 @@
 													},
 													"font": "Arial;13;0",
 													"parentStyle": true,
-													"left": 957,
+													"left": 949,
 													"top": 932,
+													"width": 270,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAGarQCpvz8zOqs=",
+													"_parent": {
+														"$ref": "AAAAAAGanY2EGBQN5PE="
+													},
+													"model": {
+														"$ref": "AAAAAAGarQCpuj8wxTQ="
+													},
+													"font": "Arial;13;0",
+													"parentStyle": true,
+													"left": 949,
+													"top": 947,
 													"width": 270,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"left": 952,
+											"left": 944,
 											"top": 927,
 											"width": 280,
-											"height": 23
+											"height": 38
 										}
 									],
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 952,
+									"left": 944,
 									"top": 904,
 									"width": 280,
 									"height": 224,
@@ -604,7 +620,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"parentStyle": false,
-											"left": 803,
+											"left": 799,
 											"top": 1028,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -622,7 +638,7 @@
 											},
 											"font": "Arial;13;0",
 											"parentStyle": false,
-											"left": 926,
+											"left": 918,
 											"top": 1027,
 											"height": 13,
 											"alpha": 0.5235987755982988,
@@ -659,7 +675,7 @@
 										"$ref": "AAAAAAGanY2EGBQLj/s="
 									},
 									"lineStyle": 2,
-									"points": "952:1019;656:1019",
+									"points": "944:1019;656:1019",
 									"nameLabel": {
 										"$ref": "AAAAAAGanY8rcRQ68SM="
 									},
@@ -692,7 +708,7 @@
 											"top": 605,
 											"width": 280,
 											"height": 13,
-											"text": "TestCaseResult"
+											"text": "test_case_result"
 										},
 										{
 											"_type": "ERDColumnCompartmentView",
@@ -991,6 +1007,91 @@
 									"headNameLabel": {
 										"$ref": "AAAAAAGana9+pxUW+J8="
 									}
+								},
+								{
+									"_type": "ERDRelationshipView",
+									"_id": "AAAAAAGarRfi7z8+1Cs=",
+									"_parent": {
+										"$ref": "AAAAAAGanW8K8BLhh/o="
+									},
+									"model": {
+										"$ref": "AAAAAAGarRfi7j86PkY="
+									},
+									"subViews": [
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGarRfi7z8/06w=",
+											"_parent": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"parentStyle": false,
+											"left": 463,
+											"top": 685,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 15,
+											"hostEdge": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGarRfi7z9AmtA=",
+											"_parent": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": false,
+											"left": 463,
+											"top": 499,
+											"height": 13,
+											"alpha": 0.5235987755982988,
+											"distance": 30,
+											"hostEdge": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											},
+											"edgePosition": 2
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGarRfi7z9Bfs8=",
+											"_parent": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": false,
+											"left": 463,
+											"top": 872,
+											"height": 13,
+											"alpha": -0.5235987755982988,
+											"distance": 30,
+											"hostEdge": {
+												"$ref": "AAAAAAGarRfi7z8+1Cs="
+											}
+										}
+									],
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"head": {
+										"$ref": "AAAAAAGanYqNqRPMlnQ="
+									},
+									"tail": {
+										"$ref": "AAAAAAGanW8j4hLnlWI="
+									},
+									"lineStyle": 2,
+									"points": "448:480;448:904",
+									"nameLabel": {
+										"$ref": "AAAAAAGarRfi7z8/06w="
+									},
+									"tailNameLabel": {
+										"$ref": "AAAAAAGarRfi7z9AmtA="
+									},
+									"headNameLabel": {
+										"$ref": "AAAAAAGarRfi7z9Bfs8="
+									}
 								}
 							]
 						},
@@ -1000,7 +1101,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGanW8K8BLgjmQ="
 							},
-							"name": "Problem",
+							"name": "problem",
 							"ownedElements": [
 								{
 									"_type": "ERDRelationship",
@@ -1029,6 +1130,34 @@
 										},
 										"cardinality": "0..*"
 									}
+								},
+								{
+									"_type": "ERDRelationship",
+									"_id": "AAAAAAGarRfi7j86PkY=",
+									"_parent": {
+										"$ref": "AAAAAAGanW8j4RLlJL4="
+									},
+									"end1": {
+										"_type": "ERDRelationshipEnd",
+										"_id": "AAAAAAGarRfi7j87hmk=",
+										"_parent": {
+											"$ref": "AAAAAAGarRfi7j86PkY="
+										},
+										"reference": {
+											"$ref": "AAAAAAGanW8j4RLlJL4="
+										}
+									},
+									"end2": {
+										"_type": "ERDRelationshipEnd",
+										"_id": "AAAAAAGarRfi7j886ng=",
+										"_parent": {
+											"$ref": "AAAAAAGarRfi7j86PkY="
+										},
+										"reference": {
+											"$ref": "AAAAAAGanYqNqRPKRJ0="
+										},
+										"cardinality": "0..*"
+									}
 								}
 							],
 							"documentation": "\n",
@@ -1039,7 +1168,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanW8j4RLlJL4="
 									},
-									"name": "problemId",
+									"name": "problem_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"primaryKey": true
@@ -1050,7 +1179,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanW8j4RLlJL4="
 									},
-									"name": "problemTitle",
+									"name": "problem_title",
 									"type": "VARCHAR",
 									"length": "255"
 								},
@@ -1060,8 +1189,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanW8j4RLlJL4="
 									},
-									"name": "problemDescription",
-									"type": "TEXT"
+									"name": "problem_description",
+									"type": "TEXT",
+									"length": 0
 								},
 								{
 									"_type": "ERDColumn",
@@ -1089,7 +1219,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGanW8K8BLgjmQ="
 							},
-							"name": "TestCase",
+							"name": "test_case",
 							"ownedElements": [
 								{
 									"_type": "ERDRelationship",
@@ -1127,7 +1257,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanXAovhMe1Zg="
 									},
-									"name": "testCaseId",
+									"name": "test_case_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"primaryKey": true
@@ -1138,7 +1268,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanXAovhMe1Zg="
 									},
-									"name": "problemId",
+									"name": "problem_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"foreignKey": true
@@ -1149,8 +1279,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanXAovhMe1Zg="
 									},
-									"name": "inputValue",
-									"length": 0
+									"name": "input_value",
+									"type": "VARCHAR",
+									"length": "255"
 								},
 								{
 									"_type": "ERDColumn",
@@ -1158,8 +1289,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanXAovhMe1Zg="
 									},
-									"name": "expectedValue",
-									"length": 0
+									"name": "expected_value",
+									"type": "VARCHAR",
+									"length": "255"
 								}
 							]
 						},
@@ -1169,7 +1301,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGanW8K8BLgjmQ="
 							},
-							"name": "Submission",
+							"name": "submission",
 							"ownedElements": [
 								{
 									"_type": "ERDRelationship",
@@ -1207,7 +1339,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "submissionId",
+									"name": "submission_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"primaryKey": true
@@ -1218,7 +1350,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "studentId",
+									"name": "student_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"foreignKey": true
@@ -1229,7 +1361,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "problemId",
+									"name": "problem_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"foreignKey": true
@@ -1240,7 +1372,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "submittedCode",
+									"name": "submitted_code",
 									"type": "TEXT",
 									"length": 0
 								},
@@ -1250,8 +1382,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "submittedAt",
-									"type": "DATETIME"
+									"name": "submitted_at",
+									"type": "DATETIME",
+									"length": 0
 								},
 								{
 									"_type": "ERDColumn",
@@ -1259,7 +1392,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanYqNqRPKRJ0="
 									},
-									"name": "overallStatus",
+									"name": "overall_status",
 									"type": "BOOLEAN",
 									"length": 0
 								}
@@ -1278,7 +1411,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGanW8K8BLgjmQ="
 							},
-							"name": "Student",
+							"name": "student",
 							"ownedElements": [
 								{
 									"_type": "ERDRelationship",
@@ -1316,10 +1449,20 @@
 									"_parent": {
 										"$ref": "AAAAAAGanY2EGBQJi18="
 									},
-									"name": "studentId",
+									"name": "student_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"primaryKey": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAGarQCpuj8wxTQ=",
+									"_parent": {
+										"$ref": "AAAAAAGanY2EGBQJi18="
+									},
+									"name": "student_name",
+									"type": "TEXT",
+									"length": 0
 								}
 							]
 						},
@@ -1337,7 +1480,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGanW8K8BLgjmQ="
 							},
-							"name": "TestCaseResult",
+							"name": "test_case_result",
 							"columns": [
 								{
 									"_type": "ERDColumn",
@@ -1345,7 +1488,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanZxryRRYp30="
 									},
-									"name": "testCaseResultId",
+									"name": "test_case_result_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"primaryKey": true
@@ -1356,7 +1499,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanZxryRRYp30="
 									},
-									"name": "submissionId",
+									"name": "submission_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"foreignKey": true
@@ -1367,7 +1510,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGanZxryRRYp30="
 									},
-									"name": "testCaseId",
+									"name": "test_case_id",
 									"type": "VARCHAR",
 									"length": "255",
 									"foreignKey": true
@@ -1388,8 +1531,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanZxryRRYp30="
 									},
-									"name": "actualOutput",
-									"type": "TEXT"
+									"name": "actual_output",
+									"type": "TEXT",
+									"length": 0
 								},
 								{
 									"_type": "ERDColumn",
@@ -1397,8 +1541,9 @@
 									"_parent": {
 										"$ref": "AAAAAAGanZxryRRYp30="
 									},
-									"name": "runtimeMs",
-									"type": "INTEGER"
+									"name": "runtime_ms",
+									"type": "INTEGER",
+									"length": 0
 								}
 							]
 						}
