@@ -1,11 +1,13 @@
 import express, { Application } from "express";
-import router from "./routes/routes";
+import problemsRouter from "./routes/problemRoutes";
 import errorHandler from "./middlewares/errorHandler";
+import cors from "cors";
 
 const app: Application = express();
 const port: number = 3000;
 
-app.use("/", router);
+app.use(express.json());
+app.use("/api", problemsRouter);
 app.use(errorHandler);
 
 app.listen(port, () => {
