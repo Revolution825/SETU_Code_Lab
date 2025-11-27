@@ -1,5 +1,5 @@
 import express, { Application } from "express";
-import problemsRouter from "./routes/problemRoutes";
+import problemsRouter from "./routes/problem.routes";
 import errorHandler from "./middlewares/errorHandler";
 import cors from "cors";
 

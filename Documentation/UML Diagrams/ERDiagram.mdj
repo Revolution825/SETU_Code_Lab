@@ -1633,7 +1633,7 @@
 										"$ref": "AAAAAAGanY2EGBQJi18="
 									},
 									"name": "password",
-									"type": "PASSWORD",
+									"type": "VARCHAR",
 									"length": "255"
 								}
 							]
@@ -1765,7 +1765,7 @@
 										"$ref": "AAAAAAGawb7vGQLb2qM="
 									},
 									"name": "password",
-									"type": "PASSWORD",
+									"type": "VARCHAR",
 									"length": "255"
 								}
 							]

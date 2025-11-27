@@ -1,14 +1,11 @@
-import Problems from './problems'
 import './App.scss'
+import Login from './loginSignup/login.component'
 
-function App() {
+export default function App() {
 
   return (
     <>
-      <h1>SETU Code Lab</h1>
-        <Problems />
+      <Login />
     </>
   )
 }
-
-export default App
