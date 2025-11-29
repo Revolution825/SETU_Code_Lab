@@ -14,7 +14,7 @@ export default function SignUp() {
         setError("");
 
         try {
-            const res = await fetch("/auth/signup", {
+            const res = await fetch("/api/auth/signup", {
                 method: "POST",
                 credentials: "include",
                 headers: {

@@ -7,7 +7,7 @@ const app: Application = express();
 const port: number = 3000;
 
 app.use(express.json());
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api", problemRouter)
 app.use(errorHandler);
 
