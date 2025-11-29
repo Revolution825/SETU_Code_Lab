@@ -9,10 +9,10 @@ interface LoginResult {
 
 export async function login(email: string, password: string): Promise<LoginResult> {
     const user = await authModel.getUserByEmail(email);
-    if (!user) throw new Error("User not found")
+    if (!user) throw new Error("Invalid email or password")
 
     const match = await bcrypt.compare(password, user.password);
-    if(!match) throw new Error("Incorrect password")
+    if(!match) throw new Error("Invalid email or password")
 
     const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
