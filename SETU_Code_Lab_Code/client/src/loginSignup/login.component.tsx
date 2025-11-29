@@ -4,7 +4,7 @@ export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,6 +28,7 @@ export default function Login() {
                 }
                 
         } catch (error) {
+            console.error(error)
             setError("Something went wrong. Try Again");
         }
     }
