@@ -38,7 +38,7 @@ export default function Login() {
                 <h3>
                     SETU Code Lab
                 </h3>
-
+                
                     <p>{error}</p>
                 <div>
                     <input 

@@ -6,7 +6,8 @@ export default function SignUp() {
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [, setError] = useState("");
+    const [confPassword, setConfPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +21,7 @@ export default function SignUp() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({name, role, email, password})
+                body: JSON.stringify({name, role, email, password, confPassword})
                 });
                 const data = await res.json();
                 if(res.ok) {
@@ -39,6 +40,8 @@ export default function SignUp() {
                 <h3>
                     SETU Code Lab
                 </h3>
+
+                <p>{error}</p>
                 <div>
                     <input 
                         type="text"
@@ -90,6 +93,14 @@ export default function SignUp() {
                         placeholder="password" 
                         value={password}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        required />
+                </div>
+                <div>
+                    <input 
+                        type="password" 
+                        placeholder="confirm password" 
+                        value={confPassword}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfPassword(e.target.value)}
                         required />
                 </div>
                 <br/>
