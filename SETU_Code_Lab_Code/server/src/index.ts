@@ -1,13 +1,14 @@
 import express, { Application } from "express";
-import problemsRouter from "./routes/problem.routes";
+import authRouter from "./routes/auth.routes";
+import problemRouter from "./routes/problem.routes"
 import errorHandler from "./middlewares/errorHandler";
-import cors from "cors";
 
 const app: Application = express();
 const port: number = 3000;
 
 app.use(express.json());
-app.use("/api", problemsRouter);
+app.use("/auth", authRouter);
+app.use("/api", problemRouter)
 app.use(errorHandler);
 
 app.listen(port, () => {

@@ -1,27 +1,67 @@
-import React, { Component } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+export default function Login() {
 
-export default class Login extends Component {
-    render() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError("");
+
+        try {
+            const res = await fetch("/auth/login", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({email, password})
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    navigate("/problems");
+                } else {
+                    setError(data.message);
+                }
+                
+        } catch (error) {
+            setError("Something went wrong. Try Again");
+        }
+    }
+
         return(
-            <form >
+            <form onSubmit={handleSubmit}>
                 <h3>
                     SETU Code Lab
                 </h3>
                 <div>
-                    <input type="email" placeholder="Email" required />
+                    <input 
+                        type="email" 
+                        placeholder="email"
+                        value={email}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        required />
                 </div>
                 <div>
-                    <input type="password" placeholder="Password" required />
+                    <input 
+                        type="password" 
+                        placeholder="password" 
+                        value={password}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        required />
                 </div>
                 <div>
+                    <br/>
                     <button type="submit">
                         Log in
                     </button>
                 </div>
                 <p>
-                    <a href="#">Sign up</a> if you don't have an account already
+                    <a href="/signup">Sign up</a> if you don't have an account already
                 </p>
             </form>
         );
     }
-}

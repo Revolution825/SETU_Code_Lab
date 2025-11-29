@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { fetchProblems } from "../services/problem.service";
+import { getAllProblems } from "../services/problem.service";
 
 export const getProblems = async (req: Request, res: Response) => {
     try {
-        const problems = await fetchProblems();
+        const problems = await getAllProblems();
         res.json(problems);
     } catch (error) {
         console.error("Error fetching problems:", error);
