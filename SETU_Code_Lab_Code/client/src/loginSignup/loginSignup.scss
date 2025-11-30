@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap");
+
+
+.authBox {
+  color: #dedede;
+  width: 320px;
+  height: auto;
+  box-shadow: 5px 0 5px -2px #202020;
+  background-color: #363636;
+  border-radius: 15px;
+}
+
+.title {
+    font-size: 24px;
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+
+input:not([type="radio"]) {
+    width: 240px;
+    background-color: #363636;
+    border-color: #a0a0a0;
+    padding: 15px;
+    font-size: 16px;
+}
+
+input::placeholder {
+    font-family: "Inter Tight", sans-serif;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #dedede;
+}
+
+input[type="radio"] {
+}
+
+.bottomRounded {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.topRounded {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.fullyRounded {
+    border-radius: 15px;
+}
+
+.button {
+    width: 272px;
+    height: 38px;
+    background-color: #e74751;
+    font-weight: 400;
+    font-size: 20px;
+    padding-bottom: 35px;
+}
+
+.message {
+    font-size: 12px;
+    padding-bottom: 20px;
+}
+
+a {
+    color: #dedede;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #a0a0a0;
+}
+
+.error {
+    padding-left: 40px;
+    width: 240px;
+    color: #ff0011;
+}

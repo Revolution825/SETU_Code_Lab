@@ -28,7 +28,7 @@ export default function SignUp() {
 
         const { isValid, sanitizedEmail } = validateEmail(email);
         const sanitizedName = sanitizeName(name)
-        if(!isValid) throw new Error("Invalid Email input")
+        if(!isValid) setError("Invalid Email input")
         try {
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -54,14 +54,16 @@ export default function SignUp() {
     }
 
         return(
+            <div className="authBox">
             <form onSubmit={handleSubmit}>
-                <h3>
+                <h3 className="title">
                     SETU Code Lab
                 </h3>
 
-                <p>{error}</p>
+                <p className="error">{error}</p>
                 <div>
                     <input 
+                        className="fullyRounded"
                         type="text"
                         placeholder="name"
                         value={name}
@@ -98,7 +100,8 @@ export default function SignUp() {
                 </div>
                 <br/>
                 <div>
-                    <input 
+                    <input
+                        className="topRounded"
                         type="email" 
                         placeholder="email"
                         value={email}
@@ -115,6 +118,7 @@ export default function SignUp() {
                 </div>
                 <div>
                     <input 
+                        className="bottomRounded"
                         type="password" 
                         placeholder="confirm password" 
                         value={confPassword}
@@ -123,13 +127,14 @@ export default function SignUp() {
                 </div>
                 <br/>
                 <div>
-                    <button type="submit">
+                    <button className="button" type="submit">
                         Sign Up
                     </button>
                 </div>
-                <p>
+                <p className="message">
                     <a href="/">Log in</a> if you don't have an account already
                 </p>
             </form>
+            </div>
         );
     }

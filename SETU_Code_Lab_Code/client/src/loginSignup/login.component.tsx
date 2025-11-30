@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./loginSignup.scss";
 import { useNavigate } from "react-router-dom";
 
 function sanitizeEmail(email:string) {
@@ -44,14 +45,16 @@ export default function Login() {
     }
 
         return(
+        <div className="authBox">
             <form onSubmit={handleSubmit}>
-                <h3>
+                <h3 className="title">
                     SETU Code Lab
                 </h3>
                 
-                    <p>{error}</p>
+                    <p className="error">{error}</p>
                 <div>
-                    <input 
+                    <input
+                        className="topRounded"
                         type="email" 
                         placeholder="email"
                         value={email}
@@ -60,6 +63,7 @@ export default function Login() {
                 </div>
                 <div>
                     <input 
+                        className="bottomRounded"
                         type="password" 
                         placeholder="password" 
                         value={password}
@@ -68,13 +72,14 @@ export default function Login() {
                 </div>
                 <div>
                     <br/>
-                    <button type="submit">
+                    <button className="button" type="submit">
                         Log in
                     </button>
                 </div>
-                <p>
+                <p className="message">
                     <a href="/signup">Sign up</a> if you don't have an account already
                 </p>
             </form>
+            </div>
         );
     }

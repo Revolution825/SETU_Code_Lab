@@ -7,7 +7,7 @@ function isValidPassword(password:string, confPassword:string) {
     if (password.length > 15) throw new Error("Password must be shorter than 15 characters")
     if (password.length < 8) throw new Error("Password must be at least 8 characters long")
     if (!regex.test(password)) throw new Error(
-        "Password must contain: at least one uppercase letter, at least one lowercase letter, at least one digit and at least one special character"
+        "Password must contain: at least one uppercase letter, a lowercase letter, a digit and a special character"
     )
     if (confPassword !== password) throw new Error("Passwords do not match")   
 }
