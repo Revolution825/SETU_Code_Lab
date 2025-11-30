@@ -48,7 +48,7 @@ export default function Login() {
         <div className="authBox">
             <form onSubmit={handleSubmit}>
                 <div className="header">
-                    <img src="../../public/logo.svg" alt="Logo" />
+                    <img src="/logo.svg" alt="Logo" />
                     <h3>
                     SETU Code Lab
                     </h3>
