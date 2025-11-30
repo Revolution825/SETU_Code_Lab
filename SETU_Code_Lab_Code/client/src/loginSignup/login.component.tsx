@@ -47,14 +47,16 @@ export default function Login() {
         return(
         <div className="authBox">
             <form onSubmit={handleSubmit}>
-                <h3 className="title">
+                <div className="header">
+                    <img src="../../public/logo.svg" alt="Logo" />
+                    <h3>
                     SETU Code Lab
-                </h3>
-                
+                    </h3>
+                </div>
                     <p className="error">{error}</p>
                 <div>
                     <input
-                        className="topRounded"
+                        className="topRounded emailInput"
                         type="email" 
                         placeholder="email"
                         value={email}
@@ -63,7 +65,7 @@ export default function Login() {
                 </div>
                 <div>
                     <input 
-                        className="bottomRounded"
+                        className="bottomRounded passwordInput"
                         type="password" 
                         placeholder="password" 
                         value={password}

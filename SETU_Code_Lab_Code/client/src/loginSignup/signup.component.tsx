@@ -56,14 +56,16 @@ export default function SignUp() {
         return(
             <div className="authBox">
             <form onSubmit={handleSubmit}>
-                <h3 className="title">
+                <div className="header">
+                    <img src="../../public/logo.svg" alt="Logo" />
+                    <h3>
                     SETU Code Lab
-                </h3>
-
+                    </h3>
+                </div>
                 <p className="error">{error}</p>
                 <div>
                     <input 
-                        className="fullyRounded"
+                        className="fullyRounded nameInput"
                         type="text"
                         placeholder="name"
                         value={name}
@@ -72,7 +74,7 @@ export default function SignUp() {
                     />
                 </div>
                 <br/>
-                <div>
+                <div className="radioLabel">
                     <label>
                         <input 
                             type="radio"
@@ -82,10 +84,10 @@ export default function SignUp() {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
                             required 
                         />
-                        student
+                        Student
                     </label>
                 </div>
-                <div>
+                <div className="radioLabel">
                     <label>
                     <input 
                         type="radio" 
@@ -95,13 +97,13 @@ export default function SignUp() {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
                         required 
                     />
-                    lecturer
+                    Lecturer
                     </label>
                 </div>
                 <br/>
                 <div>
                     <input
-                        className="topRounded"
+                        className="topRounded emailInput"
                         type="email" 
                         placeholder="email"
                         value={email}
@@ -110,6 +112,7 @@ export default function SignUp() {
                 </div>
                 <div>
                     <input 
+                    className="passwordInput"
                         type="password" 
                         placeholder="password" 
                         value={password}
@@ -118,7 +121,7 @@ export default function SignUp() {
                 </div>
                 <div>
                     <input 
-                        className="bottomRounded"
+                        className="bottomRounded passwordInput"
                         type="password" 
                         placeholder="confirm password" 
                         value={confPassword}

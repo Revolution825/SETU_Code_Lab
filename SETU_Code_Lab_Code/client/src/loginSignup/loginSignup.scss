@@ -2,6 +2,7 @@
 
 
 .authBox {
+  text-align: center;
   color: #dedede;
   width: 320px;
   height: auto;
@@ -10,18 +11,38 @@
   border-radius: 15px;
 }
 
-.title {
-    font-size: 24px;
-    padding-top: 50px;
-    padding-bottom: 10px;
+.header {
+  font-size: 20px;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  margin-left: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 input:not([type="radio"]) {
-    width: 240px;
+    width: 210px;
     background-color: #363636;
     border-color: #a0a0a0;
     padding: 15px;
+    padding-left: 43px;
     font-size: 16px;
+}
+
+.emailInput {
+  background: url("../../public/envelope.svg") no-repeat 10px center;
+  background-size: 24px;
+}
+
+.passwordInput {
+  background: url("../../public/lock.svg") no-repeat 10px center;
+  background-size: 24px;
+}
+
+.nameInput {
+  background: url("../../public/user.svg") no-repeat 10px center;
+  background-size: 24px;
 }
 
 input::placeholder {
@@ -34,6 +55,12 @@ input:focus {
 }
 
 input[type="radio"] {
+    margin-right: 20px;
+}
+
+.radioLabel {
+    margin-left: 40px;
+    text-align: left !important;
 }
 
 .bottomRounded {
