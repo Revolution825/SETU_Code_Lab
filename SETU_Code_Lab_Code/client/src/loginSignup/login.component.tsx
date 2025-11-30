@@ -7,9 +7,15 @@ export default function Login() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    function sanitizeEmail(email:string) {
+        return email.trim().toLowerCase()
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
+
+        const sanitizedEmail = sanitizeEmail(email);
 
         try {
             const res = await fetch("/api/auth/login", {
@@ -18,7 +24,7 @@ export default function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({email, password})
+                body: JSON.stringify({sanitizedEmail, password})
                 });
                 const data = await res.json();
                 if(res.ok) {

@@ -1,5 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+function validateEmail(email:string) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const sanitizedEmail = email.trim();
+    const isValid = emailRegex.test(sanitizedEmail);
+    return { isValid, sanitizedEmail };
+}
+
+function sanitizeName(name: string) {
+    return name.replaceAll(/[^a-zA-Z\s'-]/g, '').trim();
+}
+
 export default function SignUp() {
 
     const [name, setName] = useState("");
@@ -14,6 +26,9 @@ export default function SignUp() {
         e.preventDefault();
         setError("");
 
+        const { isValid, sanitizedEmail } = validateEmail(email);
+        const sanitizedName = sanitizeName(name)
+        if(!isValid) throw new Error("Invalid Email input")
         try {
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -21,7 +36,7 @@ export default function SignUp() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({name, role, email, password, confPassword})
+                body: JSON.stringify({ sanitizedName, role, sanitizedEmail, password, confPassword})
                 });
                 const data = await res.json();
                 if(res.ok) {
