@@ -5,14 +5,23 @@ function Problems() {
     const [problems, setProblems] = useState<any[]>([]);
     
     useEffect(() => {
-    async function fetchProblems() {
-        const res = await fetch('/api/problems');
-        setProblems(await res.json());
-    }
+      const token = localStorage.getItem("token");
+    
+      async function fetchProblems() {
+        const res = await fetch('/api/problems', {
+          headers: {
+          "Authorization": `Bearer ${token}`,
+            },
+        });
+        if(res.ok){
+          setProblems(await res.json());
+        } else {
+          const errorData = await res.json();
+          console.error("Error fetching problems:", errorData.message);
+        }
+      }
     fetchProblems();
 }, []);
-
-
 
 console.log("problems : ", problems);
 

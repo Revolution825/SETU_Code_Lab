@@ -21,7 +21,7 @@ export const login = async (req: Request, res: Response) => {
             secure: false,
             sameSite: "lax",
         });
-        res.json({message: "Logged In Successfully", user})
+        res.json({message: "Logged In Successfully", user, token})
     } catch (error: any) {
         res.status(400).json({message: error.message});
     }
@@ -31,10 +31,11 @@ export const signUp = async (req: Request, res: Response) => {
     try {
         const { name, role, email, password, confPassword } = req.body;
         isValidPassword(password, confPassword);
-        const user = await signUpUser(name, role, email, password);
+        const { user, token } = await signUpUser(name, role, email, password);
         res.status(201).json({
         message: "Account created successfully",
         user,
+        token
     });
     } catch (error: any) {
         res.status(400).json({message: error.message});

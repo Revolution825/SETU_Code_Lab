@@ -45,6 +45,13 @@ export async function signUp(name: string, role: string, email: string, password
 
     const user = await authModel.createUser(name, role, email, hashed);
 
+    
+  const token = jwt.sign(
+    { id: user.id, email: user.email, role: user.role },
+    process.env.JWT_SECRET!,
+    { expiresIn: "1h" }
+  );
+
     const { password: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return {user: userWithoutPassword, token};
 }
