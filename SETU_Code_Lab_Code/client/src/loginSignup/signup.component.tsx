@@ -36,7 +36,9 @@ export default function SignUp() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ sanitizedName, role, sanitizedEmail, password, confPassword})
+                body: JSON.stringify({
+                    name: sanitizedName, role, email: sanitizedEmail, password, confPassword
+                    })
                 });
                 const data = await res.json();
                 if(res.ok) {

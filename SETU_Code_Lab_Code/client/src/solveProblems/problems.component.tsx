@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Problems() {
 
+
+export default function Problems() {
+    const navigate = useNavigate();
     const [problems, setProblems] = useState<any[]>([]);
+
+    const handleClick = () => {
+      localStorage.removeItem("token");
+      navigate("/");
+    }
     
     useEffect(() => {
       const token = localStorage.getItem("token");
+      if(!token) {
+        navigate("/");
+        return;
+      }
     
       async function fetchProblems() {
         const res = await fetch('/api/problems', {
@@ -38,7 +50,9 @@ console.log("problems : ", problems);
         </li>)
     : <li>No problems found</li>}
       </ul>
+      <button onClick={handleClick}>
+        Log out
+      </button>
     </div>
   );
 }
-export default Problems;

@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+function sanitizeEmail(email:string) {
+    return email.trim().toLowerCase()
+}
+
 export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-
-    function sanitizeEmail(email:string) {
-        return email.trim().toLowerCase()
-    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -24,7 +25,9 @@ export default function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({sanitizedEmail, password})
+                body: JSON.stringify({
+                    email: sanitizedEmail, password
+                    })
                 });
                 const data = await res.json();
                 if(res.ok) {
