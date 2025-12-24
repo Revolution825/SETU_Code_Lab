@@ -53,48 +53,50 @@ export default function Login() {
     }
 
         return(
-        <div className="authBox">
-            <form onSubmit={handleSubmit}>
-                <div className="header">
-                    <img src="/logo.svg" alt="Logo" />
-                    <h3>
-                    SETU Code Lab
-                    </h3>
+        <div className="authScreen">
+            <div className="authBox">
+                <form onSubmit={handleSubmit}>
+                    <div className="header">
+                        <img src="/logo.svg" alt="Logo" />
+                        <h3>
+                        SETU Code Lab
+                        </h3>
+                    </div>
+                        <p className="error">{error}</p>
+                        { capsOn && (
+                            <p className="capsMessage" > Caps Lock on!</p>
+                        )}   
+                    <div>
+                        <input
+                            className="topRounded emailInput"
+                            type="email" 
+                            placeholder="email"
+                            value={email}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            required />
+                    </div>
+                    <div>
+                        <input 
+                            className="bottomRounded passwordInput"
+                            type="password" 
+                            placeholder="password" 
+                            value={password}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            required />
+                    </div>
+                    <div>
+                        <br/>
+                        <button className="button" type="submit">
+                            Log in
+                        </button>
+                    </div>
+                    <p className="message">
+                        <a href="/signup">Sign up</a> if you don't have an account already
+                    </p>
+                </form>
                 </div>
-                    <p className="error">{error}</p>
-                    { capsOn && (
-                        <p className="capsMessage" > Caps Lock on!</p>
-                    )}   
-                <div>
-                    <input
-                        className="topRounded emailInput"
-                        type="email" 
-                        placeholder="email"
-                        value={email}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        required />
-                </div>
-                <div>
-                    <input 
-                        className="bottomRounded passwordInput"
-                        type="password" 
-                        placeholder="password" 
-                        value={password}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                        required />
-                </div>
-                <div>
-                    <br/>
-                    <button className="button" type="submit">
-                        Log in
-                    </button>
-                </div>
-                <p className="message">
-                    <a href="/signup">Sign up</a> if you don't have an account already
-                </p>
-            </form>
             </div>
         );
     }

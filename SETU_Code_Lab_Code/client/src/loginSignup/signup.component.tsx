@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./loginSignup.scss";
 import { useNavigate } from "react-router-dom";
 
 function validateEmail(email:string) {
@@ -62,6 +63,7 @@ export default function SignUp() {
     }
 
         return(
+        <div className="authScreen">
             <div className="authBox">
             <form onSubmit={handleSubmit}>
                 <div className="header">
@@ -154,5 +156,6 @@ export default function SignUp() {
                 </p>
             </form>
             </div>
+        </div>
         );
     }

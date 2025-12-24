@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./viewProblems.scss";
 import { useNavigate } from "react-router-dom";
 
 
@@ -39,6 +40,12 @@ console.log("problems : ", problems);
 
   return (
     <div>
+      <div className="problemsHeader">
+        <img src="/logo.svg" alt="Logo" />
+        <h3>
+          SETU Code Lab
+        </h3>
+      </div>
       <h1>Problems Page</h1>
       <ul>
   {Array.isArray(problems)

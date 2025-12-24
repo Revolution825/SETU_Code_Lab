@@ -1,7 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap");
 
+.authScreen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding-bottom: 10vh;
+}
 
 .authBox {
+  margin-top: 50px;
   text-align: center;
   color: #dedede;
   width: 320px;
