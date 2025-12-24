@@ -8,6 +8,14 @@ function sanitizeEmail(email:string) {
 
 export default function Login() {
 
+    const [capsOn, setCapsOn] = useState(false);
+    const checkCapsLock = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.getModifierState("CapsLock")) {
+            setCapsOn(true);
+        } else {
+            setCapsOn(false);
+        }
+    };
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -54,12 +62,16 @@ export default function Login() {
                     </h3>
                 </div>
                     <p className="error">{error}</p>
+                    { capsOn && (
+                        <p className="capsMessage" > Caps Lock on!</p>
+                    )}   
                 <div>
                     <input
                         className="topRounded emailInput"
                         type="email" 
                         placeholder="email"
                         value={email}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         required />
                 </div>
@@ -69,6 +81,7 @@ export default function Login() {
                         type="password" 
                         placeholder="password" 
                         value={password}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         required />
                 </div>

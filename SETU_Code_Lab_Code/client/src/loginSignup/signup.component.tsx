@@ -14,6 +14,14 @@ function sanitizeName(name: string) {
 
 export default function SignUp() {
 
+    const [capsOn, setCapsOn] = useState(false);
+    const checkCapsLock = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.getModifierState("CapsLock")) {
+            setCapsOn(true);
+        } else {
+            setCapsOn(false);
+        }
+    };
     const [name, setName] = useState("");
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
@@ -63,12 +71,16 @@ export default function SignUp() {
                     </h3>
                 </div>
                 <p className="error">{error}</p>
+                                    { capsOn && (
+                        <p className="capsMessage" > Caps Lock on!</p>
+                    )}  
                 <div>
                     <input 
                         className="fullyRounded nameInput"
                         type="text"
                         placeholder="name"
                         value={name}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                         required 
                     />
@@ -107,6 +119,7 @@ export default function SignUp() {
                         type="email" 
                         placeholder="email"
                         value={email}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         required />
                 </div>
@@ -116,6 +129,7 @@ export default function SignUp() {
                         type="password" 
                         placeholder="password" 
                         value={password}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         required />
                 </div>
@@ -125,6 +139,7 @@ export default function SignUp() {
                         type="password" 
                         placeholder="confirm password" 
                         value={confPassword}
+                        onKeyUp={checkCapsLock}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfPassword(e.target.value)}
                         required />
                 </div>
