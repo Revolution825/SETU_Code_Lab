@@ -40,26 +40,31 @@ console.log("problems : ", problems);
 
   return (
     <div>
-      <div className="problemsHeader">
-        <img src="/logo.svg" alt="Logo" />
+      <div className="navBar">
+        <img className="logo" src="/logo.svg" alt="Logo" />
         <h3>
           SETU Code Lab
         </h3>
+        <button className="profileButton">
+          <img src="/profileIcon.svg" alt="profileIcon" />
+        </button>
       </div>
-      <h1>Problems Page</h1>
-      <ul>
-  {Array.isArray(problems)
-    ? problems.map((p) => <li key={p.problem_id}>
-        {p.problem_title}
+      <div>
+        <h1>Problems Page</h1>
+        <ul>
+          {Array.isArray(problems)
+            ? problems.map((p) => <li key={p.problem_id}>
+            {p.problem_title}
             <p>
-                {p.problem_description}
+              {p.problem_description}
             </p>
-        </li>)
-    : <li>No problems found</li>}
-      </ul>
-      <button onClick={handleClick}>
-        Log out
-      </button>
+          </li>)
+          : <li>No problems found</li>}
+        </ul>
+        <button onClick={handleClick}>
+          Log out
+        </button>
+      </div>
     </div>
   );
 }
