@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import "./viewProblems.scss";
 import { useNavigate } from "react-router-dom";
-
-
+export interface Problem {
+  problem_id: number;
+  user_id: number;
+  problem_title: string;
+  problem_description: string;
+  user_name: string;
+  difficulty: number;
+}
 
 export default function Problems() {
     const navigate = useNavigate();
-    const [problems, setProblems] = useState<any[]>([]);
+    const [problems, setProblems] = useState<Problem[]>([]);
 
     const handleClick = () => {
       localStorage.removeItem("token");
@@ -49,16 +55,23 @@ console.log("problems : ", problems);
           <img src="/profileIcon.svg" alt="profileIcon" />
         </button>
       </div>
-      <div>
-        <h1>Problems Page</h1>
+      <div className="problems">
         <ul>
           {Array.isArray(problems)
-            ? problems.map((p) => <li key={p.problem_id}>
-            {p.problem_title}
-            <p>
-              {p.problem_description}
-            </p>
-          </li>)
+            ? problems.map((p) => <button className="problem" key={p.problem_id}>
+            {p.problem_id}. {p.problem_title} 
+            <span className="problemListItem">| {p.user_name}</span>
+            <span className="stars">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <img
+                key={i}
+                className="star"
+                src={i < p.difficulty ? "/filledStar.svg" : "/emptyStar.svg"}
+                alt="star"
+              />
+            ))}
+            </span>
+          </button>)
           : <li>No problems found</li>}
         </ul>
         <button onClick={handleClick}>

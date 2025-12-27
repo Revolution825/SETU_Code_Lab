@@ -21,3 +21,51 @@
   border: none;
   padding: 0;
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul button.problem {
+  background-color: #363636;
+}
+
+ul button.problem:nth-child(even) {
+  background-color: #262626;
+  box-shadow: none;
+}
+
+.problems {
+  margin: auto;
+  margin-top: 10%;
+  width: 50%;
+  padding: 10px;
+}
+
+.problem {
+  align-items: center;
+  background-color: #363636;
+  box-shadow: 10px 0 10px 5px #202020;
+  border-radius: 15px;
+  font-size: 18px;
+  padding: 10px;
+  padding-left: 48px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+}
+
+.problemListItem {
+  margin-left: 6px;
+  color: #626262;
+}
+
+.stars {
+  margin-left: auto;
+}
+
+.star {
+  margin: 3px;
+}
