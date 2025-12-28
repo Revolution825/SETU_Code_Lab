@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./viewProblems.scss";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "./dropdown.component";
 export interface Problem {
   problem_id: number;
   user_id: number;
@@ -51,9 +52,19 @@ console.log("problems : ", problems);
         <h3>
           SETU Code Lab
         </h3>
-        <button className="profileButton">
-          <img src="/profileIcon.svg" alt="profileIcon" />
-        </button>
+        <div className="profileDropdown">
+          <Dropdown 
+          className="profileDropdownButton"
+          buttonLabel={<img src="/profileIcon.svg" alt="profileIcon" />} 
+          items={[
+          {
+            title: "Logout",
+            icon: <img src="/logoutIcon.svg" alt="logoutIcon"/>,
+            action: () => handleClick,
+            url: "/"
+          },
+          ]}/>
+        </div>
       </div>
       <div className="problems">
         <ul>
@@ -74,9 +85,6 @@ console.log("problems : ", problems);
           </button>)
           : <li>No problems found</li>}
         </ul>
-        <button onClick={handleClick}>
-          Log out
-        </button>
       </div>
     </div>
   );

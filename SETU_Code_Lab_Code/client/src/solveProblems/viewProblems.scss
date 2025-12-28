@@ -14,12 +14,41 @@
   margin: 12px;
 }
 
-.profileButton {
+.profileDropdown {
   margin-left: auto;
+}
+
+.profileDropdownButton {
   margin-right: 24px;
   background: none;
   border: none;
   padding: 0;
+}
+
+.dropdownMenu {
+  position: absolute;
+  margin-right: 24px;
+  right: 0;
+  
+  width: 120px;
+  border-radius: 8px;
+  background-color: #262626;
+  box-shadow: 5px 0 5px 2px #202020;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownButtons {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  background-color: #262626;
+}
+
+.dropdownButtons:hover {
+  background-color:#363636;
 }
 
 ul {
@@ -47,7 +76,7 @@ ul button.problem:nth-child(even) {
 .problem {
   align-items: center;
   background-color: #363636;
-  box-shadow: 10px 0 10px 5px #202020;
+  box-shadow: 5px 0 5px 2px #202020;
   border-radius: 15px;
   font-size: 18px;
   padding: 10px;
