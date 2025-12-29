@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.scss'
 import Login from './loginSignup/login.component'
 import SignUp from './loginSignup/signup.component'
-import Problems from './solveProblems/problems.component'
+import Problems from './viewProblems/problems.component'
 import RequireAuth from './requireAuth'
 
 export default function App() {

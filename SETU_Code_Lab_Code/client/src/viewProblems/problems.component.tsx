@@ -47,7 +47,7 @@ console.log("problems : ", problems);
         <ul>
           {Array.isArray(problems)
             ? problems.map((p) => <button className="problem" key={p.problem_id}>
-            {p.problem_id}. {p.problem_title} 
+            {problems.indexOf(p)+1}. {p.problem_title} 
             <span className="problemListItem">| {p.user_name}</span>
             <span className="stars">
             {Array.from({ length: 5 }).map((_, i) => (

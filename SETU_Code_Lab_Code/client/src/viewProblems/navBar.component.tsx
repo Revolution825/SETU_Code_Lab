@@ -3,13 +3,18 @@ import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
     const navigate = useNavigate();
-    const handleClick = () => {
+    const logOutClick = () => {
       localStorage.removeItem("token");
       navigate("/");
-    }   
+    }
+    const logoClick = () => {
+      navigate("/problems");
+    }
     return (
-          <div className="navBar">
-            <img className="logo" src="/logo.svg" alt="Logo" />
+          <div  className="navBar">
+            <button onClick={logoClick} className="logoButton">
+              <img className="logo" src="/logo.svg" alt="Logo" />
+            </button>
             <h3>
               SETU Code Lab
             </h3>
@@ -21,7 +26,7 @@ export default function NavBar() {
               {
                 title: "Logout",
                 icon: <img src="/logoutIcon.svg" alt="logoutIcon"/>,
-                action: () => handleClick,
+                action: () => logOutClick,
                 url: "/"
               },
               ]}/>
