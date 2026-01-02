@@ -11,7 +11,6 @@ export default function Problem() {
   const problem:Problem = location.state;
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
-  const [rightHeight, setRightHeight] = useState(topHeight)
 
   const HIDE_TEXT_AT = 120;
 
@@ -26,7 +25,7 @@ export default function Problem() {
                     height={topHeight}
                     minConstraints={[12, topHeight]}
                     maxConstraints={[window.innerWidth * 0.5, topHeight]}
-                    onResizeStop={(e, { size }) => setLeftWidth(size.width)}
+                    onResizeStop={(_, { size }) => setLeftWidth(size.width)}
                     resizeHandles={["e"]}
                 >
                     <div className="paneContent">
@@ -51,7 +50,6 @@ export default function Problem() {
                     minConstraints={[window.innerWidth * 0.5, 12]}
                     maxConstraints={[Infinity, topHeight - 116]}
                     resizeHandles={["s"]}
-                    onResizeStop={(e, { size }) => setRightHeight(size.height)}
                   >
                     <div className="paneContent">
                       <div className="paneTitle">
