@@ -5,12 +5,18 @@ import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
 import { ResizableBox } from 'react-resizable';
 import { useState } from "react";
+import CodeEditor from "./codeEditor.component";
 
 export default function Problem() {
   const location = useLocation();
   const problem:Problem = location.state;
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
+  const [rightHeight, setRightHeight] = useState(topHeight - 116)
+
+  const [code, setCode] = useState(
+    `placeholder code`
+  )
 
   const HIDE_TEXT_AT = 120;
 
@@ -46,18 +52,26 @@ export default function Problem() {
                   <ResizableBox
                     className="pane"
                     width={Infinity}  
-                    height={topHeight - 116}
+                    height={rightHeight}
                     minConstraints={[window.innerWidth * 0.5, 12]}
                     maxConstraints={[Infinity, topHeight - 116]}
+                    onResizeStop={(_, { size }) => setRightHeight(size.height)}
                     resizeHandles={["s"]}
                   >
                     <div className="paneContent">
-                      <div className="paneTitle">
-                        Code editor 
-                      </div>
-                      <div>
-                                                   
-                      </div>
+                        {rightHeight > HIDE_TEXT_AT && (
+                          <>
+                            <div className="paneTitle">
+                              Code editor 
+                            </div>
+                            <div className="editorContainer">
+                            <CodeEditor 
+                              value={code}
+                              onChange={setCode}
+                            />
+                            </div>
+                          </>
+                        )}
                     </div>
                   </ResizableBox>
                   <div className="testCasesPane">
