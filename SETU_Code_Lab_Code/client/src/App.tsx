@@ -2,8 +2,9 @@ import { Routes, Route } from 'react-router-dom'
 import './App.scss'
 import Login from './loginSignup/login.component'
 import SignUp from './loginSignup/signup.component'
-import Problems from './viewProblems/problems.component'
+import Problems from './viewProblems/problemList.component'
 import RequireAuth from './requireAuth'
+import Problem from './solveProblem/problem.component'
 
 export default function App() {
 
@@ -16,6 +17,11 @@ export default function App() {
           <Problems />
         </RequireAuth>
         } />
+      <Route path="/problem" element={
+        <RequireAuth>
+          <Problem />
+        </RequireAuth>
+      } />
     </Routes>
   )
 }

@@ -14,7 +14,11 @@ export interface Problem {
 export default function Problems() {
     const navigate = useNavigate();
     const [problems, setProblems] = useState<Problem[]>([]);
-    
+
+    function problemClick(problem: Problem) {
+      navigate("/problem", { state: problem});
+    }
+
     useEffect(() => {
       const token = localStorage.getItem("token");
       if(!token) {
@@ -46,7 +50,10 @@ console.log("problems : ", problems);
       <div className="problems">
         <ul>
           {Array.isArray(problems)
-            ? problems.map((p) => <button className="problem" key={p.problem_id}>
+            ? problems.map((p) => <button 
+            className="problem" 
+            key={p.problem_id}
+            onClick={() => problemClick(p)}>
             {problems.indexOf(p)+1}. {p.problem_title} 
             <span className="problemListItem">| {p.user_name}</span>
             <span className="stars">
