@@ -1,0 +1,104 @@
+.overallPane {
+    display: flex;
+}
+
+.react-resizable-handle-e {
+  width: 3px !important;
+  height: 10% !important;
+  margin: 4px;
+  background-color: #262626;
+  position: absolute !important;
+  transition: background-color 0.2s !important;
+  transform: none !important;
+  border-radius: 8px;
+}
+
+.react-resizable-handle-e:hover {
+  background-color: #dedede;
+}
+
+.react-resizable-handle-s {
+  width: 10% !important;
+  height: 3px !important;
+  margin: 4px;
+  background-color: #262626;
+  position: absolute !important;
+  transition: background-color 0.2s !important;
+  transform: none !important;
+  border-radius: 8px;
+}
+
+.react-resizable-handle-s:hover {
+  background-color: #dedede;
+}
+
+.react-resizable-handle-n {
+  width: 10% !important;
+  height: 3px !important;
+  margin: 4px;
+  background-color: #262626;
+  position: absolute !important;
+  transition: background-color 0.2s !important;
+  transform: none !important;
+  border-radius: 8px;
+}
+
+.react-resizable-handle-n:hover {
+  background-color: #dedede;
+}
+
+.pane {
+  background-color: #363636;
+  border-radius: 15px;
+}
+
+.paneContent {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 0 5px 2px #202020;
+  display: flex;
+  flex-direction: column;
+}
+
+.problemDescription {
+  margin: 12px;
+}
+
+.paneTitle {
+  background-color: #454545;
+  padding: 12px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  margin: 0px;
+  font-size: 18px;
+  box-shadow: 5px 0 5px 2px #202020;
+}
+
+.descriptionContent {
+  margin: 12px;
+  flex: 1;
+  overflow: auto;
+}
+
+.testCasesPane {
+  margin-top: 12px;
+  flex: 1;
+  display: flex;
+  height: 100%;
+  min-height: 0px;
+}
+
+.testCasesPane .pane {
+  flex: 1;
+  min-height: 0px;
+}
+
+.rightPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+  margin-left: 0px;
+  height: calc(100vh - 104px);
+}
