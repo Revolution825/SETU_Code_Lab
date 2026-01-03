@@ -10,12 +10,13 @@ import CodeEditor from "./codeEditor.component";
 export default function Problem() {
   const location = useLocation();
   const problem:Problem = location.state;
+  
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
   const [rightHeight, setRightHeight] = useState(topHeight - 116)
 
   const [code, setCode] = useState(
-    `placeholder code`
+    problem.placeholder_code
   )
 
   const HIDE_TEXT_AT = 120;
