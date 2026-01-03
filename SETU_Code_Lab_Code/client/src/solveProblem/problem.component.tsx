@@ -1,25 +1,59 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { Problem } from "../viewProblems/problemList.component";
 import NavBar from "../viewProblems/navBar.component";
 import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
 import { ResizableBox } from 'react-resizable';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditor from "./codeEditor.component";
 
+export interface TestCase {
+  test_case_id: number;
+  problem_id: number;
+  input_value: string;
+  expected_value:string;
+}
+
 export default function Problem() {
+  const navigate = useNavigate();
   const location = useLocation();
   const problem:Problem = location.state;
-  
+
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
   const [rightHeight, setRightHeight] = useState(topHeight - 116)
+  const HIDE_TEXT_AT = 120;
 
+  const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [code, setCode] = useState(
     problem.placeholder_code
   )
 
-  const HIDE_TEXT_AT = 120;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+      if(!token) {
+        navigate("/");
+        return;
+      }
+
+    async function fetchTestCases() {
+      const res = await fetch('api/testCases?problem_id='+ problem.problem_id, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        }
+      });
+      if(res.ok) {
+        setTestCases(await res.json());
+      } else {
+        console.log("Data", res.json());
+        const errorData = await res.json();
+        console.error("Error fetching test cases: ", errorData.message);
+      }
+    }
+    fetchTestCases();
+  }, [])
+
+  console.log("test cases: ", testCases)
 
     return (
         <div>
@@ -81,10 +115,21 @@ export default function Problem() {
                         <div className="paneTitle">
                           Test cases
                         </div>
-                        <div className="descriptionContent">
-                          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque possimus vitae reprehenderit blanditiis debitis nihil, natus aliquid perspiciatis ex officiis doloribus ea iste reiciendis dolores quia in impedit error eius? 
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus quaerat nemo accusamus! Veniam, sequi porro! Facilis similique quidem sit possimus molestiae neque quia, fugit illo? Quo voluptate quam vero tenetur? 
-                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, id? Repellendus deserunt voluptas omnis fugit earum. Similique perspiciatis doloribus, asperiores, sint numquam voluptatem deserunt laudantium, in harum voluptas culpa ipsum?
+                        <div className="testCases">
+                          {Array.isArray(testCases)
+                          ? testCases.map((testCase) =>
+                            <>
+                              <div className="testCase" key={testCase.test_case_id}>
+                                <p>
+                                  Input: {testCase.input_value}
+                                </p>
+                                <p>
+                                  Expected: {testCase.expected_value}
+                                </p>
+                              </div>
+                            </>
+                          )
+                        : <p>No Test Cases Found</p>}
                         </div>
                       </div>
                     </div>

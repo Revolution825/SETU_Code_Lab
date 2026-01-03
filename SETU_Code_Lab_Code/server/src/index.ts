@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import authRouter from "./routes/auth.routes";
-import problemRouter from "./routes/problem.routes"
+import problemRouter from "./routes/problem.routes";
+import testCaseRouter from "./routes/testCase.route";
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
 
@@ -9,7 +10,8 @@ const port: number = 3000;
 
 app.use(express.json());
 app.use("/api/auth", authRouter);
-app.use("/api", verifyToken, problemRouter)
+app.use("/api", verifyToken, problemRouter);
+app.use("/api", testCaseRouter);
 app.use(errorHandler);
 
 app.listen(port, () => {

@@ -116,3 +116,14 @@
 .cm-scroller {
   overflow: auto;
 }
+
+.testCases {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.testCase {
+  padding: 12px;
+  min-width: 200px;
+}
