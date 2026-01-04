@@ -26,7 +26,7 @@ export default function Problem() {
 
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [code, setCode] = useState(
-    problem.placeholder_code
+    problem?.placeholder_code
   )
 
   useEffect(() => {
@@ -97,11 +97,15 @@ export default function Problem() {
                         {rightHeight > HIDE_TEXT_AT && (
                           <>
                             <div className="paneTitle">
-                              Code editor 
+                              Code editor
+                              <div className="submissionButtons">
+                                <button className="runButton">Run</button>
+                                <button className="submitButton">Submit</button>
+                              </div>
                             </div>
                             <div className="editorContainer">
                             <CodeEditor 
-                              value={code}
+                              value={code ?? ""}
                               onChange={setCode}
                             />
                             </div>
@@ -118,8 +122,7 @@ export default function Problem() {
                         <div className="testCases">
                           {Array.isArray(testCases)
                           ? testCases.map((testCase) =>
-                            <>
-                              <div className="testCase" key={testCase.test_case_id}>
+                            <div className="testCase" key={testCase.test_case_id}>
                                 <p>
                                   Input: {testCase.input_value}
                                 </p>
@@ -127,7 +130,6 @@ export default function Problem() {
                                   Expected: {testCase.expected_value}
                                 </p>
                               </div>
-                            </>
                           )
                         : <p>No Test Cases Found</p>}
                         </div>

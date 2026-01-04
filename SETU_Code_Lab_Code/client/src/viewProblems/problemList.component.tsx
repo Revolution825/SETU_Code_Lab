@@ -9,7 +9,7 @@ export interface Problem {
   problem_description: string;
   user_name: string;
   difficulty: number;
-  placeholder_code: string;
+  placeholder_code?: string;
 }
 
 export default function Problems() {
