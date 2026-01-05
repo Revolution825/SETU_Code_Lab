@@ -99,7 +99,9 @@ export default function Problem() {
                             <div className="paneTitle">
                               Code editor
                               <div className="submissionButtons">
-                                <button className="runButton">Run</button>
+                                <button 
+                                  className="runButton"
+                                  >Run</button>
                                 <button className="submitButton">Submit</button>
                               </div>
                             </div>

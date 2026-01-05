@@ -1,4 +1,4 @@
-import { pool } from "../database";
+import { pool } from "../infrastructure/database";
 
 export interface User {
     id: number;

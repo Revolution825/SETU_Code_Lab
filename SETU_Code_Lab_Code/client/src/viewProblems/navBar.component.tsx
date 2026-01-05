@@ -26,7 +26,7 @@ export default function NavBar() {
               {
                 title: "Logout",
                 icon: <img src="/logoutIcon.svg" alt="logoutIcon"/>,
-                action: () => logOutClick,
+                action: logOutClick,
                 url: "/"
               },
               ]}/>
