@@ -65,7 +65,8 @@ export default function Problem() {
         },
         body: JSON.stringify({
           image: image,
-          code: code
+          code: code,
+          input: testCases[0].input_value
         })
       });
 
@@ -83,7 +84,7 @@ export default function Problem() {
     }
   }
 
-  console.log("test cases: ", testCases)
+  console.log("test cases: ", testCases);
 
     return (
         <div>
@@ -163,10 +164,10 @@ export default function Problem() {
                           ? testCases.map((testCase) =>
                             <div className="testCase" key={JSON.stringify(testCase.test_case_id)}>
                                 <p>
-                                  Input: {JSON.stringify(testCase.input_value.x)}
+                                  Input: {JSON.stringify(testCase.input_value)}
                                 </p>
                                 <p>
-                                  Expected: {JSON.stringify(testCase.expected_value.x)}
+                                  Expected: {JSON.stringify(testCase.expected_value)}
                                 </p>
                               </div>
                           )
