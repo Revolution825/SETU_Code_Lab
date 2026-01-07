@@ -17,5 +17,5 @@ app.use("/docker", dockerRouter);
 app.use(errorHandler);
 
 app.listen(port, () => {
-    console.log(`Server is running smoothly on http://localhost:${port}`);
+    console.log(`Server is running smoothly on http://134.209.178.129:${port} or http://localhost:${port}`);
 });

@@ -1,22 +1,22 @@
 import docker from "../infrastructure/docker";
 
 export async function startContainer(image:string, code:string): Promise<string> {
-    await new Promise<void>((resolve, reject) => {
-        docker.pull(image, (err: any, stream: NodeJS.ReadableStream) => {
-            if(err) return reject(err);
-            docker.modem.followProgress(stream, (err) => (err ? reject(err) : resolve()))
-        });
-    });
+//    await new Promise<void>((resolve, reject) => {
+//        docker.pull(image, (err: any, stream: NodeJS.ReadableStream) => {
+//            if(err) return reject(err);
+//            docker.modem.followProgress(stream, (err) => (err ? reject(err) : resolve()))
+//        });
+//    });
 
     const container = await docker.createContainer({
         Image: image,
-//      name,
+        WorkingDir: "/app",
 Cmd: ["sh", "-c", `
 cat << 'EOF' > Main.java
 ${code}
 EOF
 javac Main.java
-java Main
+java -cp ".:/app/*" Main
 `],
         Tty: true,
         AttachStdout: true,

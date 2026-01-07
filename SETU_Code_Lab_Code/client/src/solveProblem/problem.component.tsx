@@ -10,8 +10,8 @@ import CodeEditor from "./codeEditor.component";
 export interface TestCase {
   test_case_id: number;
   problem_id: number;
-  input_value: string;
-  expected_value:string;
+  input_value: any;
+  expected_value: any;
 }
 
 export default function Problem() {
@@ -26,8 +26,9 @@ export default function Problem() {
 
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [code, setCode] = useState(
-    problem?.placeholder_code
-  )
+    problem.placeholder_code ?? ""
+  );
+  const image = "java-sandbox";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,7 +52,36 @@ export default function Problem() {
       }
     }
     fetchTestCases();
-  }, [])
+  }, []);
+
+  const handleRun = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch('docker/start', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          image: image,
+          code: code
+        })
+      });
+
+      const data = await res.json();
+
+      if(res.ok) {
+        //todo - change this
+        setCode(data.output);
+      } else {
+        console.log("Data", data);
+        console.error("Error running code: ", data.message);        
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   console.log("test cases: ", testCases)
 
@@ -101,8 +131,15 @@ export default function Problem() {
                               <div className="submissionButtons">
                                 <button 
                                   className="runButton"
-                                  >Run</button>
-                                <button className="submitButton">Submit</button>
+                                  onClick={handleRun}
+                                >
+                                  Run
+                                </button>
+                                <button 
+                                  className="submitButton"
+                                >
+                                  Submit
+                                </button>
                               </div>
                             </div>
                             <div className="editorContainer">
@@ -124,12 +161,12 @@ export default function Problem() {
                         <div className="testCases">
                           {Array.isArray(testCases)
                           ? testCases.map((testCase) =>
-                            <div className="testCase" key={testCase.test_case_id}>
+                            <div className="testCase" key={JSON.stringify(testCase.test_case_id)}>
                                 <p>
-                                  Input: {testCase.input_value}
+                                  Input: {JSON.stringify(testCase.input_value.x)}
                                 </p>
                                 <p>
-                                  Expected: {testCase.expected_value}
+                                  Expected: {JSON.stringify(testCase.expected_value.x)}
                                 </p>
                               </div>
                           )
