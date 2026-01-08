@@ -1,10 +1,11 @@
 import docker from "../infrastructure/docker";
 import { TestCase } from "../models/testCase.model";
+import { TestCaseResult } from "../models/testCaseResult.model";
 
-function preprocessJavaInput(code:string):string {
+function preprocessJavaInput(code: string): string {
     const signatureRegex = /public\s+static\s+(\w+)\s+(\w+)\(([^)]*)\)/;
     const match = code.match(signatureRegex);
-    if(!match) {
+    if (!match) {
         throw new Error("Could not find method signature in code.");
     }
     const returnType = match[1];
@@ -20,7 +21,7 @@ function preprocessJavaInput(code:string):string {
 
     const paramNames = params.map(p => p.split(/\s+/)[1]);
 
-    const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map(n=> "input." + n).join(", ")});`;
+    const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map(n => "input." + n).join(", ")});`;
 
     const processedCode = `
     import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,11 +47,11 @@ function preprocessJavaInput(code:string):string {
     return processedCode;
 }
 
-export async function startContainer(image:string, code:string, testCase:TestCase): Promise<string> {
+export async function startContainer(image: string, code: string, testCase: TestCase): Promise<TestCaseResult> {
 
     const processedInput = JSON.stringify(testCase.input_value);
     const preprocessedCode = preprocessJavaInput(code);
-
+    const startTime = Date.now();
     const container = await docker.createContainer({
         Image: image,
         WorkingDir: "/app",
@@ -75,14 +76,20 @@ java -cp ".:/app/*" Main '${processedInput}'
     await container.wait();
 
     const logs = await container.logs({
-      stdout: true,
-      stderr: true
+        stdout: true,
+        stderr: true
     });
     await container.remove();
+    const endTime = Date.now();
+    const combinedOutput = logs.toString().trim();
+    const passed = combinedOutput == testCase.expected_value.toString()
 
-    if (logs.toString().trim() == testCase.expected_value.toString()) {
-        return "Pass";
-    }
+    let result: TestCaseResult = {
+        test_case_id: testCase.test_case_id,
+        passed: passed,
+        actual_output: combinedOutput,
+        runtime_ms: endTime - startTime
+    };
 
-    return "Fail";
+    return result;
 }

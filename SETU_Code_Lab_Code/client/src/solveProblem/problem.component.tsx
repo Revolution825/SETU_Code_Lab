@@ -15,17 +15,27 @@ export interface TestCase {
   passed: boolean;
 }
 
+export interface TestCaseResult {
+  test_case_result_id?: number;
+  submission_id?: number;
+  test_case_id: number;
+  passed: boolean;
+  actual_output: string;
+  runtime_ms: number;
+}
+
 export default function Problem() {
   const navigate = useNavigate();
   const location = useLocation();
-  const problem:Problem = location.state;
+  const problem: Problem = location.state;
 
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
-  const [rightHeight, setRightHeight] = useState(topHeight - 116)
+  const [rightHeight, setRightHeight] = useState(topHeight - 332)
   const HIDE_TEXT_AT = 120;
 
   const [testCases, setTestCases] = useState<TestCase[]>([]);
+  const [testCaseResults, setTestCaseResults] = useState<TestCaseResult[]>([]);
   const [code, setCode] = useState(
     problem.placeholder_code ?? ""
   );
@@ -33,18 +43,18 @@ export default function Problem() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-      if(!token) {
-        navigate("/");
-        return;
-      }
+    if (!token) {
+      navigate("/");
+      return;
+    }
 
     async function fetchTestCases() {
-      const res = await fetch('api/testCases?problem_id='+ problem.problem_id, {
+      const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
         headers: {
           "Authorization": `Bearer ${token}`,
         }
       });
-      if(res.ok) {
+      if (res.ok) {
         setTestCases(await res.json());
       } else {
         console.log("Data", res.json());
@@ -61,7 +71,7 @@ export default function Problem() {
     }
   };
 
-  async function runTestCase(testCase:TestCase) {
+  async function runTestCase(testCase: TestCase) {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch('docker/start', {
@@ -79,17 +89,24 @@ export default function Problem() {
 
       const data = await res.json();
 
-      if(res.ok) {
-        setTestCases(prev => 
-          prev.map(tc => 
-            tc.test_case_id === testCase.test_case_id
-            ? { ...tc, passed: data.output }
-            : tc
-          )
-        );
+      if (res.ok) {
+        const testCaseResult: TestCaseResult = data.output;
+        setTestCaseResults(prev => {
+          const exists = prev.some(tc => tc.test_case_id === testCase.test_case_id);
+
+          if (exists) {
+            return prev.map(tc =>
+              tc.test_case_id === testCase.test_case_id
+                ? { ...tc, ...testCaseResult }
+                : tc
+            );
+          } else {
+            return [...prev, testCaseResult];
+          }
+        });
       } else {
         console.log("Data", data);
-        console.error("Error running code: ", data.message);        
+        console.error("Error running code: ", data.message);
       }
     } catch (err) {
       console.error(err);
@@ -98,99 +115,122 @@ export default function Problem() {
 
   console.log("test cases: ", testCases);
 
-    return (
-        <div>
-            <NavBar/>
-            <div className="overallPane">
-              <div className="problemDescription">
-                <ResizableBox
-                    className="pane"
-                    width={leftWidth}  
-                    height={topHeight}
-                    minConstraints={[12, topHeight]}
-                    maxConstraints={[window.innerWidth * 0.5, topHeight]}
-                    onResizeStop={(_, { size }) => setLeftWidth(size.width)}
-                    resizeHandles={["e"]}
-                >
-                    <div className="paneContent">
-                        {leftWidth > HIDE_TEXT_AT && (
-                          <>
-                            <div className="paneTitle">
-                              {problem.problem_title} | {problem.user_name}
-                            </div>
-                            <div className="descriptionContent">
-                              {problem.problem_description}
-                            </div>
-                          </>
-                        )}
-                    </div>
-                </ResizableBox>
-              </div>
-                <div className="rightPane">
-                  <ResizableBox
-                    className="pane"
-                    width={Infinity}  
-                    height={rightHeight}
-                    minConstraints={[window.innerWidth * 0.5, 12]}
-                    maxConstraints={[Infinity, topHeight - 116]}
-                    onResizeStop={(_, { size }) => setRightHeight(size.height)}
-                    resizeHandles={["s"]}
-                  >
-                    <div className="paneContent">
-                        {rightHeight > HIDE_TEXT_AT && (
-                          <>
-                            <div className="paneTitle">
-                              Code editor
-                              <div className="submissionButtons">
-                                <button 
-                                  className="runButton"
-                                  onClick={handleRun}
-                                >
-                                  Run
-                                </button>
-                                <button 
-                                  className="submitButton"
-                                >
-                                  Submit
-                                </button>
-                              </div>
-                            </div>
-                            <div className="editorContainer">
-                            <CodeEditor 
-                              value={code ?? ""}
-                              onChange={setCode}
-                            />
-                            </div>
-                          </>
-                        )}
-                    </div>
-                  </ResizableBox>
-                  <div className="testCasesPane">
-                    <div className="pane">
-                      <div className="paneContent">
-                        <div className="paneTitle">
-                          Test cases
-                        </div>
-                        <div className="testCases">
-                          {Array.isArray(testCases)
-                          ? testCases.map((testCase) =>
-                            <div className="testCase" key={JSON.stringify(testCase.test_case_id)}>
-                            <h3>Test Case {testCases.indexOf(testCase)+1} {testCase.passed?.toString()}</h3>
-                                <p>
-                                  Input: {JSON.stringify(testCase.input_value)}
-                                </p>
-                                <p>
-                                  Expected: {JSON.stringify(testCase.expected_value)}
-                                </p>
-                              </div>
-                          )
-                        : <p>No Test Cases Found</p>}
-                        </div>
-                      </div>
+  return (
+    <div>
+      <NavBar />
+      <div className="overallPane">
+        <div className="problemDescription">
+          <ResizableBox
+            className="pane"
+            width={leftWidth}
+            height={topHeight}
+            minConstraints={[12, topHeight]}
+            maxConstraints={[window.innerWidth * 0.5, topHeight]}
+            onResizeStop={(_, { size }) => setLeftWidth(size.width)}
+            resizeHandles={["e"]}
+          >
+            <div className="paneContent">
+              {leftWidth > HIDE_TEXT_AT && (
+                <>
+                  <div className="paneTitle">
+                    {problem.problem_title} | {problem.user_name}
+                  </div>
+                  <div className="descriptionContent">
+                    {problem.problem_description}
+                  </div>
+                </>
+              )}
+            </div>
+          </ResizableBox>
+        </div>
+        <div className="rightPane">
+          <ResizableBox
+            className="pane"
+            width={Infinity}
+            height={rightHeight}
+            minConstraints={[window.innerWidth * 0.5, 12]}
+            maxConstraints={[Infinity, topHeight - 116]}
+            onResizeStop={(_, { size }) => setRightHeight(size.height)}
+            resizeHandles={["s"]}
+          >
+            <div className="paneContent">
+              {rightHeight > HIDE_TEXT_AT && (
+                <>
+                  <div className="paneTitle">
+                    Code editor
+                    <div className="submissionButtons">
+                      <button
+                        className="runButton"
+                        onClick={handleRun}
+                      >
+                        Run
+                      </button>
+                      <button
+                        className="submitButton"
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
-                </div>
+                  <div className="editorContainer">
+                    <CodeEditor
+                      value={code ?? ""}
+                      onChange={setCode}
+                    />
+                  </div>
+                </>
+              )}
             </div>
+          </ResizableBox>
+          <div className="testCasesPane">
+            <div className="pane">
+              <div className="paneContent">
+                <div className="paneTitle">
+                  Test cases
+                </div>
+                <div className="testCases">
+                  {Array.isArray(testCases) && testCases.length > 0 ? (
+                    testCases.map((testCase, idx) => {
+                      const result = testCaseResults.find(
+                        (r) => r.test_case_id === testCase.test_case_id
+                      );
+
+                      return (
+                        <div className="testCase" key={testCase.test_case_id}>
+                          <h3>
+                            Test Case {idx + 1}{" "}
+                          </h3>
+                          {result?.passed != null
+                            ? <p><strong>Status: </strong><text style={{ color: result.passed ? "green" : "red" }}>
+                              {result?.passed === true
+                                ? "Pass"
+                                : "Fail"}</text></p>
+                            : ""}
+                          <p><strong>Input:</strong> {JSON.stringify(testCase.input_value)}</p>
+                          <p><strong>Expected:</strong> {JSON.stringify(testCase.expected_value)}</p>
+                          {result && (
+                            <>
+                              <strong>Output:</strong>
+                              <pre
+                                style={{ color: result.passed ? "green" : "red" }}
+                                className="testOutput"
+                              >
+                                <p>{result.actual_output}</p>
+                              </pre>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No Test Cases Found</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
