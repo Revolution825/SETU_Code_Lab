@@ -5,6 +5,7 @@ export interface TestCase {
   problem_id: number;
   input_value: any;
   expected_value: any;
+  passed?: boolean;
 }
 
 export async function fetchTestCases(problem_id: string): Promise<TestCase[]> {

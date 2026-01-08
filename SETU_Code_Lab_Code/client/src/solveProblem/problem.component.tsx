@@ -12,6 +12,7 @@ export interface TestCase {
   problem_id: number;
   input_value: any;
   expected_value: any;
+  passed: boolean;
 }
 
 export default function Problem() {
@@ -55,6 +56,12 @@ export default function Problem() {
   }, []);
 
   const handleRun = async () => {
+    for (const testCase of testCases) {
+      await runTestCase(testCase);
+    }
+  };
+
+  async function runTestCase(testCase:TestCase) {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch('docker/start', {
@@ -66,15 +73,20 @@ export default function Problem() {
         body: JSON.stringify({
           image: image,
           code: code,
-          input: testCases[0].input_value
+          testCase: testCase
         })
       });
 
       const data = await res.json();
 
       if(res.ok) {
-        //todo - change this
-        setCode(data.output);
+        setTestCases(prev => 
+          prev.map(tc => 
+            tc.test_case_id === testCase.test_case_id
+            ? { ...tc, passed: data.output }
+            : tc
+          )
+        );
       } else {
         console.log("Data", data);
         console.error("Error running code: ", data.message);        
@@ -163,6 +175,7 @@ export default function Problem() {
                           {Array.isArray(testCases)
                           ? testCases.map((testCase) =>
                             <div className="testCase" key={JSON.stringify(testCase.test_case_id)}>
+                            <h3>Test Case {testCases.indexOf(testCase)+1} {testCase.passed?.toString()}</h3>
                                 <p>
                                   Input: {JSON.stringify(testCase.input_value)}
                                 </p>

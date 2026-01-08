@@ -1,4 +1,5 @@
 import docker from "../infrastructure/docker";
+import { TestCase } from "../models/testCase.model";
 
 function preprocessJavaInput(code:string):string {
     const signatureRegex = /public\s+static\s+(\w+)\s+(\w+)\(([^)]*)\)/;
@@ -34,7 +35,7 @@ function preprocessJavaInput(code:string):string {
             try {
                 Input input = mapper.readValue(args[0], Input.class);
                 ${functionCallLine}
-                System.out.println("RESULT:" + result);
+                System.out.println(result);
             } catch (Exception e) {
                 System.out.println("ERROR:" + e.getMessage());
             }
@@ -45,9 +46,9 @@ function preprocessJavaInput(code:string):string {
     return processedCode;
 }
 
-export async function startContainer(image:string, code:string, input:string): Promise<string> {
+export async function startContainer(image:string, code:string, testCase:TestCase): Promise<string> {
 
-    const processedInput = JSON.stringify(input);
+    const processedInput = JSON.stringify(testCase.input_value);
     const preprocessedCode = preprocessJavaInput(code);
 
     const container = await docker.createContainer({
@@ -79,6 +80,9 @@ java -cp ".:/app/*" Main '${processedInput}'
     });
     await container.remove();
 
-    return logs.toString();
+    if (logs.toString().trim() == testCase.expected_value.toString()) {
+        return "Pass";
+    }
 
+    return "Fail";
 }
