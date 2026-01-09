@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import "./stopwatch.scss";
 
-export default function Stopwatch() {
+export type StopwatchHandle = {
+    getTotalSeconds: () => number;
+};
+
+const Stopwatch = forwardRef<StopwatchHandle>((props, ref) => {
     const [image, setImage] = useState(<img className="stopPlayIcon" src="/pauseButton.svg" alt="start/stop" />);
 
     const {
+        totalSeconds,
         seconds,
         minutes,
         hours,
@@ -13,6 +18,10 @@ export default function Stopwatch() {
         start,
         pause,
     } = useStopwatch({ autoStart: true });
+
+    useImperativeHandle(ref, () => ({
+        getTotalSeconds: () => totalSeconds,
+    }));
 
     const startStop = () => {
         if (isRunning) {
@@ -22,7 +31,8 @@ export default function Stopwatch() {
             start();
             setImage(<img className="stopPlayIcon" src="/pauseButton.svg" alt="start/stop" />);
         }
-    }
+    };
+
     return (
         <div className="stopwatch">
             <button onClick={startStop}>
@@ -35,4 +45,6 @@ export default function Stopwatch() {
             </div>
         </div>
     );
-}
+});
+
+export default Stopwatch;

@@ -4,9 +4,9 @@ import NavBar from "../viewProblems/navBar.component";
 import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
 import { ResizableBox } from 'react-resizable';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CodeEditor from "./codeEditor.component";
-import Stopwatch from "./stopwatch.component";
+import Stopwatch, { type StopwatchHandle } from "./stopwatch.component";
 
 export interface TestCase {
   test_case_id: number;
@@ -38,6 +38,7 @@ export default function Problem() {
   const [code, setCode] = useState(
     problem.placeholder_code ?? ""
   );
+  const stopwatchRef = useRef<StopwatchHandle | null>(null);
   const image = "java-sandbox";
 
   useEffect(() => {
@@ -120,7 +121,9 @@ export default function Problem() {
   }
 
   const handleSubmit = async () => {
-
+    if (!stopwatchRef.current) return;
+    const totalSeconds = stopwatchRef.current.getTotalSeconds();
+    console.log("Submitted time: ", totalSeconds);
   }
 
   console.log("test cases: ", testCases);
@@ -169,7 +172,7 @@ export default function Problem() {
                   <div className="paneTitle">
                     Code editor
                     <div className="submissionButtons">
-                      <Stopwatch />
+                      <Stopwatch ref={stopwatchRef} />
                       <button
                         className="runButton"
                         onClick={handleRun}
