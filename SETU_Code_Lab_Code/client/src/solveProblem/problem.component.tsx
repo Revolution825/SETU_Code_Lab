@@ -87,8 +87,15 @@ export default function Problem() {
         })
       });
 
-      const data = await res.json();
+      const text = await res.text();
 
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        console.error("non-json response: ", text);
+        throw new Error("Server returned invalid JSON");
+      }
       if (res.ok) {
         const testCaseResult: TestCaseResult = data.output;
         setTestCaseResults(prev => {
