@@ -201,10 +201,10 @@ export default function Problem() {
                             Test Case {idx + 1}{" "}
                           </h3>
                           {result?.passed != null
-                            ? <p><strong>Status: </strong><text style={{ color: result.passed ? "green" : "red" }}>
+                            ? <p><strong>Status: </strong><span style={{ color: result.passed ? "green" : "red" }}>
                               {result?.passed === true
                                 ? "Pass"
-                                : "Fail"}</text></p>
+                                : "Fail"}</span></p>
                             : ""}
                           <p><strong>Input:</strong> {JSON.stringify(testCase.input_value)}</p>
                           <p><strong>Expected:</strong> {JSON.stringify(testCase.expected_value)}</p>
