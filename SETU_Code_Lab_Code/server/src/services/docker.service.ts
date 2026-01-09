@@ -62,7 +62,7 @@ EOF
 javac Main.java
 java -cp ".:/app/*" Main '${processedInput}'
 `],
-        Tty: true,
+        Tty: false,
         AttachStdout: true,
         AttachStderr: true,
         HostConfig: {
