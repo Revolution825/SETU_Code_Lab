@@ -6,6 +6,7 @@ import "react-resizable/css/styles.css";
 import { ResizableBox } from 'react-resizable';
 import { useEffect, useState } from "react";
 import CodeEditor from "./codeEditor.component";
+import Stopwatch from "./stopwatch.component";
 
 export interface TestCase {
   test_case_id: number;
@@ -16,8 +17,6 @@ export interface TestCase {
 }
 
 export interface TestCaseResult {
-  test_case_result_id?: number;
-  submission_id?: number;
   test_case_id: number;
   passed: boolean;
   actual_output: string;
@@ -120,6 +119,10 @@ export default function Problem() {
     }
   }
 
+  const handleSubmit = async () => {
+
+  }
+
   console.log("test cases: ", testCases);
 
   return (
@@ -166,6 +169,7 @@ export default function Problem() {
                   <div className="paneTitle">
                     Code editor
                     <div className="submissionButtons">
+                      <Stopwatch />
                       <button
                         className="runButton"
                         onClick={handleRun}
@@ -174,6 +178,7 @@ export default function Problem() {
                       </button>
                       <button
                         className="submitButton"
+                        onClick={handleSubmit}
                       >
                         Submit
                       </button>
