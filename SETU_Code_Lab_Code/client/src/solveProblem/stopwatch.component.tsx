@@ -1,8 +1,10 @@
-import { useState, type JSX } from "react";
+import { useState } from "react";
 import { useStopwatch } from "react-timer-hook";
+import "./stopwatch.scss";
 
 export default function Stopwatch() {
-    const [image, setImage] = useState(<img style={{ height: "14px", width: "14px" }} src="" alt="start/stop" />);
+    const [image, setImage] = useState(<img className="stopPlayIcon" src="/pauseButton.svg" alt="start/stop" />);
+
     const {
         seconds,
         minutes,
@@ -15,35 +17,18 @@ export default function Stopwatch() {
     const startStop = () => {
         if (isRunning) {
             pause();
-            setImage(<img style={{ height: "14px", width: "14px" }} src="/playButton.svg" alt="start/stop" />)
+            setImage(<img className="stopPlayIcon" src="/playButton.svg" alt="start/stop" />)
         } else {
             start();
-            setImage(<img style={{ height: "14px", width: "14px" }} src="" alt="start/stop" />);
+            setImage(<img className="stopPlayIcon" src="/pauseButton.svg" alt="start/stop" />);
         }
     }
     return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#2b2a33",
-                borderRadius: "8px",
-                marginRight: "12px",
-            }}
-        >
+        <div className="stopwatch">
             <button onClick={startStop}>
                 {image}
             </button>
-            <div
-                style={{
-                    padding: "0 12px",
-                    fontFamily: "monospace",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingLeft: "0px"
-                }}
-            >
+            <div className="digits">
                 <span>{hours.toString().padStart(2, "0")}</span>:
                 <span>{minutes.toString().padStart(2, "0")}</span>:
                 <span>{seconds.toString().padStart(2, "0")}</span>

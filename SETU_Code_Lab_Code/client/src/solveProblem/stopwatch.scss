@@ -1,0 +1,23 @@
+.stopPlayIcon {
+    height: 14px;
+    width: 14px;
+    align-items: center;
+    justify-Content: center;
+}
+
+.stopwatch {
+    display: flex;
+    align-Items: center;
+    background-Color: #2b2a33;
+    border-Radius: 8px;
+    margin-Right: 12px;
+}
+
+.digits {
+    padding: 0 12px;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    justify-Content: center;
+    padding-Left: 0px;
+}
