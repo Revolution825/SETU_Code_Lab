@@ -5,8 +5,8 @@ export const getProblems = async (req: Request, res: Response) => {
     try {
         const problems = await getAllProblems();
         res.json(problems);
-    } catch (error) {
-        console.error("Error fetching problems:", error);
+    } catch (error: any) {
+        console.error("Error fetching problems:", error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 }

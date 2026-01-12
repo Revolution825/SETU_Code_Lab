@@ -23,6 +23,15 @@ export interface TestCaseResult {
   runtime_ms: number;
 }
 
+export interface Submission {
+  student_id: number;
+  problem_id: number;
+  submitted_code: String;
+  submitted_at?: number;
+  overall_status: boolean;
+  time_taken: number;
+}
+
 export default function Problem() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,13 +74,16 @@ export default function Problem() {
     fetchTestCases();
   }, []);
 
-  const handleRun = async () => {
+  const handleRun = async (): Promise<TestCaseResult[]> => {
+    const results: TestCaseResult[] = [];
     for (const testCase of testCases) {
-      await runTestCase(testCase);
+      const result = await runTestCase(testCase);
+      if (result) results.push(result);
     }
+    return results;
   };
 
-  async function runTestCase(testCase: TestCase) {
+  async function runTestCase(testCase: TestCase): Promise<TestCaseResult | null> {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch('docker/start', {
@@ -87,20 +99,11 @@ export default function Problem() {
         })
       });
 
-      const text = await res.text();
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        console.error("non-json response: ", text);
-        throw new Error("Server returned invalid JSON");
-      }
+      const data = await res.json();
       if (res.ok) {
         const testCaseResult: TestCaseResult = data.output;
         setTestCaseResults(prev => {
           const exists = prev.some(tc => tc.test_case_id === testCase.test_case_id);
-
           if (exists) {
             return prev.map(tc =>
               tc.test_case_id === testCase.test_case_id
@@ -111,19 +114,53 @@ export default function Problem() {
             return [...prev, testCaseResult];
           }
         });
+        return testCaseResult;
       } else {
         console.log("Data", data);
         console.error("Error running code: ", data.message);
+        return null;
       }
     } catch (err) {
       console.error(err);
+      return null;
     }
   }
 
   const handleSubmit = async () => {
     if (!stopwatchRef.current) return;
-    const totalSeconds = stopwatchRef.current.getTotalSeconds();
-    console.log("Submitted time: ", totalSeconds);
+    const timeTaken = stopwatchRef.current.getTotalSeconds();
+    const submittedCode = code;
+    console.log("Time taken (s): ", timeTaken);
+    const results = await handleRun();
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch('/api/submission', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          problem_id: problem.problem_id,
+          submitted_code: submittedCode,
+          overall_status: testCaseResults.every(tc => tc.passed),
+          time_taken: timeTaken,
+          testCaseResults: results
+        })
+      });
+
+      const data = await res.text();
+      if (res.ok) {
+        console.log("Submission successful: ", data);
+        alert("Submission successful!");
+      } else {
+        console.log("Data", data);
+        console.error("Error submitting code: ", data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   console.log("test cases: ", testCases);
@@ -209,7 +246,7 @@ export default function Problem() {
                       const result = testCaseResults.find(
                         (r) => r.test_case_id === testCase.test_case_id
                       );
-
+                      console.log("result ", result);
                       return (
                         <div className="testCase" key={testCase.test_case_id}>
                           <h3>

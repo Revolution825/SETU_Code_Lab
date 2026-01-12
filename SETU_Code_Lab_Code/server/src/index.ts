@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import authRouter from "./routes/auth.routes";
 import problemRouter from "./routes/problem.routes";
 import testCaseRouter from "./routes/testCase.route";
+import submissionRouter from "./routes/submission.route";
 import dockerRouter from "./routes/docker.routes"
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api", verifyToken, problemRouter);
 app.use("/api", verifyToken, testCaseRouter);
+app.use("/api", verifyToken, submissionRouter)
 app.use("/docker", dockerRouter);
 app.use(errorHandler);
 

@@ -62,7 +62,7 @@ EOF
 javac Main.java
 java -cp ".:/app/*" Main '${processedInput}'
 `],
-        Tty: false,
+        Tty: true,
         AttachStdout: true,
         AttachStderr: true,
         HostConfig: {
@@ -82,7 +82,7 @@ java -cp ".:/app/*" Main '${processedInput}'
     await container.remove();
     const endTime = Date.now();
     const combinedOutput = logs.toString().trim();
-    const passed = combinedOutput == testCase.expected_value.toString()
+    const passed = combinedOutput == testCase.expected_value.toString();
 
     let result: TestCaseResult = {
         test_case_id: testCase.test_case_id,
