@@ -1,9 +1,10 @@
 import * as authModel from "../models/auth.model";
+import { User } from "../types/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 interface LoginResult {
-    user: Omit<authModel.User, "password">;
+    user: Omit<User, "password">;
     token: string;
 }
 
@@ -12,22 +13,22 @@ export async function login(email: string, password: string): Promise<LoginResul
     if (!user) throw new Error("Invalid email or password")
 
     const match = await bcrypt.compare(password, user.password);
-    if(!match) throw new Error("Invalid email or password")
+    if (!match) throw new Error("Invalid email or password")
 
     const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET as string,
-        { expiresIn: "1h"}
+        { expiresIn: "1h" }
     );
 
-        const { password: _, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = user;
 
-        return { user: userWithoutPassword, token };
+    return { user: userWithoutPassword, token };
 }
 
-export function verifyToken(token: string): {id:number, email:string } {
+export function verifyToken(token: string): { id: number, email: string } {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {id:number, email:string }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number, email: string }
         return decoded;
     } catch (error: any) {
         console.error(error);
@@ -35,9 +36,9 @@ export function verifyToken(token: string): {id:number, email:string } {
     }
 }
 
-export async function signUp(name: string, role: string, email: string, password:string) {
+export async function signUp(name: string, role: string, email: string, password: string) {
     const existing = await authModel.getUserByEmail(email);
-    if(existing) {
+    if (existing) {
         throw new Error("Email already in use");
     }
 
@@ -45,13 +46,13 @@ export async function signUp(name: string, role: string, email: string, password
 
     const user = await authModel.createUser(name, role, email, hashed);
 
-    
-  const token = jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
-    process.env.JWT_SECRET!,
-    { expiresIn: "1h" }
-  );
+
+    const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET!,
+        { expiresIn: "1h" }
+    );
 
     const { password: _, ...userWithoutPassword } = user;
-    return {user: userWithoutPassword, token};
+    return { user: userWithoutPassword, token };
 }

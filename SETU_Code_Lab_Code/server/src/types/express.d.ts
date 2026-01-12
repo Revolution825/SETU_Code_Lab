@@ -1,4 +1,8 @@
-import { JwtPayload } from '../middlewares/auth';
+
+export interface JwtPayload {
+    id: number;
+    email: string;
+}
 
 declare global {
     namespace Express {

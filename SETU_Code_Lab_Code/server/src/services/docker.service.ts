@@ -1,6 +1,5 @@
 import docker from "../infrastructure/docker";
-import { TestCase } from "../models/testCase.model";
-import { TestCaseResult } from "../models/testCaseResult.model";
+import { TestCase, TestCaseResult } from "../types/testCase";
 
 function preprocessJavaInput(code: string): string {
     const signatureRegex = /public\s+static\s+(\w+)\s+(\w+)\(([^)]*)\)/;

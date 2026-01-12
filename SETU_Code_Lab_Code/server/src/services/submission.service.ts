@@ -1,7 +1,7 @@
 import { pool } from "../infrastructure/database";
 import { createSubmission } from "../models/submission.model";
 import { createTestCaseResult } from "../models/testCaseResult.model";
-import { TestCaseResult } from "../models/testCaseResult.model";
+import { TestCaseResult } from "../types/testCase";
 
 export const makeSubmission = async (
     user_id: number,

@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-
-export interface JwtPayload {
-    id: number;
-    email: string;
-}
+import { JwtPayload } from '../types/express';
 
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
 
