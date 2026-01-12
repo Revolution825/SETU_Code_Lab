@@ -6,7 +6,7 @@ export type StopwatchHandle = {
     getTotalSeconds: () => number;
 };
 
-const Stopwatch = forwardRef<StopwatchHandle>((props, ref) => {
+const Stopwatch = forwardRef<StopwatchHandle>((_props, ref) => {
     const [image, setImage] = useState(<img className="stopPlayIcon" src="/pauseButton.svg" alt="start/stop" />);
 
     const {
