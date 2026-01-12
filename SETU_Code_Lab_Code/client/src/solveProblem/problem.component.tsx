@@ -47,6 +47,7 @@ export default function Problem() {
   const [code, setCode] = useState(
     problem.placeholder_code ?? ""
   );
+  const [isRunning, setIsRunning] = useState(false);
   const stopwatchRef = useRef<StopwatchHandle | null>(null);
   const image = "java-sandbox";
 
@@ -78,7 +79,10 @@ export default function Problem() {
     const results: TestCaseResult[] = [];
     for (const testCase of testCases) {
       const result = await runTestCase(testCase);
-      if (result) results.push(result);
+      if (!result) {
+        throw new Error("Failed to get result for test case ID: " + testCase.test_case_id);
+      }
+      results.push(result);
     }
     return results;
   };
@@ -120,20 +124,25 @@ export default function Problem() {
         console.error("Error running code: ", data.message);
         return null;
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error: any) {
+      console.error(error.message);
       return null;
     }
   }
 
   const handleSubmit = async () => {
     if (!stopwatchRef.current) return;
-    const timeTaken = stopwatchRef.current.getTotalSeconds();
-    const submittedCode = code;
-    console.log("Time taken (s): ", timeTaken);
-    const results = await handleRun();
-
     try {
+      const timeTaken = stopwatchRef.current.getTotalSeconds();
+      const submittedCode = code;
+      setIsRunning(true);
+      const results = await handleRun();
+      setIsRunning(false);
+      if (results.length !== testCases.length) {
+        alert("Error: Not all test cases were run successfully. Please try again.");
+        return;
+      }
+      const overallStatus = results.every(tc => tc.passed);
       const token = localStorage.getItem("token");
       const res = await fetch('/api/submission', {
         method: "POST",
@@ -144,7 +153,7 @@ export default function Problem() {
         body: JSON.stringify({
           problem_id: problem.problem_id,
           submitted_code: submittedCode,
-          overall_status: testCaseResults.every(tc => tc.passed),
+          overall_status: overallStatus,
           time_taken: timeTaken,
           testCaseResults: results
         })
@@ -155,11 +164,14 @@ export default function Problem() {
         console.log("Submission successful: ", data);
         alert("Submission successful!");
       } else {
+        setIsRunning(false);
         console.log("Data", data);
         console.error("Error submitting code: ", data);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error: any) {
+      setIsRunning
+      alert("Submission failed: test cases could not be executed.");
+      console.error(error.message);
     }
   }
 
@@ -213,12 +225,14 @@ export default function Problem() {
                       <button
                         className="runButton"
                         onClick={handleRun}
+                        disabled={isRunning}
                       >
                         Run
                       </button>
                       <button
                         className="submitButton"
                         onClick={handleSubmit}
+                        disabled={isRunning}
                       >
                         Submit
                       </button>
