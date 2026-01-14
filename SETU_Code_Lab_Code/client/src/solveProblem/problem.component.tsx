@@ -7,6 +7,7 @@ import { ResizableBox } from 'react-resizable';
 import { useEffect, useRef, useState } from "react";
 import CodeEditor from "./codeEditor.component";
 import Stopwatch, { type StopwatchHandle } from "./stopwatch.component";
+import MarkdownPreview from "@uiw/react-markdown-preview";
 
 export interface TestCase {
   test_case_id: number;
@@ -198,7 +199,14 @@ export default function Problem() {
                     {problem.problem_title} | {problem.user_name}
                   </div>
                   <div className="descriptionContent">
-                    {problem.problem_description}
+                    <MarkdownPreview
+                      source={problem.problem_description}
+                      style={{
+                        backgroundColor: "transparent",
+                        fontFamily: 'Inter Tight, sans-serif',
+                        color: '#dedede',
+                      }}
+                    />
                   </div>
                 </>
               )}
@@ -210,42 +218,38 @@ export default function Problem() {
             className="pane"
             width={Infinity}
             height={rightHeight}
-            minConstraints={[window.innerWidth * 0.5, 12]}
+            minConstraints={[window.innerWidth * 0.5, 51]}
             maxConstraints={[Infinity, topHeight - 116]}
             onResizeStop={(_, { size }) => setRightHeight(size.height)}
             resizeHandles={["s"]}
           >
             <div className="paneContent">
-              {rightHeight > HIDE_TEXT_AT && (
-                <>
-                  <div className="paneTitle">
-                    Code editor
-                    <div className="submissionButtons">
-                      <Stopwatch ref={stopwatchRef} />
-                      <button
-                        className="runButton"
-                        onClick={handleRun}
-                        disabled={isRunning}
-                      >
-                        Run
-                      </button>
-                      <button
-                        className="submitButton"
-                        onClick={handleSubmit}
-                        disabled={isRunning}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                  <div className="editorContainer">
-                    <CodeEditor
-                      value={code ?? ""}
-                      onChange={setCode}
-                    />
-                  </div>
-                </>
-              )}
+              <div className="paneTitle">
+                Code editor
+                <div className="submissionButtons">
+                  <Stopwatch ref={stopwatchRef} />
+                  <button
+                    className="runButton"
+                    onClick={handleRun}
+                    disabled={isRunning}
+                  >
+                    Run
+                  </button>
+                  <button
+                    className="submitButton"
+                    onClick={handleSubmit}
+                    disabled={isRunning}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+              <div className="editorContainer">
+                <CodeEditor
+                  value={code ?? ""}
+                  onChange={setCode}
+                />
+              </div>
             </div>
           </ResizableBox>
           <div className="testCasesPane">
@@ -289,7 +293,7 @@ export default function Problem() {
                       );
                     })
                   ) : (
-                    <p>No Test Cases Found</p>
+                    <p style={{ marginLeft: "12px" }}>No Test Cases Found</p>
                   )}
                 </div>
               </div>
