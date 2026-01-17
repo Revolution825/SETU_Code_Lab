@@ -273,7 +273,7 @@ export default function Problem() {
                 </div>
                 <div className="testCases">
                   {Array.isArray(testCases) && testCases.length > 0 ? (
-                    testCases.map((testCase, idx) => {
+                    testCases.slice(0, 4).map((testCase, idx) => {
                       const result = testCaseResults.find(
                         (r) => r.test_case_id === testCase.test_case_id
                       );

@@ -133,9 +133,10 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  overflow: auto;
 }
 
 .testCase {
   padding: 12px;
-  min-width: 200px;
+  min-width: 375px;
 }
