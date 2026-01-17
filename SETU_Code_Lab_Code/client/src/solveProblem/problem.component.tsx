@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import CodeEditor from "./codeEditor.component";
 import Stopwatch, { type StopwatchHandle } from "./stopwatch.component";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import SubmissionAlert from "./submissionAlert.component";
 
 export interface TestCase {
   test_case_id: number;
@@ -51,6 +52,13 @@ export default function Problem() {
   const [isRunning, setIsRunning] = useState(false);
   const stopwatchRef = useRef<StopwatchHandle | null>(null);
   const image = "java-sandbox";
+
+  const [showSubmissionAlert, setShowSubmissionAlert] = useState(false);
+  const [submissionSummary, setSubmissionSummary] = useState<{
+    overall_status: boolean,
+    testCaseResults: TestCaseResult[],
+    time_taken: number
+  } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -160,17 +168,22 @@ export default function Problem() {
         })
       });
 
-      const data = await res.text();
+      const data = await res.json();
       if (res.ok) {
         console.log("Submission successful: ", data);
-        alert("Submission successful!");
+        setSubmissionSummary({
+          overall_status: overallStatus,
+          testCaseResults: results,
+          time_taken: timeTaken
+        });
+        setShowSubmissionAlert(true);
       } else {
         setIsRunning(false);
         console.log("Data", data);
         console.error("Error submitting code: ", data);
       }
     } catch (error: any) {
-      setIsRunning
+      setIsRunning(false);
       alert("Submission failed: test cases could not be executed.");
       console.error(error.message);
     }
@@ -301,6 +314,16 @@ export default function Problem() {
           </div>
         </div>
       </div>
+      {submissionSummary && (
+        <SubmissionAlert
+          isOpen={showSubmissionAlert}
+          summary={submissionSummary}
+          onClose={() => {
+            setShowSubmissionAlert(false);
+            navigate("/problems");
+          }}
+        />
+      )}
     </div>
   )
 }
