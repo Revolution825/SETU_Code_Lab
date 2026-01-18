@@ -1,23 +1,42 @@
 import { Dropdown } from "./dropdown.component";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
+
   const logOutClick = () => {
     localStorage.removeItem("token");
     navigate("/");
   }
-  const logoClick = () => {
+  const problemsClick = () => {
     navigate("/problems");
+  }
+
+  const leaderboardClick = () => {
+    navigate("/leaderboard");
+  }
+
+  const profileClick = () => {
+    navigate("/profile");
   }
   return (
     <div className="navBar">
-      <button onClick={logoClick} className="logoButton">
+      <button onClick={problemsClick} className="logoButton">
         <img className="logo" src="/logo.svg" alt="Logo" />
       </button>
       <h3>
         SETU Code Lab
       </h3>
+      <div className="menu">
+        <button onClick={leaderboardClick} className="menuButton" style={{ color: isActive("/leaderboard") ? "#626262" : "#dedede" }}>Leaderboard</button>
+        |
+        <button onClick={problemsClick} className="menuButton" style={{ color: isActive("/problems") ? "#626262" : "#dedede" }}>Problems</button>
+        |
+        <button onClick={profileClick} className="menuButton" style={{ color: isActive("/profile") ? "#626262" : "#dedede" }}>Profile</button>
+      </div>
       <div className="profileDropdown">
         <Dropdown
           className="profileDropdownButton"
