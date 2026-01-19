@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./viewProblems.scss";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./navBar.component";
+import LecturerSideBar from "./lecturerSideBar.component";
+import { useAuth } from "../authContext";
 export interface Problem {
   problem_id: number;
   user_id: number;
@@ -15,23 +17,17 @@ export interface Problem {
 export default function Problems() {
   const navigate = useNavigate();
   const [problems, setProblems] = useState<Problem[]>([]);
+  const { user } = useAuth();
 
   function problemClick(problem: Problem) {
     navigate("/problem", { state: problem });
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
-    }
-
     async function fetchProblems() {
       const res = await fetch('/api/problems', {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        method: "GET",
+        credentials: "include"
       });
       if (res.ok) {
         setProblems(await res.json());
@@ -48,6 +44,7 @@ export default function Problems() {
   return (
     <div>
       <NavBar />
+      {user?.role == "lecturer" ? <LecturerSideBar /> : null}
       <div className="problems">
         <ul>
           {Array.isArray(problems)

@@ -6,15 +6,18 @@ import submissionRouter from "./routes/submission.route";
 import dockerRouter from "./routes/docker.routes"
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
+import cookieParser from "cookie-parser";
 
 const app: Application = express();
 const port: number = 3000;
 
 app.use(express.json());
+app.use(cookieParser());
+
 app.use("/api/auth", authRouter);
 app.use("/api", verifyToken, problemRouter);
 app.use("/api", verifyToken, testCaseRouter);
-app.use("/api", verifyToken, submissionRouter)
+app.use("/api", verifyToken, submissionRouter);
 app.use("/docker", dockerRouter);
 app.use(errorHandler);
 

@@ -26,17 +26,7 @@ export async function login(email: string, password: string): Promise<LoginResul
     return { user: userWithoutPassword, token };
 }
 
-export function verifyToken(token: string): { id: number, email: string } {
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number, email: string }
-        return decoded;
-    } catch (error: any) {
-        console.error(error);
-        throw new Error("Invalid token")
-    }
-}
-
-export async function signUp(name: string, role: string, email: string, password: string) {
+export async function signUp(name: string, role: string, email: string, password: string): Promise<LoginResult> {
     const existing = await authModel.getUserByEmail(email);
     if (existing) {
         throw new Error("Email already in use");
@@ -45,7 +35,6 @@ export async function signUp(name: string, role: string, email: string, password
     const hashed = await bcrypt.hash(password, 10);
 
     const user = await authModel.createUser(name, role, email, hashed);
-
 
     const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },

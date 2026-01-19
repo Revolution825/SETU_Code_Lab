@@ -1,14 +1,17 @@
 import { Navigate } from "react-router-dom";
-import type { ReactNode } from "react";
+import { useAuth } from "./authContext";
+import type React from "react";
 
-interface RequireAuthProps {
-  children: ReactNode;
-}
+export default function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
 
-export default function RequireAuth({children}: Readonly<RequireAuthProps>) {
-    const token = localStorage.getItem("token");
+  if (loading) {
+    return null;
+  }
 
-    if(!token) return <Navigate to="/" replace />;
+  if (!user) {
+    return <Navigate to="/" replace />
+  }
 
-    return <>{children}</>;
+  return <>{children}</>;
 }

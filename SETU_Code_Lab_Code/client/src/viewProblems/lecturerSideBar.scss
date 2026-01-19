@@ -1,0 +1,22 @@
+.sideBar {
+    position: absolute;
+    padding-top: 12px;
+    height: 100vh;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-color: #363636;
+}
+
+.option {
+    background: none;
+    padding: 6px;
+    width: 175px;
+    font-size: 18px;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-top: 12px;
+}
+
+.option:hover {
+    background-color: #363636;
+}

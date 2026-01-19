@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./loginSignup.scss";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext";
 
-function validateEmail(email:string) {
+function validateEmail(email: string) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const sanitizedEmail = email.trim();
     const isValid = emailRegex.test(sanitizedEmail);
@@ -30,6 +31,7 @@ export default function SignUp() {
     const [confPassword, setConfPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { setUser } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,7 +39,7 @@ export default function SignUp() {
 
         const { isValid, sanitizedEmail } = validateEmail(email);
         const sanitizedName = sanitizeName(name)
-        if(!isValid) setError("Invalid Email input")
+        if (!isValid) setError("Invalid Email input")
         try {
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -47,115 +49,115 @@ export default function SignUp() {
                 },
                 body: JSON.stringify({
                     name: sanitizedName, role, email: sanitizedEmail, password, confPassword
-                    })
-                });
-                const data = await res.json();
-                if(res.ok) {
-                localStorage.setItem("token", data.token);
-                    navigate("/problems");
-                } else {
-                    setError(data.message);
-                }
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+                navigate("/problems");
+            } else {
+                setError(data.message);
+            }
         } catch (error) {
             console.error(error)
             setError("Something went wrong. Try Again");
         }
     }
 
-        return(
+    return (
         <div className="authScreen">
             <div className="authBox">
-            <form onSubmit={handleSubmit}>
-                <div className="header">
-                    <img src="/logo.svg" alt="Logo" />
-                    <h3>
-                    SETU Code Lab
-                    </h3>
-                </div>
-                <p className="error">{error}</p>
-                                    { capsOn && (
+                <form onSubmit={handleSubmit}>
+                    <div className="header">
+                        <img src="/logo.svg" alt="Logo" />
+                        <h3>
+                            SETU Code Lab
+                        </h3>
+                    </div>
+                    <p className="error">{error}</p>
+                    {capsOn && (
                         <p className="capsMessage" > Caps Lock on!</p>
-                    )}  
-                <div>
-                    <input 
-                        className="fullyRounded nameInput"
-                        type="text"
-                        placeholder="name"
-                        value={name}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        required 
-                    />
-                </div>
-                <br/>
-                <div className="radioLabel">
-                    <label>
-                        <input 
-                            type="radio"
-                            name="role"
-                            value="student"
-                            checked={role === "student"}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
-                            required 
+                    )}
+                    <div>
+                        <input
+                            className="fullyRounded nameInput"
+                            type="text"
+                            placeholder="name"
+                            value={name}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                            required
                         />
-                        Student
-                    </label>
-                </div>
-                <div className="radioLabel">
-                    <label>
-                    <input 
-                        type="radio" 
-                        name="role"
-                        value="lecturer"
-                        checked={role === "lecturer"}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
-                        required 
-                    />
-                    Lecturer
-                    </label>
-                </div>
-                <br/>
-                <div>
-                    <input
-                        className="topRounded emailInput"
-                        type="email" 
-                        placeholder="email"
-                        value={email}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        required />
-                </div>
-                <div>
-                    <input 
-                    className="passwordInput"
-                        type="password" 
-                        placeholder="password" 
-                        value={password}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                        required />
-                </div>
-                <div>
-                    <input 
-                        className="bottomRounded passwordInput"
-                        type="password" 
-                        placeholder="confirm password" 
-                        value={confPassword}
-                        onKeyUp={checkCapsLock}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfPassword(e.target.value)}
-                        required />
-                </div>
-                <br/>
-                <div>
-                    <button className="button" type="submit">
-                        Sign Up
-                    </button>
-                </div>
-                <p className="message">
-                    <a href="/">Log in</a> if you don't have an account already
-                </p>
-            </form>
+                    </div>
+                    <br />
+                    <div className="radioLabel">
+                        <label>
+                            <input
+                                type="radio"
+                                name="role"
+                                value="student"
+                                checked={role === "student"}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
+                                required
+                            />
+                            Student
+                        </label>
+                    </div>
+                    <div className="radioLabel">
+                        <label>
+                            <input
+                                type="radio"
+                                name="role"
+                                value="lecturer"
+                                checked={role === "lecturer"}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRole(e.target.value)}
+                                required
+                            />
+                            Lecturer
+                        </label>
+                    </div>
+                    <br />
+                    <div>
+                        <input
+                            className="topRounded emailInput"
+                            type="email"
+                            placeholder="email"
+                            value={email}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            required />
+                    </div>
+                    <div>
+                        <input
+                            className="passwordInput"
+                            type="password"
+                            placeholder="password"
+                            value={password}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            required />
+                    </div>
+                    <div>
+                        <input
+                            className="bottomRounded passwordInput"
+                            type="password"
+                            placeholder="confirm password"
+                            value={confPassword}
+                            onKeyUp={checkCapsLock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfPassword(e.target.value)}
+                            required />
+                    </div>
+                    <br />
+                    <div>
+                        <button className="button" type="submit">
+                            Sign Up
+                        </button>
+                    </div>
+                    <p className="message">
+                        <a href="/">Log in</a> if you don't have an account already
+                    </p>
+                </form>
             </div>
         </div>
-        );
-    }
+    );
+}

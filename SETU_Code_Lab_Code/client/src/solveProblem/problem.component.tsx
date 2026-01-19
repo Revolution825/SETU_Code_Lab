@@ -61,17 +61,10 @@ export default function Problem() {
   } | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
-    }
-
     async function fetchTestCases() {
       const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        }
+        method: "GET",
+        credentials: "include"
       });
       if (res.ok) {
         setTestCases(await res.json());
@@ -98,12 +91,11 @@ export default function Problem() {
 
   async function runTestCase(testCase: TestCase): Promise<TestCaseResult | null> {
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch('docker/start', {
         method: "POST",
+        credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           image: image,
@@ -152,12 +144,11 @@ export default function Problem() {
         return;
       }
       const overallStatus = results.every(tc => tc.passed);
-      const token = localStorage.getItem("token");
       const res = await fetch('/api/submission', {
         method: "POST",
+        credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           problem_id: problem.problem_id,
