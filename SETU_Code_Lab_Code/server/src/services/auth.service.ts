@@ -34,7 +34,7 @@ export async function signUp(name: string, role: string, email: string, password
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const user = await authModel.createUser(name, role, email, hashed);
+    const user = await authModel.createUser(name, role, email.toLowerCase(), hashed);
 
     const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
