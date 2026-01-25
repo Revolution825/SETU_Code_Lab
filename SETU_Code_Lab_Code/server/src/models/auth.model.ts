@@ -2,7 +2,7 @@ import { pool } from "../infrastructure/database";
 import { User } from "../types/user";
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-    let result = await pool.query(
+    const result = await pool.query(
         "SELECT user_id AS id, user_name AS name, email, password, role FROM users WHERE email = $1",
         [email]
     );

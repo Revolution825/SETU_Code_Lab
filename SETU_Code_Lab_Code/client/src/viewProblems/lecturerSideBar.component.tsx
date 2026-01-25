@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import "./lecturerSideBar.scss"
 
 export default function LecturerSideBar() {
+    const navigate = useNavigate();
+    const isActive = (path: string) => location.pathname === path;
+    const manageProblemsClick = () => {
+        navigate("/manageProblems");
+    }
+
     return (
         <div className="sideBar">
             <ul>
-                <li><button className="option">Manage Problems</button></li>
+                <li><button onClick={manageProblemsClick} className="option" style={{ color: isActive("/manageProblems") ? "#626262" : "#dedede" }}>Manage Problems</button></li>
                 <li><button className="option">Manage Classes</button></li>
             </ul>
         </div>

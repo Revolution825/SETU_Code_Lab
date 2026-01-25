@@ -1,0 +1,64 @@
+.manageProblemsBody {
+    margin-left: 225px;
+    margin-top: 32px;
+}
+
+.manageProblemRow {
+    display: flex;
+    width: 60%;
+}
+
+.manageProblemsRow {
+    display: flex;
+    width: 80%;
+    align-items: center;
+    gap: 8px;
+}
+
+.manageProblemsRow:nth-child(odd) .problem {
+    background-color: #363636;
+}
+
+.manageProblemsRow:nth-child(even) .problem {
+    background-color: #262626;
+    box-shadow: none;
+}
+
+.createNewProblem {
+    align-items: center;
+    height: 50px;
+    margin-top: 12px;
+    background-color: #363636;
+    box-shadow: 5px 0 5px 2px #202020;
+    border-radius: 15px;
+    font-size: 18px;
+    padding: 12px;
+    text-align: left;
+    display: flex;
+}
+
+.plusIcon {
+    width: 24px;
+    height: 24px;
+    color: #dedede;
+    margin-right: 12px;
+}
+
+.manageIcons {
+    width: 24px;
+    height: 24px;
+    color: #dedede;
+}
+
+.manageProblemButton {
+    width: 42px;
+    height: 42px;
+    padding: 0px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 0px;
+    margin-left: 12px;
+    background-color: #363636;
+    box-shadow: 5px 0 5px 2px #202020;
+    border-radius: 15px;
+}
