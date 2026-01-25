@@ -61,4 +61,8 @@
     background-color: #363636;
     box-shadow: 5px 0 5px 2px #202020;
     border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
