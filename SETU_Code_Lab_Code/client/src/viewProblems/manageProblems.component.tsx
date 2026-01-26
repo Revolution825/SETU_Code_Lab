@@ -24,6 +24,10 @@ export default function ManageProblems() {
         navigate("/problem", { state: problem });
     }
 
+    function createProblemClick() {
+        navigate("/createProblem");
+    }
+
     useEffect(() => {
         async function fetchProblems() {
             const res = await fetch('/api/myProblems', {
@@ -79,7 +83,7 @@ export default function ManageProblems() {
                     </ul>
                 </div>
                 <div>
-                    <button className="createNewProblem">
+                    <button onClick={createProblemClick} className="createNewProblem">
                         <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Problem
                     </button>
                 </div>

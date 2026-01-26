@@ -80,7 +80,7 @@ export default function SignUp() {
                     )}
                     <div>
                         <input
-                            className="fullyRounded nameInput"
+                            className="fullyRounded nameInput loginSignUpInput"
                             type="text"
                             placeholder="name"
                             value={name}
@@ -119,7 +119,7 @@ export default function SignUp() {
                     <br />
                     <div>
                         <input
-                            className="topRounded emailInput"
+                            className="topRounded emailInput loginSignUpInput"
                             type="email"
                             placeholder="email"
                             value={email}
@@ -129,7 +129,7 @@ export default function SignUp() {
                     </div>
                     <div>
                         <input
-                            className="passwordInput"
+                            className="passwordInput loginSignUpInput"
                             type="password"
                             placeholder="password"
                             value={password}
@@ -139,7 +139,7 @@ export default function SignUp() {
                     </div>
                     <div>
                         <input
-                            className="bottomRounded passwordInput"
+                            className="bottomRounded passwordInput loginSignUpInput"
                             type="password"
                             placeholder="confirm password"
                             value={confPassword}

@@ -70,7 +70,7 @@ export default function Login() {
                     )}
                     <div>
                         <input
-                            className="topRounded emailInput"
+                            className="topRounded emailInput loginSignUpInput"
                             type="email"
                             placeholder="email"
                             value={email}
@@ -80,7 +80,7 @@ export default function Login() {
                     </div>
                     <div>
                         <input
-                            className="bottomRounded passwordInput"
+                            className="bottomRounded passwordInput loginSignUpInput"
                             type="password"
                             placeholder="password"
                             value={password}

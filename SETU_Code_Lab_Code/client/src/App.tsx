@@ -6,6 +6,7 @@ import Problems from './viewProblems/problemList.component'
 import RequireAuth from './requireAuth'
 import Problem from './solveProblem/problem.component'
 import ManageProblems from './viewProblems/manageProblems.component'
+import CreateProblem from './createProblem/createProblem.component'
 
 export default function App() {
 
@@ -26,6 +27,11 @@ export default function App() {
       <Route path="/manageProblems" element={
         <RequireAuth>
           <ManageProblems />
+        </RequireAuth>
+      } />
+      <Route path="/createProblem" element={
+        <RequireAuth>
+          <CreateProblem />
         </RequireAuth>
       } />
     </Routes>

@@ -11,7 +11,7 @@ export default function LecturerSideBar() {
     return (
         <div className="sideBar">
             <ul>
-                <li><button onClick={manageProblemsClick} className="option" style={{ color: isActive("/manageProblems") ? "#626262" : "#dedede" }}>Manage Problems</button></li>
+                <li><button onClick={manageProblemsClick} className="option" style={{ color: isActive("/manageProblems") || isActive("/createProblem") ? "#626262" : "#dedede" }}>Manage Problems</button></li>
                 <li><button className="option">Manage Classes</button></li>
             </ul>
         </div>

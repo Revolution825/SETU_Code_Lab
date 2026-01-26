@@ -1,0 +1,88 @@
+.createProblemForm {
+    margin-left: 200px;
+    display: flex;
+    flex-direction: row;
+}
+
+.createProblemHeader {
+    background-color: #454545;
+    padding: 12px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    margin: 0px;
+    font-size: 18px;
+    box-shadow: 5px 0 5px 2px #202020;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 24px;
+}
+
+.formContent {
+    margin-top: 24px;
+    margin-left: 24px;
+    width: 50%;
+
+}
+
+.formBackground {
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+}
+
+.createProblemContent {
+    height: auto;
+}
+
+.placeholderCodeContentBox {
+    height: fit-content;
+}
+
+.createProblemInput {
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+label.createProblemForm {
+    margin-top: 12px;
+}
+
+.inputBox {
+    width: 80%;
+    background-color: #363636;
+    border-color: #a0a0a0;
+    padding: 15px;
+    font-size: 16px;
+    margin-left: auto;
+}
+
+.textAreaInput {
+    width: 100%;
+    margin-bottom: 24px;
+    background-color: #363636;
+    border-color: #a0a0a0;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.problemDescriptionInput {
+    margin-top: 12px;
+    height: 55vh;
+}
+
+.placeholderCodeInput {
+    height: 20vh;
+}
+
+textarea {
+    resize: none;
+    font-family: inherit;
+}
+
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #dedede;
+}
