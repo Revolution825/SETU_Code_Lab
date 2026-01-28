@@ -47,7 +47,7 @@ export default function ManageProblems() {
     console.log("problems : ", problems);
 
     return (
-        <div>
+        <div className="testCaseBody">
             <NavBar />
             {user?.role == "lecturer" ? <LecturerSideBar /> : null}
             <div className="manageProblemsBody">
@@ -83,7 +83,7 @@ export default function ManageProblems() {
                     </ul>
                 </div>
                 <div>
-                    <button onClick={createProblemClick} className="createNewProblem">
+                    <button onClick={createProblemClick} className="createNew">
                         <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Problem
                     </button>
                 </div>

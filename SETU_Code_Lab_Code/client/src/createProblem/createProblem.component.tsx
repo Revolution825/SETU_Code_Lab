@@ -1,5 +1,6 @@
 import NavBar from "../viewProblems/navBar.component";
 import LecturerSideBar from "../viewProblems/lecturerSideBar.component";
+import TestCaseForm from "./testCaseForm.component";
 import "./createProblem.scss";
 import { useAuth } from "../authContext";
 
@@ -91,9 +92,7 @@ public static boolean isPalindrome(int x) {
               </div>
             </div>
             <div>
-              <button className="createNewProblem" type="button">
-                <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Add Test Case
-              </button>
+              <TestCaseForm />
             </div>
           </div>
         </form>

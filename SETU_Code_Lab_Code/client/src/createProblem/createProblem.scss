@@ -21,7 +21,6 @@
     margin-top: 24px;
     margin-left: 24px;
     width: 50%;
-
 }
 
 .formBackground {
@@ -85,4 +84,46 @@ textarea {
 textarea:focus {
     outline: none;
     box-shadow: 0 0 0 1px #dedede;
+}
+
+.testCaseBody {
+    margin-top: 12px;
+    margin-right: 24px;
+    max-height: 440px;
+    overflow: auto;
+}
+
+.testCaseBackground {
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+    margin-top: 12px;
+    padding-bottom: 12px;
+    width: 100%;
+}
+
+.testCaseInputBox {
+    width: 70%;
+    background-color: #363636;
+    border-color: #a0a0a0;
+    padding: 15px;
+    font-size: 16px;
+    margin-left: auto;
+}
+
+.testCaseXButton {
+    padding: 10px;
+    font-size: 12px;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    margin-left: auto;
+    background: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.testCaseXButton:hover {
+    background-color: #454545;
 }
