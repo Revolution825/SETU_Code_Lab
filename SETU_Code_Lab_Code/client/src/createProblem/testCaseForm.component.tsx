@@ -1,13 +1,17 @@
-import { useState } from "react";
+import React from "react";
 import "./createProblem.scss";
 import "../viewProblems/manageProblems.scss";
 
-export default function TestCaseForm() {
-    interface TestCase {
-        sampleInput: string;
-        expectedOutput: string;
-    }
-    const [testCases, setTestCases] = useState<TestCase[]>([])
+interface TestCase {
+    sampleInput: string;
+    expectedOutput: string;
+}
+interface Props {
+    testCases: TestCase[],
+    setTestCases: React.Dispatch<React.SetStateAction<TestCase[]>>
+}
+
+export default function TestCaseForm({ testCases, setTestCases }: Props) {
     const addTestCase = () => {
         setTestCases([
             ...testCases,
@@ -19,15 +23,15 @@ export default function TestCaseForm() {
         updatedCases[index][field] = value;
         setTestCases(updatedCases);
     }
-    const deleteTestCase = () => {
-        setTestCases(prev => prev.slice(0, -1));
+    const deleteTestCase = (index: number) => {
+        setTestCases(testCases.filter((_, i) => i !== index));
     }
     return (
         <div className="testCaseBody">
             {
                 testCases.map((testCase, index) => (
-                    <div className="testCaseBackground">
-                        <button onClick={deleteTestCase} className="testCaseXButton">x</button>
+                    <div key={index} className="testCaseBackground">
+                        <button onClick={() => deleteTestCase(index)} type="button" className="testCaseXButton">x</button>
                         <div className="createProblemInput">
                             <label>
                                 Sample Input:

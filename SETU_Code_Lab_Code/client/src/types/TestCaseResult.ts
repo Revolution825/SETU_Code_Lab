@@ -1,0 +1,6 @@
+export interface TestCaseResult {
+    test_case_id: number;
+    passed: boolean;
+    actual_output: string;
+    runtime_ms: number;
+}

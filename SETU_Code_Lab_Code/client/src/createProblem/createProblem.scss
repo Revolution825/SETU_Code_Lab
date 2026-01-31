@@ -89,7 +89,7 @@ textarea:focus {
 .testCaseBody {
     margin-top: 12px;
     margin-right: 24px;
-    max-height: 440px;
+    height: 400px;
     overflow: auto;
 }
 
@@ -100,6 +100,7 @@ textarea:focus {
     border-radius: 15px;
     margin-top: 12px;
     padding-bottom: 12px;
+    padding-top: 6px;
     width: 100%;
 }
 
@@ -119,6 +120,7 @@ textarea:focus {
     height: 10px;
     display: flex;
     margin-left: auto;
+    margin-right: 6px;
     background: none;
     align-items: center;
     justify-content: center;
@@ -126,4 +128,12 @@ textarea:focus {
 
 .testCaseXButton:hover {
     background-color: #454545;
+}
+
+.submitProblemButton {
+    display: flex;
+    background-color: #e74751;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: 24px;
 }

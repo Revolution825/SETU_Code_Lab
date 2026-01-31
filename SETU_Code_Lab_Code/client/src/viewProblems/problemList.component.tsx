@@ -4,15 +4,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "./navBar.component";
 import LecturerSideBar from "./lecturerSideBar.component";
 import { useAuth } from "../authContext";
-export interface Problem {
-  problem_id: number;
-  user_id: number;
-  problem_title: string;
-  problem_description: string;
-  user_name: string;
-  difficulty: number;
-  placeholder_code?: string;
-}
+import type { Problem } from "../types/problem";
 
 export default function Problems() {
   const navigate = useNavigate();

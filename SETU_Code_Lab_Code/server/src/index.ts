@@ -11,6 +11,11 @@ import cookieParser from "cookie-parser";
 const app: Application = express();
 const port: number = 3000;
 
+app.use((req, _res, next) => {
+    console.log("Incoming request:", req.method, req.originalUrl);
+    next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 

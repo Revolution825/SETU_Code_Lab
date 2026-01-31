@@ -5,15 +5,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "./navBar.component";
 import LecturerSideBar from "./lecturerSideBar.component";
 import { useAuth } from "../authContext";
-export interface Problem {
-    problem_id: number;
-    user_id: number;
-    problem_title: string;
-    problem_description: string;
-    user_name: string;
-    difficulty: number;
-    placeholder_code?: string;
-}
+import type { Problem } from "../types/problem";
 
 export default function ManageProblems() {
     const navigate = useNavigate();
@@ -21,7 +13,7 @@ export default function ManageProblems() {
     const { user } = useAuth();
 
     function problemClick(problem: Problem) {
-        navigate("/problem", { state: problem });
+        navigate("/createProblem", { state: problem });
     }
 
     function createProblemClick() {
@@ -47,7 +39,7 @@ export default function ManageProblems() {
     console.log("problems : ", problems);
 
     return (
-        <div className="testCaseBody">
+        <div>
             <NavBar />
             {user?.role == "lecturer" ? <LecturerSideBar /> : null}
             <div className="manageProblemsBody">

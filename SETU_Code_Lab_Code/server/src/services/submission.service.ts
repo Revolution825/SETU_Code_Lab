@@ -37,7 +37,7 @@ export const makeSubmission = async (
 
         await client.query("COMMIT");
         return submission;
-    } catch (error) {
+    } catch (error: any) {
         await client.query("ROLLBACK");
         throw error;
     } finally {

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import type { Problem } from "../viewProblems/problemList.component";
+import type { Problem } from "../types/problem";
 import NavBar from "../viewProblems/navBar.component";
 import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
@@ -9,30 +9,8 @@ import CodeEditor from "./codeEditor.component";
 import Stopwatch, { type StopwatchHandle } from "./stopwatch.component";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import SubmissionAlert from "./submissionAlert.component";
-
-export interface TestCase {
-  test_case_id: number;
-  problem_id: number;
-  input_value: any;
-  expected_value: any;
-  passed: boolean;
-}
-
-export interface TestCaseResult {
-  test_case_id: number;
-  passed: boolean;
-  actual_output: string;
-  runtime_ms: number;
-}
-
-export interface Submission {
-  student_id: number;
-  problem_id: number;
-  submitted_code: String;
-  submitted_at?: number;
-  overall_status: boolean;
-  time_taken: number;
-}
+import type { TestCase } from "../types/TestCase";
+import type { TestCaseResult } from "../types/TestCaseResult";
 
 export default function Problem() {
   const navigate = useNavigate();
