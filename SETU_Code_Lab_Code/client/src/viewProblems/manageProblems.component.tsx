@@ -13,6 +13,10 @@ export default function ManageProblems() {
     const { user } = useAuth();
 
     function problemClick(problem: Problem) {
+        navigate("/problem", { state: problem })
+    }
+
+    function editProblemClick(problem: Problem) {
         navigate("/createProblem", { state: problem });
     }
 
@@ -20,6 +24,29 @@ export default function ManageProblems() {
         navigate("/createProblem");
     }
 
+    const deleteProblemClick = async (problem_id: number) => {
+        let userConfirmed = confirm("Are you sure you want to delete this problem and all of it's associated test cases?");
+        if (userConfirmed) {
+            try {
+                const res = await fetch('/api/deleteProblem', {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        problem_id: problem_id
+                    })
+                });
+                if (!res.ok) {
+                    throw new Error("Failed to delete problem");
+                }
+                window.location.reload();
+            } catch (error: any) {
+                console.error("Error updating problem :", error.message);
+            }
+        }
+    }
     useEffect(() => {
         async function fetchProblems() {
             const res = await fetch('/api/myProblems', {
@@ -64,10 +91,10 @@ export default function ManageProblems() {
                                             ))}
                                         </span>
                                     </button>
-                                    <button className="manageProblemButton">
+                                    <button onClick={() => editProblemClick(p)} className="manageProblemButton">
                                         <img className="manageIcons" src="editIcon.svg" alt="edit" />
                                     </button>
-                                    <button className="manageProblemButton">
+                                    <button onClick={() => deleteProblemClick(p.problem_id)} className="manageProblemButton">
                                         <img className="manageIcons" src="binIcon.svg" alt="delete" />
                                     </button>
                                 </li>)

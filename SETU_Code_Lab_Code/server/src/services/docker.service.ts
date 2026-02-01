@@ -81,10 +81,15 @@ java -cp ".:/app/*" Main '${processedInput}'
     await container.remove();
     const endTime = Date.now();
     const combinedOutput = logs.toString().trim();
-    const passed = combinedOutput == testCase.expected_value.toString();
-
+    let actualOutput: any
+    try {
+        actualOutput = JSON.parse(combinedOutput);
+    } catch {
+        actualOutput = combinedOutput;
+    }
+    const passed = JSON.stringify(actualOutput) == JSON.stringify(testCase.expected_value);
     let result: TestCaseResult = {
-        test_case_id: testCase.test_case_id,
+        test_case_id: testCase.test_case_id as number,
         passed: passed,
         actual_output: combinedOutput,
         runtime_ms: endTime - startTime

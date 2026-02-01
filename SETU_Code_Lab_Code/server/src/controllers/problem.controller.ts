@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { getAllProblems, getAllMyProblems, createProblem } from "../services/problem.service";
+import {
+    getAllProblems,
+    getAllMyProblems,
+    createProblem,
+    updateProblem,
+    deleteProblem
+} from "../services/problem.service";
 
 export const getProblems = async (req: Request, res: Response) => {
     try {
@@ -28,7 +34,6 @@ export const getMyProblems = async (req: Request, res: Response) => {
 
 export const createProblemController = async (req: Request, res: Response) => {
     try {
-        console.log("USER IN CONTROLLER:", req.user);
         const userId = req.user!.id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
@@ -55,7 +60,55 @@ export const createProblemController = async (req: Request, res: Response) => {
         )
         res.status(201).json({ problem_id: problem.problem_id });
     } catch (error: any) {
-        console.error("Error fetching creating new problem:", error);
+        console.error("Error creating new problem:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const updateProblemController = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user!.id;
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const {
+            problem_id,
+            problem_title,
+            problem_description,
+            difficulty,
+            placeholder_code,
+            testCases
+        } = req.body;
+        if (!Array.isArray(testCases) || testCases.length === 0) {
+            return res.status(400).json({ message: "At least one test case is required" })
+        }
+
+        const problem = await updateProblem(
+            problem_id,
+            problem_title,
+            problem_description,
+            difficulty,
+            placeholder_code,
+            testCases
+        )
+        res.status(201).json({ problem: problem.problem_id });
+    } catch (error: any) {
+        console.error("Error updating problem:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const deleteProblemController = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user!.id;
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const problem_id = req.body.problem_id;
+        const problem = await deleteProblem(problem_id);
+        res.status(201).json({ problem: problem })
+    } catch (error: any) {
+        console.error("Error deleting problem:", error);
         res.status(500).json({ message: error.message });
     }
 }

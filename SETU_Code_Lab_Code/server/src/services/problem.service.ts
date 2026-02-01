@@ -1,11 +1,7 @@
 import * as ProblemModel from "../models/problem.model";
 import * as TestCaseModel from "../models/testCase.model";
 import { pool } from "../infrastructure/database";
-
-export interface tempTestCase {
-  sampleInput: string;
-  expectedOutput: string;
-}
+import type { TestCase } from "../types/testCase";
 
 export const getAllProblems = async () => {
   const problems = await ProblemModel.fetchProblems();
@@ -18,19 +14,19 @@ export const getAllMyProblems = async (userId: number) => {
 }
 
 export const createProblem = async (
-  user_Id: number,
+  user_id: number,
   problem_title: string,
   problem_description: string,
   difficulty: string,
   placeholder_code: string,
-  testCases: tempTestCase[]
+  testCases: TestCase[]
 ) => {
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
     const problem = await ProblemModel.insertProblem(
       client,
-      user_Id,
+      user_id,
       problem_title,
       problem_description,
       difficulty,
@@ -50,8 +46,91 @@ export const createProblem = async (
     await client.query("COMMIT");
     return problem
   } catch (error: any) {
-    client.query("ROLLBACK");
+    await client.query("ROLLBACK");
     console.error("Error inside createProblem:", error);
+    throw error;
+  } finally {
+    await client.release();
+  }
+}
+
+export const updateProblem = async (
+  problem_id: number,
+  problem_title: string,
+  problem_description: string,
+  difficulty: number,
+  placeholder_code: string,
+  testCases: TestCase[]
+) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const problem = await ProblemModel.updateProblem(
+      client,
+      problem_id,
+      problem_title,
+      problem_description,
+      difficulty,
+      placeholder_code
+    );
+
+    for (const testCase of testCases) {
+      if (testCase.deleted) {
+        if (testCase.test_case_id) {
+          await TestCaseModel.deleteTestCase(
+            client,
+            testCase.test_case_id
+          )
+        }
+        continue;
+      } else if (testCase.test_case_id) {
+        if (testCase.input_value == null || testCase.expected_value == null) {
+          throw new Error("Invalid test case data");
+        }
+        await TestCaseModel.updateTestCase(
+          client,
+          testCase
+        )
+      } else {
+        if (!problem_id) {
+          throw new Error("Cannot create test case without problem_id");
+        }
+        if (testCase.input_value == null || testCase.expected_value == null) {
+          throw new Error("Invalid test case data");
+        }
+        await TestCaseModel.createTestCase(
+          client,
+          problem_id,
+          testCase
+        )
+      }
+    }
+    await client.query("COMMIT");
+    return problem
+  } catch (error: any) {
+    await client.query("ROLLBACK");
+    console.error("Error inside updateProblem:", error);
+    throw error;
+  } finally {
+    await client.release();
+  }
+}
+
+export const deleteProblem = async (
+  problem_id: number
+) => {
+  const client = await pool.connect();
+  await client.query("BEGIN");
+  try {
+    const problem = await ProblemModel.deleteProblem(
+      client,
+      problem_id
+    );
+    await client.query("COMMIT");
+    return problem;
+  } catch (error: any) {
+    await client.query("ROLLBACK");
+    console.error("Error inside updateProblem:", error);
     throw error;
   } finally {
     await client.release();

@@ -5,26 +5,50 @@ import "./createProblem.scss";
 import { useAuth } from "../authContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Problem } from "../types/problem";
-import { useState } from "react";
+import type { TestCase } from "../types/TestCase";
+import { useEffect, useState } from "react";
 
 export default function CreateProblem() {
-  interface TestCase {
-    sampleInput: string;
-    expectedOutput: string;
-  }
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const problem: Problem = location.state;
-  // const problemId = problem?.problem_id;
   const [title, setTitle] = useState(problem?.problem_title ?? "");
   const [difficulty, setDifficulty] = useState(problem?.difficulty ?? 1);
   const [description, setDescription] = useState(problem?.problem_description ?? "");
   const [placeholderCode, setPlaceholderCode] = useState(problem?.placeholder_code ?? "");
   const [testCases, setTestCases] = useState<TestCase[]>([]);
 
-  const handleSubmit = async () => {
+  const updateProblem = async (preparedTestCases: TestCase[]) => {
+    try {
+      const res = await fetch('/api/updateProblem', {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          problem_id: problem?.problem_id,
+          problem_title: title,
+          problem_description: description,
+          difficulty: difficulty,
+          placeholder_code: placeholderCode,
+          testCases: preparedTestCases
+        })
+      });
+      const response = await res.json()
+      console.log("Response: ", response);
 
+      if (!res.ok) {
+        throw new Error("Failed to update problem");
+      }
+      navigate("/manageProblems");
+    } catch (error: any) {
+      console.error("Error updating problem :", error.message);
+    }
+  }
+
+  const createNewProblem = async (preparedTestCases: TestCase[]) => {
     try {
       const res = await fetch('/api/createNewProblem', {
         method: "POST",
@@ -33,11 +57,12 @@ export default function CreateProblem() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          problem_id: problem?.problem_id,
           problem_title: title,
           problem_description: description,
           difficulty: difficulty,
           placeholder_code: placeholderCode,
-          testCases: testCases
+          testCases: preparedTestCases
         })
       });
       const response = await res.json()
@@ -51,6 +76,49 @@ export default function CreateProblem() {
       console.error("Error creating problem :", error.message);
     }
   }
+
+  const handleSubmit = async () => {
+    const preparedTestCases = testCases.map(testCase => {
+      let id, input, output, deleted;
+      try {
+        id = testCase?.test_case_id;
+        input = JSON.parse(testCase.input_value);
+        output = JSON.parse(testCase.expected_value);
+        deleted = testCase.deleted;
+      } catch (error: any) {
+        console.error(error.message);
+      }
+      return { test_case_id: id, input_value: input, expected_value: output, deleted: deleted }
+    });
+    if (problem?.problem_id) {
+      updateProblem(preparedTestCases)
+    } else {
+      createNewProblem(preparedTestCases)
+    }
+  }
+
+  useEffect(() => {
+    if (!problem?.problem_id) return;
+    async function fetchTestCases() {
+      const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
+        method: "GET",
+        credentials: "include"
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Error fetching test cases:", errorData.message);
+        return;
+      }
+      const dbTestCases = await res.json();
+      const formFriendlyTestCases = dbTestCases.map((tc: any) => ({
+        test_case_id: tc.test_case_id,
+        input_value: JSON.stringify(tc.input_value),
+        expected_value: JSON.stringify(tc.expected_value),
+      }));
+      setTestCases(formFriendlyTestCases);
+    }
+    fetchTestCases();
+  }, [problem?.problem_id]);
 
   const descriptionPlaceholder = `eg. (markdown formatting is supported)
 
