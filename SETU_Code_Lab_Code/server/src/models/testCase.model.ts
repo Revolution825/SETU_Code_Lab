@@ -44,16 +44,3 @@ export async function deleteTestCase(
   }
   return result;
 }
-
-export async function deleteAllMyTestCases(
-  client: any,
-  problem_id: number
-) {
-  const result = await client.query(
-    'DELETE FROM test_case WHERE problem_id=$1 RETURNING *', [problem_id]
-  );
-  if (result.rowCount === 0) {
-    throw new Error('Cannot delete all test cases');
-  }
-  return result;
-}
