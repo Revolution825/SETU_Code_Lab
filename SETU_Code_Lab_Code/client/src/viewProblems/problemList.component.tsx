@@ -34,11 +34,11 @@ export default function Problems() {
   console.log("problems : ", problems);
 
   return (
-    <div>
+    <div className="main">
       <NavBar />
       {user?.role == "lecturer" ? <LecturerSideBar /> : null}
-      <div className="problems">
-        <ul>
+      <div>
+        <ul className="problemList">
           {Array.isArray(problems)
             ? problems.map((p) => <button
               className="problem"

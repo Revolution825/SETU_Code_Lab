@@ -1,6 +1,11 @@
 .manageProblemsBody {
     margin-left: 225px;
-    margin-top: 32px;
+}
+
+.manageProblems {
+    margin-top: 16px;
+    overflow-y: auto;
+    height: 81vh;
 }
 
 .manageProblemRow {
@@ -27,7 +32,7 @@
 .createNew {
     align-items: center;
     height: 50px;
-    margin-top: 12px;
+    margin-top: 24px;
     background-color: #363636;
     box-shadow: 5px 0 5px 2px #202020;
     border-radius: 15px;
@@ -35,6 +40,12 @@
     padding: 12px;
     text-align: left;
     display: flex;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.createNew:hover {
+    transform: translateY(-2px);
+    box-shadow: 7px 4px 10px 3px #1a1a1a;
 }
 
 .plusIcon {
@@ -65,4 +76,10 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.manageProblemButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 7px 4px 10px 3px #1a1a1a;
 }

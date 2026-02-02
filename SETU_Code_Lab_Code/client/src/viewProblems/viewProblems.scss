@@ -1,3 +1,8 @@
+.main {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .navBar {
   display: flex;
   flex-direction: row;
@@ -20,6 +25,10 @@
   font-size: 18px;
   background: none;
   padding: 6px;
+}
+
+.menuButton:hover {
+  color: #626262 !important;
 }
 
 .logo {
@@ -92,11 +101,14 @@ ul button.problem:nth-child(even) {
   box-shadow: none;
 }
 
-.problems {
+.problemList {
   margin: auto;
   margin-top: 10%;
   width: 50%;
-  padding: 10px;
+  padding: 12px;
+  height: 68vh;
+  scrollbar-width: none;
+  overflow-y: auto;
 }
 
 .problem {

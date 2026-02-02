@@ -66,10 +66,15 @@ export default function ManageProblems() {
     console.log("problems : ", problems);
 
     return (
-        <div>
+        <div className="main">
             <NavBar />
             {user?.role == "lecturer" ? <LecturerSideBar /> : null}
             <div className="manageProblemsBody">
+                <div>
+                    <button onClick={createProblemClick} className="createNew">
+                        <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Problem
+                    </button>
+                </div>
                 <div className="manageProblems">
                     <ul>
                         {Array.isArray(problems)
@@ -100,11 +105,6 @@ export default function ManageProblems() {
                                 </li>)
                             : <li>No problems found</li>}
                     </ul>
-                </div>
-                <div>
-                    <button onClick={createProblemClick} className="createNew">
-                        <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Problem
-                    </button>
                 </div>
             </div>
         </div>
