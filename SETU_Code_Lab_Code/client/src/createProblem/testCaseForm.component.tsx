@@ -2,6 +2,7 @@ import React from "react";
 import "./createProblem.scss";
 import "../viewProblems/manageProblems.scss";
 import type { TestCase } from "../types/TestCase";
+import { v4 as uuidv4 } from 'uuid';
 interface Props {
     testCases: TestCase[],
     setTestCases: React.Dispatch<React.SetStateAction<TestCase[]>>
@@ -13,7 +14,7 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
         setTestCases(prev => [
             ...prev,
             {
-                temp_id: crypto.randomUUID(),
+                temp_id: uuidv4(),
                 input_value: "",
                 expected_value: ""
             }
