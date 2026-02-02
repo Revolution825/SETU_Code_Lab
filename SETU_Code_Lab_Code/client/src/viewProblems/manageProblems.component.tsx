@@ -6,6 +6,7 @@ import NavBar from "./navBar.component";
 import LecturerSideBar from "./lecturerSideBar.component";
 import { useAuth } from "../authContext";
 import type { Problem } from "../types/problem";
+import toast from "react-hot-toast";
 
 export default function ManageProblems() {
     const navigate = useNavigate();
@@ -39,10 +40,16 @@ export default function ManageProblems() {
                     })
                 });
                 if (!res.ok) {
+                    toast.error("Failed to delete problem. Please try again.");
                     throw new Error("Failed to delete problem");
                 }
-                window.location.reload();
+                toast.success("Problem deleted successfully");
+                navigate("/manageProblems");
+                setProblems(prev =>
+                    prev.filter(p => p.problem_id !== problem_id)
+                );
             } catch (error: any) {
+                toast.error("Failed to delete problem. Please try again.");
                 console.error("Error updating problem :", error.message);
             }
         }
@@ -62,8 +69,6 @@ export default function ManageProblems() {
         }
         fetchProblems();
     }, []);
-
-    console.log("problems : ", problems);
 
     return (
         <div className="main">

@@ -7,33 +7,33 @@ import RequireAuth from './requireAuth'
 import Problem from './solveProblem/problem.component'
 import ManageProblems from './viewProblems/manageProblems.component'
 import CreateProblem from './createProblem/createProblem.component'
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
 
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/problems" element={
-        <RequireAuth>
+    <><Toaster
+      position="top-center"
+      toastOptions={{
+        style: {
+          background: "#363636",
+          color: "#fff",
+        },
+      }} /><Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/problems" element={<RequireAuth>
           <Problems />
-        </RequireAuth>
-      } />
-      <Route path="/problem" element={
-        <RequireAuth>
+        </RequireAuth>} />
+        <Route path="/problem" element={<RequireAuth>
           <Problem />
-        </RequireAuth>
-      } />
-      <Route path="/manageProblems" element={
-        <RequireAuth>
+        </RequireAuth>} />
+        <Route path="/manageProblems" element={<RequireAuth>
           <ManageProblems />
-        </RequireAuth>
-      } />
-      <Route path="/createProblem" element={
-        <RequireAuth>
+        </RequireAuth>} />
+        <Route path="/createProblem" element={<RequireAuth>
           <CreateProblem />
-        </RequireAuth>
-      } />
-    </Routes>
+        </RequireAuth>} />
+      </Routes></>
   )
 }

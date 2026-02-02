@@ -11,6 +11,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import SubmissionAlert from "./submissionAlert.component";
 import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
+import toast from "react-hot-toast";
 
 export default function Problem() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ export default function Problem() {
       } else {
         console.log("Data", res.json());
         const errorData = await res.json();
+        toast.error("Error fetching test cases");
         console.error("Error fetching test cases: ", errorData.message);
       }
     }
@@ -99,7 +101,7 @@ export default function Problem() {
         });
         return testCaseResult;
       } else {
-        console.log("Data", data);
+        toast.error("Error running code");
         console.error("Error running code: ", data.message);
         return null;
       }
@@ -118,7 +120,7 @@ export default function Problem() {
       const results = await handleRun();
       setIsRunning(false);
       if (results.length !== testCases.length) {
-        alert("Error: Not all test cases were run successfully. Please try again.");
+        toast.error("Error: not all test cases ran, please try again");
         return;
       }
       const overallStatus = results.every(tc => tc.passed);
@@ -139,6 +141,7 @@ export default function Problem() {
 
       const data = await res.json();
       if (res.ok) {
+        toast.success("Submission successful");
         console.log("Submission successful: ", data);
         setSubmissionSummary({
           overall_status: overallStatus,
@@ -148,17 +151,15 @@ export default function Problem() {
         setShowSubmissionAlert(true);
       } else {
         setIsRunning(false);
-        console.log("Data", data);
+        toast.error("Error submitting code");
         console.error("Error submitting code: ", data);
       }
     } catch (error: any) {
       setIsRunning(false);
-      alert("Submission failed: test cases could not be executed.");
+      toast.error("Error: test cases could not be executed");
       console.error(error.message);
     }
   }
-
-  console.log("test cases: ", testCases);
 
   return (
     <div>

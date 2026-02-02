@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import type { Problem } from "../types/problem";
 import type { TestCase } from "../types/TestCase";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function CreateProblem() {
   const { user } = useAuth();
@@ -40,10 +41,13 @@ export default function CreateProblem() {
       console.log("Response: ", response);
 
       if (!res.ok) {
+        toast.error("Failed to update problem. Please try again.");
         throw new Error("Failed to update problem");
       }
+      toast.success("Problem updated successfully");
       navigate("/manageProblems");
     } catch (error: any) {
+      toast.error("Failed to update problem. Please try again.");
       console.error("Error updating problem :", error.message);
     }
   }
@@ -65,14 +69,17 @@ export default function CreateProblem() {
           testCases: preparedTestCases
         })
       });
-      const response = await res.json()
+      const response = await res.json();
       console.log("Response: ", response);
 
       if (!res.ok) {
+        toast.error("Failed to create problem. Please try again.");
         throw new Error("Failed to create problem");
       }
+      toast.success("Problem created successfully")
       navigate("/manageProblems");
     } catch (error: any) {
+      toast.error("Failed to create problem. Please try again.");
       console.error("Error creating problem :", error.message);
     }
   }
