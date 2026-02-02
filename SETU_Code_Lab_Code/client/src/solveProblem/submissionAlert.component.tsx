@@ -1,4 +1,4 @@
-import type { TestCaseResult } from "./problem.component";
+import type { TestCaseResult } from "../types/TestCaseResult";
 import "./submissionAlert.scss";
 
 interface submissionAlertProps {
