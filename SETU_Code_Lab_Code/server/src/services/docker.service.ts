@@ -1,24 +1,33 @@
 import docker from "../infrastructure/docker";
 import { TestCase, TestCaseResult } from "../types/testCase";
 
-function preprocessJavaInput(code: string): string {
-    const signatureRegex = /public\s+static\s+(\w+)\s+(\w+)\(([^)]*)\)/;
-    const match = code.match(signatureRegex);
+function preprocessJavaInput(placeholder_code: string, code: string): string {
+    const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+    const match = placeholder_code.match(signatureRegex);
     if (!match) {
-        throw new Error("Could not find method signature in code.");
+        throw new Error("Could not find method signature in placeholder code.");
     }
     const returnType = match[1];
     const functionName = match[2];
     const paramsList = match[3];
 
     const params = paramsList.split(",").map(p => p.trim()).filter(p => p.length > 0);
+    const parsedParams = params.map(p => {
+        const lastSpace = p.lastIndexOf(" ");
+        if (lastSpace === -1) {
+            throw new Error("Invalid parameter format: " + p);
+        }
+        return {
+            type: p.substring(0, lastSpace).trim(),
+            name: p.substring(lastSpace + 1).trim()
+        }
+    });
 
-    const inputFields = params.map(p => {
-        const [type, name] = p.split(/\s+/);
-        return `public ${type} ${name};`;
+    const inputFields = parsedParams.map(p => {
+        return `public ${p.type} ${p.name};`;
     }).join("\n    ");
 
-    const paramNames = params.map(p => p.split(/\s+/)[1]);
+    const paramNames = parsedParams.map(p => p.name);
 
     const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map(n => "input." + n).join(", ")});`;
 
@@ -46,10 +55,10 @@ function preprocessJavaInput(code: string): string {
     return processedCode;
 }
 
-export async function startContainer(image: string, code: string, testCase: TestCase): Promise<TestCaseResult> {
+export async function startContainer(image: string, placeholder_code: string, code: string, testCase: TestCase): Promise<TestCaseResult> {
 
     const processedInput = JSON.stringify(testCase.input_value);
-    const preprocessedCode = preprocessJavaInput(code);
+    const preprocessedCode = preprocessJavaInput(placeholder_code, code);
     const startTime = Date.now();
     const container = await docker.createContainer({
         Image: image,

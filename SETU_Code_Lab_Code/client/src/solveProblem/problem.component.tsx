@@ -91,6 +91,7 @@ export default function Problem() {
         },
         body: JSON.stringify({
           image: image,
+          placeholder_code: problem.placeholder_code,
           code: code,
           testCase: testCase
         })
