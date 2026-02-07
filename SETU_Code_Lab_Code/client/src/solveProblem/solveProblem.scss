@@ -144,4 +144,12 @@
 .warning {
   padding: 12px;
   background-color: #262626;
+  display: flex;
+  align-items: center;
+}
+
+.warningIcon {
+  height: 24px;
+  width: 24px;
+  margin-right: 12px;
 }

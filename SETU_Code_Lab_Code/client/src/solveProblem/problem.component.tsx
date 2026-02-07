@@ -190,7 +190,7 @@ export default function Problem() {
                   <div className="paneTitle">
                     {problem.problem_title} | {problem.user_name}
                   </div>
-                  <div className="warning">WARNING: Leaving this tab before fully completing the problem will automatically submit your current work</div>
+                  <div className="warning"><img className="warningIcon" src="warning.svg" alt="WARNING" /> Leaving this tab before fully completing the problem will automatically submit your current work</div>
                   <div className="descriptionContent">
                     <MarkdownPreview
                       source={problem.problem_description}
