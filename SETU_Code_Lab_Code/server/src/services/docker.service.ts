@@ -11,16 +11,38 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
     const functionName = match[2];
     const paramsList = match[3];
 
-    const params = paramsList.split(",").map(p => p.trim()).filter(p => p.length > 0);
+    function splitParams(paramsList: string): string[] {
+        const params: string[] = [];
+        let current = "";
+        let depth = 0;
+
+        for (let i = 0; i < paramsList.length; i++) {
+            const c = paramsList[i];
+            if (c === '<') depth++;
+            if (c === '>') depth--;
+            if (c === ',' && depth === 0) {
+                params.push(current.trim());
+                current = "";
+            } else {
+                current += c;
+            }
+        }
+        if (current.trim() !== "") {
+            params.push(current.trim());
+        }
+        return params;
+    }
+
+    const params = splitParams(paramsList);
     const parsedParams = params.map(p => {
-        const lastSpace = p.lastIndexOf(" ");
-        if (lastSpace === -1) {
+        const match = p.match(/(.+)\s+(\w+)$/);
+        if (!match) {
             throw new Error("Invalid parameter format: " + p);
         }
         return {
-            type: p.substring(0, lastSpace).trim(),
-            name: p.substring(lastSpace + 1).trim()
-        }
+            type: match[1].trim(),
+            name: match[2].trim()
+        };
     });
 
     const inputFields = parsedParams.map(p => {
@@ -33,6 +55,7 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 
     const processedCode = `
     import com.fasterxml.jackson.databind.ObjectMapper;
+    import java.util.*;
 
     public class Main {
         static final ObjectMapper mapper = new ObjectMapper();
@@ -44,7 +67,7 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
             try {
                 Input input = mapper.readValue(args[0], Input.class);
                 ${functionCallLine}
-                System.out.println(result);
+                System.out.println(mapper.writeValueAsString(result));
             } catch (Exception e) {
                 System.out.println("ERROR:" + e.getMessage());
             }
@@ -70,7 +93,7 @@ EOF
 javac Main.java
 java -cp ".:/app/*" Main '${processedInput}'
 `],
-        Tty: true,
+        Tty: false,
         AttachStdout: true,
         AttachStderr: true,
         HostConfig: {
@@ -83,20 +106,40 @@ java -cp ".:/app/*" Main '${processedInput}'
     await container.start();
     await container.wait();
 
+    function stripDockerHeader(buffer: Buffer): string {
+        let result = "";
+        let i = 0;
+
+        while (i < buffer.length) {
+            const headerSize = 8;
+            const payloadLength = buffer.readUInt32BE(i + 4);
+            const payloadStart = i + headerSize;
+            const payloadEnd = payloadStart + payloadLength;
+
+            result += buffer.slice(payloadStart, payloadEnd).toString("utf8");
+            i = payloadEnd;
+        }
+
+        return result.trim();
+    }
+
     const logs = await container.logs({
         stdout: true,
         stderr: true
     });
     await container.remove();
     const endTime = Date.now();
-    const combinedOutput = logs.toString().trim();
+    const combinedOutput = stripDockerHeader(logs);
     let actualOutput: any
     try {
         actualOutput = JSON.parse(combinedOutput);
     } catch {
         actualOutput = combinedOutput;
     }
-    const passed = JSON.stringify(actualOutput) == JSON.stringify(testCase.expected_value);
+    function deepEqual(a: any, b: any): boolean {
+        return JSON.stringify(a, Object.keys(a).sort()) === JSON.stringify(b, Object.keys(b).sort());
+    }
+    const passed = deepEqual(actualOutput, testCase.expected_value);
     let result: TestCaseResult = {
         test_case_id: testCase.test_case_id as number,
         passed: passed,

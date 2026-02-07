@@ -73,6 +73,7 @@ export default function Problem() {
     for (const testCase of testCases) {
       const result = await runTestCase(testCase);
       if (!result) {
+        setIsRunning(false);
         throw new Error("Failed to get result for test case ID: " + testCase.test_case_id);
       }
       results.push(result);
@@ -115,6 +116,7 @@ export default function Problem() {
         return testCaseResult;
       } else {
         toast.error("Error running code");
+        setIsRunning(false);
         console.error("Error running code: ", data.message);
         return null;
       }
