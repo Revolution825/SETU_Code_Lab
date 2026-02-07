@@ -13,6 +13,7 @@ import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
 import { useAntiCheat } from "../antiCheat";
+import { FadeLoader } from 'react-spinners';
 
 export default function Problem() {
   const { shouldAutoSubmit } = useAntiCheat();
@@ -68,6 +69,7 @@ export default function Problem() {
 
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
+    setIsRunning(true);
     for (const testCase of testCases) {
       const result = await runTestCase(testCase);
       if (!result) {
@@ -75,6 +77,7 @@ export default function Problem() {
       }
       results.push(result);
     }
+    setIsRunning(false);
     return results;
   };
 
@@ -125,9 +128,7 @@ export default function Problem() {
     try {
       const timeTaken = stopwatchRef.current.getTotalSeconds();
       const submittedCode = code;
-      setIsRunning(true);
       const results = await handleRun();
-      setIsRunning(false);
       if (results.length !== testCases.length) {
         toast.error("Error: not all test cases ran, please try again");
         return;
@@ -304,6 +305,11 @@ export default function Problem() {
           }}
         />
       )}
+      {isRunning &&
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, running test cases...</p>
+        </div>}
     </div>
   )
 }
