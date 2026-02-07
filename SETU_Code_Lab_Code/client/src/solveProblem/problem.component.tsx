@@ -12,8 +12,10 @@ import SubmissionAlert from "./submissionAlert.component";
 import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
+import { useAntiCheat } from "../antiCheat";
 
 export default function Problem() {
+  const { shouldAutoSubmit } = useAntiCheat();
   const navigate = useNavigate();
   const location = useLocation();
   const problem: Problem = location.state;
@@ -55,7 +57,14 @@ export default function Problem() {
       }
     }
     fetchTestCases();
+
   }, []);
+
+  useEffect(() => {
+    if (shouldAutoSubmit) {
+      handleSubmit();
+    }
+  }, [shouldAutoSubmit]);
 
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
@@ -181,6 +190,7 @@ export default function Problem() {
                   <div className="paneTitle">
                     {problem.problem_title} | {problem.user_name}
                   </div>
+                  <div className="warning">WARNING: Leaving this tab before fully completing the problem will automatically submit your current work</div>
                   <div className="descriptionContent">
                     <MarkdownPreview
                       source={problem.problem_description}
