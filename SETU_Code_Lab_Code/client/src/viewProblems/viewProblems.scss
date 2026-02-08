@@ -136,3 +136,13 @@ ul button.problem:nth-child(even) {
 .star {
   margin: 3px;
 }
+
+.title {
+  display: flex;
+  justify-content: center;
+  padding: 6px;
+  padding-bottom: 28px;
+  border-bottom: #626262;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+}

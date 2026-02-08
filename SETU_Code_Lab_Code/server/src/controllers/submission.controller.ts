@@ -4,7 +4,7 @@ import { makeSubmission } from "../services/submission.service";
 export const makeSubmissionHandler = async (req: Request, res: Response) => {
     try {
 
-        const user_id = req.user!.id;
+        const user_id = req.user!.user_id;
 
         const {
             problem_id,

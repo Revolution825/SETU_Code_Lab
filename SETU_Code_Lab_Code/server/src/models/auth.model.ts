@@ -3,7 +3,7 @@ import { User } from "../types/user";
 
 export async function getUserByEmail(email: string): Promise<User | null> {
     const result = await pool.query(
-        "SELECT user_id AS id, user_name AS name, email, password, role FROM users WHERE email = $1",
+        "SELECT user_id, user_name AS name, email, password, role FROM users WHERE email = $1",
         [email]
     );
     if (result.rows.length > 0) {
@@ -12,8 +12,8 @@ export async function getUserByEmail(email: string): Promise<User | null> {
     return null;
 }
 
-export async function createUser(name: string, role: string, email: string, password: string): Promise<User> {
-    const result = await pool.query(
+export async function createUser(client: any, name: string, role: string, email: string, password: string): Promise<User> {
+    const result = await client.query(
         `INSERT INTO users (user_name, role, email, password) 
          VALUES ($1, $2, $3, $4) 
          RETURNING *`,

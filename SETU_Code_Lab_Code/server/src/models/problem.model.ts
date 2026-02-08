@@ -1,7 +1,15 @@
 import { pool } from "../infrastructure/database";
 
-export const fetchProblems = async () => {
-    const result = await pool.query("SELECT problem.*, users.user_name FROM problem AS problem JOIN users AS users ON problem.user_id = users.user_id");
+export const fetchCourseProblems = async (selectedCourseId: Number) => {
+    const result = await pool.query(
+        `SELECT p.*, u.user_name
+     FROM problem AS p
+     JOIN users AS u ON p.user_id = u.user_id
+     JOIN course_problem AS cp ON cp.problem_id = p.problem_id
+     WHERE cp.course_id = $1`,
+        [selectedCourseId]
+    );
+    console.log("RESULT: ", result.rows);
     return result.rows;
 }
 

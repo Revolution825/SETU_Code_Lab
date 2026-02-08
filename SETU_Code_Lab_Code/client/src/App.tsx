@@ -8,6 +8,8 @@ import Problem from './solveProblem/problem.component'
 import ManageProblems from './viewProblems/manageProblems.component'
 import CreateProblem from './createProblem/createProblem.component'
 import { Toaster } from "react-hot-toast";
+import ManageClasses from './createClass/manageClasses.component'
+import CreateClass from './createClass/createClasses.component'
 
 export default function App() {
 
@@ -33,6 +35,12 @@ export default function App() {
         </RequireAuth>} />
         <Route path="/createProblem" element={<RequireAuth>
           <CreateProblem />
+        </RequireAuth>} />
+        <Route path="/manageClasses" element={<RequireAuth>
+          <ManageClasses />
+        </RequireAuth>} />
+        <Route path="/createClass" element={<RequireAuth>
+          <CreateClass />
         </RequireAuth>} />
       </Routes></>
   )

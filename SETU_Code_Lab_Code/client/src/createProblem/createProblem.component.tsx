@@ -37,8 +37,6 @@ export default function CreateProblem() {
           testCases: preparedTestCases
         })
       });
-      const response = await res.json()
-      console.log("Response: ", response);
 
       if (!res.ok) {
         toast.error("Failed to update problem. Please try again.");
@@ -69,8 +67,6 @@ export default function CreateProblem() {
           testCases: preparedTestCases
         })
       });
-      const response = await res.json();
-      console.log("Response: ", response);
 
       if (!res.ok) {
         toast.error("Failed to create problem. Please try again.");

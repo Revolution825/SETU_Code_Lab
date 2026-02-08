@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import {
-    getAllProblems,
+    getAllCourseProblems,
     getAllMyProblems,
     createProblem,
     updateProblem,
     deleteProblem
 } from "../services/problem.service";
 
-export const getProblems = async (req: Request, res: Response) => {
+export const getCourseProblems = async (req: Request, res: Response) => {
     try {
-        const problems = await getAllProblems();
+        const selectedCourseId = req.body.selectedCourse;
+        const problems = await getAllCourseProblems(selectedCourseId);
         res.json(problems);
     } catch (error: any) {
         console.error("Error fetching problems:", error.message);
@@ -19,7 +20,7 @@ export const getProblems = async (req: Request, res: Response) => {
 
 export const getMyProblems = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
+        const userId = req.user?.user_id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
@@ -34,7 +35,7 @@ export const getMyProblems = async (req: Request, res: Response) => {
 
 export const createProblemController = async (req: Request, res: Response) => {
     try {
-        const userId = req.user!.id;
+        const userId = req.user!.user_id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
@@ -67,7 +68,7 @@ export const createProblemController = async (req: Request, res: Response) => {
 
 export const updateProblemController = async (req: Request, res: Response) => {
     try {
-        const userId = req.user!.id;
+        const userId = req.user!.user_id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
@@ -100,7 +101,7 @@ export const updateProblemController = async (req: Request, res: Response) => {
 
 export const deleteProblemController = async (req: Request, res: Response) => {
     try {
-        const userId = req.user!.id;
+        const userId = req.user!.user_id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getProblems, getMyProblems, createProblemController, updateProblemController, deleteProblemController } from "../controllers/problem.controller";
+import { getCourseProblems, getMyProblems, createProblemController, updateProblemController, deleteProblemController } from "../controllers/problem.controller";
 
 const router: Router = Router();
 
-router.get("/problems", getProblems);
+router.post("/problems", getCourseProblems);
 router.get("/myProblems", getMyProblems);
 router.post("/createNewProblem", createProblemController);
 router.post("/updateProblem", updateProblemController);

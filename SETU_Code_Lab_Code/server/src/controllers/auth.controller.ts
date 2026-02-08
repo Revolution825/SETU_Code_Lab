@@ -38,7 +38,7 @@ export const signUp = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            path: "/signup",
+            path: "/",
             maxAge: 60 * 60 * 1000
         });
         res.status(201).json({

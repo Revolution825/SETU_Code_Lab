@@ -3,7 +3,8 @@ import authRouter from "./routes/auth.routes";
 import problemRouter from "./routes/problem.routes";
 import testCaseRouter from "./routes/testCase.route";
 import submissionRouter from "./routes/submission.route";
-import dockerRouter from "./routes/docker.routes"
+import dockerRouter from "./routes/docker.routes";
+import courseRouter from "./routes/course.routes";
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
 import cookieParser from "cookie-parser";
@@ -23,6 +24,7 @@ app.use("/api/auth", authRouter);
 app.use("/api", verifyToken, problemRouter);
 app.use("/api", verifyToken, testCaseRouter);
 app.use("/api", verifyToken, submissionRouter);
+app.use("/api", verifyToken, courseRouter);
 app.use("/docker", dockerRouter);
 app.use(errorHandler);
 

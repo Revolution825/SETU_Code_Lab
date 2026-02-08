@@ -51,7 +51,6 @@ export default function Problem() {
       if (res.ok) {
         setTestCases(await res.json());
       } else {
-        console.log("Data", res.json());
         const errorData = await res.json();
         toast.error("Error fetching test cases");
         console.error("Error fetching test cases: ", errorData.message);
@@ -155,7 +154,6 @@ export default function Problem() {
       const data = await res.json();
       if (res.ok) {
         toast.success("Submission successful");
-        console.log("Submission successful: ", data);
         setSubmissionSummary({
           overall_status: overallStatus,
           testCaseResults: results,

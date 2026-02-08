@@ -3,8 +3,8 @@ import * as TestCaseModel from "../models/testCase.model";
 import { pool } from "../infrastructure/database";
 import type { TestCase } from "../types/testCase";
 
-export const getAllProblems = async () => {
-  const problems = await ProblemModel.fetchProblems();
+export const getAllCourseProblems = async (selectedCourseId: Number) => {
+  const problems = await ProblemModel.fetchCourseProblems(selectedCourseId);
   return problems;
 };
 
@@ -34,7 +34,6 @@ export const createProblem = async (
     );
 
     const problem_id = problem.problem_id
-    console.log("ProblemId: ", problem_id);
     for (const testCase of testCases) {
       await TestCaseModel.createTestCase(
         client,
