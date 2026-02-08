@@ -144,4 +144,24 @@
 .warning {
   padding: 12px;
   background-color: #262626;
+  display: flex;
+  align-items: center;
+}
+
+.warningIcon {
+  height: 24px;
+  width: 24px;
+  margin-right: 12px;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  background-color: #26262699;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }

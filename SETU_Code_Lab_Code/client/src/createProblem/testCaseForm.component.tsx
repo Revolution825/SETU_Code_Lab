@@ -60,7 +60,7 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
                                 <input
                                     className="testCaseInputBox topRounded"
                                     type="text"
-                                    maxLength={100}
+                                    maxLength={1000}
                                     placeholder='eg. {"x": 313}'
                                     value={testCase.input_value}
                                     onChange={
@@ -74,7 +74,7 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
                                 <input
                                     className="testCaseInputBox bottomRounded"
                                     type="text"
-                                    maxLength={100}
+                                    maxLength={1000}
                                     placeholder='eg. true'
                                     value={testCase.expected_value}
                                     onChange={

@@ -13,6 +13,7 @@ import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
 import { useAntiCheat } from "../antiCheat";
+import { FadeLoader } from 'react-spinners';
 
 export default function Problem() {
   const { shouldAutoSubmit } = useAntiCheat();
@@ -68,13 +69,16 @@ export default function Problem() {
 
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
+    setIsRunning(true);
     for (const testCase of testCases) {
       const result = await runTestCase(testCase);
       if (!result) {
+        setIsRunning(false);
         throw new Error("Failed to get result for test case ID: " + testCase.test_case_id);
       }
       results.push(result);
     }
+    setIsRunning(false);
     return results;
   };
 
@@ -88,6 +92,7 @@ export default function Problem() {
         },
         body: JSON.stringify({
           image: image,
+          placeholder_code: problem.placeholder_code,
           code: code,
           testCase: testCase
         })
@@ -111,6 +116,7 @@ export default function Problem() {
         return testCaseResult;
       } else {
         toast.error("Error running code");
+        setIsRunning(false);
         console.error("Error running code: ", data.message);
         return null;
       }
@@ -125,9 +131,7 @@ export default function Problem() {
     try {
       const timeTaken = stopwatchRef.current.getTotalSeconds();
       const submittedCode = code;
-      setIsRunning(true);
       const results = await handleRun();
-      setIsRunning(false);
       if (results.length !== testCases.length) {
         toast.error("Error: not all test cases ran, please try again");
         return;
@@ -190,7 +194,7 @@ export default function Problem() {
                   <div className="paneTitle">
                     {problem.problem_title} | {problem.user_name}
                   </div>
-                  <div className="warning">WARNING: Leaving this tab before fully completing the problem will automatically submit your current work</div>
+                  <div className="warning"><img className="warningIcon" src="warning.svg" alt="WARNING" /> Leaving this tab before fully completing the problem will automatically submit your current work</div>
                   <div className="descriptionContent">
                     <MarkdownPreview
                       source={problem.problem_description}
@@ -304,6 +308,11 @@ export default function Problem() {
           }}
         />
       )}
+      {isRunning &&
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, running test cases...</p>
+        </div>}
     </div>
   )
 }
