@@ -39,8 +39,10 @@ export default function Problems() {
         console.error("Error fetching problems:", errorData.message);
       }
     }
-    fetchCourseProblems();
-  }, []);
+    if (selectedCourse) {
+      fetchCourseProblems();
+    }
+  }, [selectedCourse]);
 
   useEffect(() => {
     async function fetchCourses() {
@@ -57,8 +59,6 @@ export default function Problems() {
     }
     fetchCourses();
   }, []);
-
-  console.log("problems : ", problems);
 
   return (
     <div className="main">

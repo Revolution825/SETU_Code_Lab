@@ -150,7 +150,7 @@ public static boolean isPalindrome(int x) {
   return (
     <div>
       <NavBar />
-      {user?.role == "lecturer" ? <LecturerSideBar /> : null}
+      {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
       <div >
         <form className="createProblemForm"
           onSubmit={

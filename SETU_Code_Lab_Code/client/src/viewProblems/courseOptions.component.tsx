@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import "./lecturerSideBar.scss"
 import type { Course } from "../types/course";
 
@@ -13,7 +12,6 @@ export default function CourseOptions({
     selectedCourse,
     onSelectCourse
 }: CourseOptionProps) {
-    const navigate = useNavigate();
 
     return (
         <div>
@@ -21,18 +19,19 @@ export default function CourseOptions({
             <ul>
                 {Array.isArray(courses)
                     ? courses.map((c) => (
-                        <button
-                            className="option"
-                            onClick={() => onSelectCourse(c.course_id)}
-                            style={{
-                                color:
-                                    selectedCourse === c.course_id
-                                        ? "#626262"
-                                        : "#dedede"
-                            }}
-                            key={c.course_id}>
-                            {c.course_title}
-                        </button>
+                        <li key={c.course_id}>
+                            <button
+                                className="option"
+                                onClick={() => onSelectCourse(c.course_id)}
+                                style={{
+                                    color:
+                                        selectedCourse === c.course_id
+                                            ? "#626262"
+                                            : "#dedede"
+                                }}
+                                key={c.course_id}>
+                                {c.course_title}
+                            </button></li>
                     ))
                     : <li>No courses found</li>}
             </ul>

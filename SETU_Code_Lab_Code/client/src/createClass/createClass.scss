@@ -1,0 +1,90 @@
+.createCourseForm {
+    margin-left: 212px;
+    margin-top: 24px;
+    margin-right: 24px;
+    display: flex;
+    flex-direction: row;
+}
+
+.createCourseContent {
+    height: fit-content;
+    width: 100%;
+}
+
+.createCourseFormBackground {
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+}
+
+.createCourseInput {
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    margin-right: 24px;
+    padding-bottom: 24px;
+}
+
+.inputBoxExtended {
+    width: 90%;
+    background-color: #363636;
+    border-color: #a0a0a0;
+    padding: 15px;
+    font-size: 16px;
+    margin-left: auto;
+}
+
+
+.selectionContainer {
+    display: flex;
+    flex-direction: row;
+    height: 500px;
+}
+
+.problemSelection {
+    width: 50%;
+    background-color: #363636;
+    border-radius: 15px;
+    margin-top: 24px;
+    margin-right: 24px;
+    overflow: auto;
+}
+
+.problemItem {
+    display: flex;
+    width: auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 10px;
+}
+
+.problemItem:nth-child(odd) {
+    background-color: #363636;
+}
+
+.problemItem:nth-child(even) {
+    background-color: #262626;
+    box-shadow: none;
+}
+
+.studentSelection {
+    width: 50%;
+    background-color: #363636;
+    border-radius: 15px;
+    margin-top: 24px;
+}
+
+.problemSelectionList {
+    margin: 24px;
+    max-height: 375px;
+    overflow: auto;
+}
+
+.submitCourseButton {
+    display: flex;
+    background-color: #e74751;
+    margin-top: 12px;
+    margin-left: auto;
+}

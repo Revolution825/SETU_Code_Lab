@@ -9,7 +9,6 @@ export const fetchCourseProblems = async (selectedCourseId: Number) => {
      WHERE cp.course_id = $1`,
         [selectedCourseId]
     );
-    console.log("RESULT: ", result.rows);
     return result.rows;
 }
 
