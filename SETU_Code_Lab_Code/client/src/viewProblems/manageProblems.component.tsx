@@ -73,7 +73,7 @@ export default function ManageProblems() {
     return (
         <div className="main">
             <NavBar />
-            {user?.role == "lecturer" ? <LecturerSideBar /> : null}
+            {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
             <div className="manageProblemsBody">
                 <div>
                     <button onClick={createProblemClick} className="createNew">

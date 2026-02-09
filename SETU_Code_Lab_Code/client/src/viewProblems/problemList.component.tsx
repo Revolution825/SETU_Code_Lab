@@ -6,12 +6,14 @@ import LecturerSideBar from "./lecturerSideBar.component";
 import { useAuth } from "../authContext";
 import type { Problem } from "../types/problem";
 import type { Course } from "../types/course";
+import CourseOptions from "./courseOptions.component";
+import "./lecturerSideBar.scss"
 
 export default function Problems() {
   const navigate = useNavigate();
   const [problems, setProblems] = useState<Problem[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [selectedCourse, setSelectedCourse] = useState<Number>(1);
+  const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const { user } = useAuth();
 
   function problemClick(problem: Problem) {
@@ -61,48 +63,33 @@ export default function Problems() {
   return (
     <div className="main">
       <NavBar />
-      {
-        user?.role == "lecturer"
-          ? <LecturerSideBar />
-          :
-          <div className="sideBar">
-            <h3 className="title">Your Courses</h3>
-            <ul>
-              {Array.isArray(courses)
-                ? courses.map((c) => (
-                  <button
-                    className="option"
-                    key={c.course_id}>
-                    {c.course_title}
-                  </button>
-                ))
-                : <li>No courses found</li>}
-            </ul>
-          </div>
-      }
-      <div>
-        <ul className="problemList">
-          {Array.isArray(problems)
-            ? problems.map((p) => <button
-              className="problem"
-              key={p.problem_id}
-              onClick={() => problemClick(p)}>
-              {problems.indexOf(p) + 1}. {p.problem_title}
-              <span className="problemListItem">| {p.user_name}</span>
-              <span className="stars">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <img
-                    key={i}
-                    className="star"
-                    src={i < p.difficulty ? "/filledStar.svg" : "/emptyStar.svg"}
-                    alt="star"
-                  />
-                ))}
-              </span>
-            </button>)
-            : <li>No problems found</li>}
-        </ul>
+      <div className="sideBar">
+        <CourseOptions courses={courses} selectedCourse={selectedCourse} onSelectCourse={setSelectedCourse} />
+        {
+          user?.role == "lecturer" ? <LecturerSideBar /> : null
+        }
       </div>
+      <ul className="problemList">
+        {Array.isArray(problems)
+          ? problems.map((p) => <button
+            className="problem"
+            key={p.problem_id}
+            onClick={() => problemClick(p)}>
+            {problems.indexOf(p) + 1}. {p.problem_title}
+            <span className="problemListItem">| {p.user_name}</span>
+            <span className="stars">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <img
+                  key={i}
+                  className="star"
+                  src={i < p.difficulty ? "/filledStar.svg" : "/emptyStar.svg"}
+                  alt="star"
+                />
+              ))}
+            </span>
+          </button>)
+          : <li>No problems found</li>}
+      </ul>
     </div>
   );
 }

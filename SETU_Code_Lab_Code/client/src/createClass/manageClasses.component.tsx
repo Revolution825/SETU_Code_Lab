@@ -14,7 +14,7 @@ export default function ManageClasses() {
     return (
         <div>
             <NavBar />
-            {user?.role == "lecturer" ? <LecturerSideBar /> : null}
+            {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
             <div className="manageProblemsBody">
                 <div>
                     <button onClick={createClassClick} className="createNew">

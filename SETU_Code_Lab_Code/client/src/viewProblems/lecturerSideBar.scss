@@ -1,6 +1,6 @@
 .sideBar {
     position: absolute;
-    padding-top: 12px;
+    padding-top: 6px;
     height: 90vh;
     border-right-width: 2px;
     border-right-style: solid;
@@ -12,11 +12,22 @@
     padding: 6px;
     width: 175px;
     font-size: 18px;
-    margin-left: 12px;
-    margin-right: 12px;
-    margin-top: 12px;
+    margin: 6px;
 }
 
 .option:hover {
     background-color: #363636;
+}
+
+.lecturerMenuTitle {
+    display: flex;
+    justify-content: center;
+    border-top: #363636;
+    border-width: 2px;
+    border-top-style: solid;
+    border-bottom: #363636;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
