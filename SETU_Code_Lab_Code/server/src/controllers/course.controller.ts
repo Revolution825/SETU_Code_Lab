@@ -7,7 +7,17 @@ export const fetchMyCourses = async (req: Request, res: Response) => {
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const courses = await CourseService.getAllMyCourses(userId);
+        let courses;
+        if (req.user?.role === "student") {
+            courses = await CourseService.getAllMyCourses(userId);
+        } else if (req.user?.role === "lecturer") {
+            courses = await CourseService.getAllMyCreatedCourses(userId);
+            const globalCourse = await CourseService.getCourseById(1);
+            const exists = courses.some(course => course.course_id === 1);
+            if (!exists && globalCourse) {
+                courses.push(globalCourse);
+            }
+        }
         res.json(courses);
     } catch (error: any) {
         console.error("Error fetching user's courses:", error.message);
@@ -89,6 +99,17 @@ export const fetchCourseAssociations = async (req: Request, res: Response) => {
         res.status(201).json(associations);
     } catch (error: any) {
         console.error("Error fetching course associations: ", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const deleteCourse = async (req: Request, res: Response) => {
+    const { course_id } = req.body;
+    try {
+        await CourseService.deleteCourse(course_id);
+        res.status(200).json({ message: "Course deleted successfully" });
+    } catch (error: any) {
+        console.error("Error deleting course: ", error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 }

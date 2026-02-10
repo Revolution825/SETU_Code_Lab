@@ -104,3 +104,19 @@ export const fetchStudentIdsFromCourse = async (
     );
     return result.rows;
 }
+
+export const deleteCourseById = async (
+    client: any,
+    course_id: number
+) => {
+    await client.query(
+        "DELETE FROM course WHERE course_id=$1", [course_id]
+    )
+}
+
+export const fetchCourseById = async (course_id: number) => {
+    const result = await pool.query(
+        "SELECT * FROM course WHERE course_id=$1", [course_id]
+    )
+    return result.rows[0];
+}

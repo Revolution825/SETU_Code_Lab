@@ -104,3 +104,25 @@ export const getCourseAssociations = async (course_id: number) => {
     }
     return associations;
 }
+
+export const deleteCourse = async (course_id: number) => {
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        await CourseModel.deleteCourseProblems(client, course_id);
+        await CourseModel.deleteEnrollmentsByCourseId(client, course_id);
+        await CourseModel.deleteCourseById(client, course_id);
+        await client.query("COMMIT");
+    } catch (error: any) {
+        await client.query("ROLLBACK");
+        console.error("Error inside deleteCourse:", error);
+        throw error;
+    } finally {
+        await client.release();
+    }
+}
+
+export const getCourseById = async (course_id: number) => {
+    const course = await CourseModel.fetchCourseById(course_id);
+    return course;
+}
