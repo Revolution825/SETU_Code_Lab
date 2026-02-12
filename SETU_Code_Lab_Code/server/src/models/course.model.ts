@@ -16,7 +16,7 @@ export const fetchCourseByUserId = async (user_id: number) => {
 
 export const fetchCreatedCoursesByUserId = async (user_id: number) => {
     const result = await pool.query(
-        "SELECT * FROM course WHERE owner_id=$1", [user_id]
+        "SELECT * FROM course WHERE owner_id=$1 OR course_id=1", [user_id]
     )
     return result.rows;
 }
