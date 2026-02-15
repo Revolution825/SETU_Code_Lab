@@ -13,6 +13,11 @@ export const getAllMyProblems = async (userId: number) => {
   return problems;
 }
 
+export const getAllAvailableProblems = async (userId: number) => {
+  const problems = await ProblemModel.getAllAvailableProblems(userId);
+  return problems;
+}
+
 export const createProblem = async (
   user_id: number,
   problem_title: string,

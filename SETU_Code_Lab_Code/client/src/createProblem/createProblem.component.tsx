@@ -93,10 +93,24 @@ export default function CreateProblem() {
       }
       return { test_case_id: id, input_value: input, expected_value: output, deleted: deleted }
     });
-    if (problem?.problem_id) {
-      updateProblem(preparedTestCases)
-    } else {
-      createNewProblem(preparedTestCases)
+    try {
+      if (testCases.length < 1) {
+        toast.error("You must add at least one test case");
+        throw new Error("At least one test case must be added");
+      }
+      const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+      const match = placeholderCode.match(signatureRegex);
+      if (!match) {
+        toast.error("Invalid method signiture for placeholder code");
+        throw new Error("Invalid method signiture for placeholder code");
+      }
+      if (problem?.problem_id) {
+        updateProblem(preparedTestCases)
+      } else {
+        createNewProblem(preparedTestCases)
+      }
+    } catch (error: any) {
+      console.error(error.message);
     }
   }
 
