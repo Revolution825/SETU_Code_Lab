@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
     getAllCourseProblems,
     getAllMyProblems,
+    getAllAvailableProblems,
     createProblem,
     updateProblem,
     deleteProblem
@@ -29,6 +30,21 @@ export const getMyProblems = async (req: Request, res: Response) => {
         res.json(problems);
     } catch (error: any) {
         console.error("Error fetching user's problems:", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const getAvailableProblems = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.user_id;
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const problems = await getAllAvailableProblems(userId);
+        res.json(problems);
+    } catch (error: any) {
+        console.error("Error fetching available problems:", error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 }

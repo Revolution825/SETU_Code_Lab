@@ -17,6 +17,14 @@ export const fetchProblemsByUserId = async (userId: number) => {
     return result.rows;
 }
 
+export const getAllAvailableProblems = async (userId: number) => {
+    const result = await pool.query(
+        `SELECT * FROM problem WHERE user_id = $1 OR user_id = 1`,
+        [userId]
+    );
+    return result.rows;
+}
+
 export const insertProblem = async (
     client: any,
     user_Id: number,

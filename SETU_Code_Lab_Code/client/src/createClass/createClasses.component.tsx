@@ -40,10 +40,9 @@ export default function CreateClass() {
         async function fetchAllData() {
             try {
 
-                const problemsRes = await fetch('/api/myProblems', { method: 'GET', credentials: 'include' });
+                const problemsRes = await fetch('/api/AvailableProblems', { method: 'GET', credentials: 'include' });
                 const problemsData = problemsRes.ok ? await problemsRes.json() : [];
                 setProblems(problemsData);
-                console.log("Fetched problems:", problemsData);
 
                 const studentsRes = await fetch('/api/students', { method: 'GET', credentials: 'include' });
                 const studentsData = studentsRes.ok ? await studentsRes.json() : [];
