@@ -1,16 +1,28 @@
 import { Dropdown } from "./dropdown.component";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext";
 
 export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUser } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
-  const logOutClick = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  }
+  const logOutClick = async () => {
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch (error) {
+      console.error("Logout request failed, clearing local state anyway", error);
+    } finally {
+      setUser(null);
+      navigate("/");
+    }
+  };
+
   const problemsClick = () => {
     navigate("/problems");
   }

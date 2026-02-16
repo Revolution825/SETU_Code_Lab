@@ -18,9 +18,9 @@ export const Dropdown = ({
   const handleToggle = () => {
     setOpen((prev) => !prev);
   };
-  const handleItemClick = (item:any) => {
+  const handleItemClick = async (item: any) => {
     if (item.action) {
-      item.action();
+      await item.action();
     }
     if (item.url) {
       globalThis.location.href = item.url;
@@ -43,7 +43,7 @@ export const Dropdown = ({
                 key={index}
               >
                 <button className="dropdownButtons" onClick={() => handleItemClick(item)}>
-                    {item.icon} {item.title}
+                  {item.icon} {item.title}
                 </button>
               </li>
             ))}
