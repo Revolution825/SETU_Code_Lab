@@ -1,8 +1,10 @@
 export interface Submission {
-    student_id: number;
+    submission_id: number;
+    user_id: number;
     problem_id: number;
     submitted_code: String;
-    submitted_at?: number;
+    submitted_at?: string;
     overall_status: boolean;
     time_taken: number;
+    percentage: number;
 }

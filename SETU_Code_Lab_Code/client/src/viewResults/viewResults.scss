@@ -1,0 +1,38 @@
+.resultsBody {
+    margin-left: 212px;
+    margin-top: 24px;
+    margin-right: 24px;
+    display: flex;
+    flex-direction: column;
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+    width: auto;
+    height: auto;
+}
+
+.resultsHeader {
+    background-color: #454545;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    margin: 0px;
+    font-size: 18px;
+    box-shadow: 5px 0 5px 2px #202020;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    padding-left: 12px;
+}
+
+.resultsContent {
+    padding: 12px;
+}
+
+.downloadButton {
+    display: flex;
+    background-color: #e74751;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: 24px;
+}

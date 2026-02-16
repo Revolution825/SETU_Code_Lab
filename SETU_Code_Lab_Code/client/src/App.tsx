@@ -10,6 +10,7 @@ import CreateProblem from './createProblem/createProblem.component'
 import { Toaster } from "react-hot-toast";
 import ManageClasses from './createClass/manageClasses.component'
 import CreateClass from './createClass/createClasses.component'
+import ViewResults from './viewResults/viewResults.component'
 
 export default function App() {
 
@@ -41,6 +42,9 @@ export default function App() {
         </RequireAuth>} />
         <Route path="/createClass" element={<RequireAuth>
           <CreateClass />
+        </RequireAuth>} />
+        <Route path="/viewResults" element={<RequireAuth>
+          <ViewResults />
         </RequireAuth>} />
       </Routes></>
   )

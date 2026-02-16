@@ -6,3 +6,10 @@ export const fetchAllStudents = async () => {
     );
     return result.rows;
 }
+
+export const fetchStudentsOnCourse = async (course_id: number) => {
+    const result = await pool.query(
+        "SELECT u.user_id, u.user_name FROM users u JOIN enrollment e ON u.user_id = e.user_id WHERE e.course_id = $1", [course_id]
+    );
+    return result.rows;
+}

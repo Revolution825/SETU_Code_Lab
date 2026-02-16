@@ -12,6 +12,10 @@ export default function ManageClasses() {
     const { user } = useAuth();
     const [courses, setCourses] = useState<Course[]>([]);
 
+    function courseClick(course: Course) {
+        navigate("/viewResults", { state: course });
+    }
+
     function createCourseClick() {
         navigate("/createClass");
     }
@@ -85,6 +89,7 @@ export default function ManageClasses() {
                                         style={{ height: 55 }}
                                         className="problem"
                                         key={c.course_id}
+                                        onClick={() => courseClick(c)}
                                     >
                                         {courses.indexOf(c) + 1}. {c.course_title}
                                     </button>

@@ -1,5 +1,5 @@
 import { pool } from "../infrastructure/database";
-import { createSubmission } from "../models/submission.model";
+import { createSubmission, getSubmissionsForCourse } from "../models/submission.model";
 import { createTestCaseResult } from "../models/testCaseResult.model";
 import { TestCaseResult } from "../types/testCase";
 
@@ -12,6 +12,10 @@ export const makeSubmission = async (
     testCaseResults: TestCaseResult[]
 ) => {
     const client = await pool.connect();
+    const numberTestCasesPassed = testCaseResults.filter(
+        (testCase) => testCase.passed
+    ).length;
+    const percentage = (numberTestCasesPassed / testCaseResults.length) * 100;
     try {
         await client.query("BEGIN");
 
@@ -21,7 +25,8 @@ export const makeSubmission = async (
             problem_id,
             submitted_code,
             overall_status,
-            time_taken
+            time_taken,
+            percentage
         );
 
         for (const testCase of testCaseResults) {
@@ -43,4 +48,9 @@ export const makeSubmission = async (
     } finally {
         await client.release();
     }
+}
+
+export const fetchSubmissionsForCourse = async (student_ids: number[], problem_ids: number[], created_at: string) => {
+    const submissions = await getSubmissionsForCourse(student_ids, problem_ids, created_at);
+    return submissions;
 }
