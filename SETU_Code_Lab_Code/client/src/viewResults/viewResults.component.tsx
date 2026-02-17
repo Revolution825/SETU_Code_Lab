@@ -116,6 +116,24 @@ export default function ViewResults() {
             row.push(String(avg));
             rows.push(row);
         })
+        const avgRow: string[] = ["Average"];
+        problems.forEach(problem => {
+            let total = 0;
+            let count = 0;
+
+            students.forEach(student => {
+                const sub = submissionMap.get(
+                    `${student.user_id}-${problem.problem_id}`
+                );
+                if (sub?.percentage !== null && sub?.percentage !== undefined) {
+                    total += sub.percentage;
+                    count++;
+                }
+            });
+            avgRow.push(count > 0 ? String(Math.round(total / count)) : "");
+        });
+        avgRow.push(overallAverage !== null ? String(overallAverage) : "");
+        rows.push(avgRow);
 
         const csvData = [headers, ...rows].map(
             row => row.map(
