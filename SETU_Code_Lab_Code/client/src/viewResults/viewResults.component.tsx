@@ -163,6 +163,10 @@ export default function ViewResults() {
                     <p>{course.course_title} - Results</p>
                 </div>
                 <div className="resultsContent">
+                    <div>
+                        <p style={{ fontWeight: "bold", marginLeft: 12 }}>Course Description:</p>
+                        <p style={{ marginLeft: 24 }}>{course.course_description}</p>
+                    </div>
                     <div className="tableWrapper">
                         <table className="resultsTable">
                             <thead>
