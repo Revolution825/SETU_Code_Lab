@@ -59,6 +59,83 @@ export default function ViewResults() {
         fetchData();
     }, [course.course_id]);
 
+    const problemAverages = problems.map(problem => {
+        let total = 0;
+        let count = 0;
+
+        students.forEach(student => {
+            const sub = submissionMap.get(
+                `${student.user_id}-${problem.problem_id}`
+            );
+
+            if (sub?.percentage !== undefined && sub.percentage !== null) {
+                total += sub.percentage;
+                count++;
+            }
+        });
+
+        return count > 0 ? Math.round(total / count) : null;
+    });
+
+    const overallAverage = problemAverages.filter(a => a !== null).length > 0
+        ? Math.round(
+            problemAverages
+                .filter(a => a !== null)
+                .reduce((a, b) => a + (b as number), 0) /
+            problemAverages.filter(a => a !== null).length
+        )
+        : null;
+
+    function downloadCSV() {
+        const headers = [
+            "Student",
+            ...problems.map(problem => problem.problem_title),
+            "Total"
+        ];
+        const rows: string[][] = [];
+        students.forEach(student => {
+            let total = 0;
+            let count = 0;
+
+            const row: string[] = [];
+            row.push(student.user_name);
+            problems.forEach(problem => {
+                const sub = submissionMap.get(`${student.user_id}-${problem.problem_id}`);
+
+                const percentage = sub?.percentage ?? null;
+
+                if (percentage !== null) {
+                    total += percentage;
+                    count++;
+                    row.push(`${percentage}`);
+                } else {
+                    row.push("");
+                }
+            })
+            const avg = count > 0 ? Math.round(total / count) : "";
+            row.push(String(avg));
+            rows.push(row);
+        })
+
+        const csvData = [headers, ...rows].map(
+            row => row.map(
+                value => `"${String(value).replace(/"/g, '""')}"`
+            ).join(",")
+        ).join("\n");
+
+        const blob = new Blob(["\uFEFF", csvData], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${course.course_title}_results.csv`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <div>
             <NavBar />
@@ -68,64 +145,117 @@ export default function ViewResults() {
                     <p>{course.course_title} - Results</p>
                 </div>
                 <div className="resultsContent">
-                    <table className="resultsTable">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                {problems.map((p) => (
-                                    <th key={p.problem_id}>{p.problem_title}</th>
-                                ))}
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((student, index) => {
-                                let total = 0;
-                                let count = 0;
+                    <div className="tableWrapper">
+                        <table className="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th className="firstResultTableHeading">Student</th>
+                                    {problems.map((p) => (
+                                        <th className="resultColumn" key={p.problem_id}>{p.problem_title}</th>
+                                    ))}
+                                    <th className="lastResultTableHeading stickyRight">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {students.map((student, index) => {
+                                    let total = 0;
+                                    let count = 0;
 
-                                return (
-                                    <tr key={student.user_id}>
-                                        <td>{index + 1}. {student.user_name}</td>
-                                        {problems.map(problem => {
-                                            const sub = submissionMap.get(
-                                                `${student.user_id}-${problem.problem_id}`
-                                            );
+                                    return (
+                                        <tr className="resultsRow" key={student.user_id}>
+                                            <td className="resultColumn">{index + 1}. {student.user_name}</td>
+                                            {problems.map(problem => {
+                                                const sub = submissionMap.get(
+                                                    `${student.user_id}-${problem.problem_id}`
+                                                );
 
-                                            const percentage = sub?.percentage ?? null;
+                                                const percentage = sub?.percentage ?? null;
 
-                                            if (percentage !== null) {
-                                                total += percentage;
-                                                count++;
-                                            }
+                                                if (percentage !== null) {
+                                                    total += percentage;
+                                                    count++;
+                                                }
 
-                                            return (
-                                                <td
-                                                    key={problem.problem_id}
-                                                    style={{
-                                                        color:
-                                                            percentage === null
-                                                                ? "grey"
-                                                                : percentage >= 80
-                                                                    ? "green"
-                                                                    : percentage >= 50
-                                                                        ? "orange"
-                                                                        : "red",
-                                                    }}
-                                                >
-                                                    {percentage !== null ? `${percentage}%` : "-"}
-                                                </td>
-                                            );
-                                        })}
-                                        <td style={{ fontWeight: "bold", color: "green" }}>
-                                            {count > 0 ? `${Math.round(total / count)}%` : "-"}
+                                                return (
+                                                    <td
+                                                        className="resultColumn"
+                                                        key={problem.problem_id}
+                                                        style={{
+                                                            color:
+                                                                percentage === null
+                                                                    ? "grey"
+                                                                    : percentage >= 80
+                                                                        ? "green"
+                                                                        : percentage >= 50
+                                                                            ? "orange"
+                                                                            : "red",
+                                                        }}
+                                                    >
+                                                        {percentage !== null ? `${percentage}%` : "-"}
+                                                    </td>
+                                                );
+                                            })}
+                                            <td className="totalResultColumn stickyRight" style={{
+                                                fontWeight: "bold",
+                                                color:
+                                                    count > 0 ?
+                                                        Math.round(total / count) === null
+                                                            ? "grey"
+                                                            : Math.round(total / count) >= 80
+                                                                ? "green"
+                                                                : Math.round(total / count) >= 50
+                                                                    ? "orange"
+                                                                    : "red"
+                                                        : "grey"
+                                            }}>
+                                                {count > 0 ? `${Math.round(total / count)}%` : "-"}
+                                            </td>
+                                        </tr>
+                                    );
+                                }
+                                )}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td style={{ fontWeight: "bold", paddingLeft: 12 }}>
+                                        Average
+                                    </td>
+                                    {problemAverages.map((avg, index) => (
+                                        <td
+                                            key={index}
+                                            className="resultColumn"
+                                            style={{
+                                                fontWeight: "bold",
+                                                color:
+                                                    avg === null
+                                                        ? "grey"
+                                                        : avg >= 80
+                                                            ? "green"
+                                                            : avg >= 50
+                                                                ? "orange"
+                                                                : "red",
+                                            }}
+                                        >
+                                            {avg !== null ? `${avg}%` : "-"}
                                         </td>
-                                    </tr>
-                                );
-                            }
-                            )}
-                        </tbody>
-                    </table>
-                    <button className="downloadButton">Download Results.csv</button>
+                                    ))}
+                                    <td className="totalResultColumn stickyRight" style={{
+                                        fontWeight: "bold", color:
+                                            overallAverage === null
+                                                ? "grey"
+                                                : overallAverage >= 80
+                                                    ? "green"
+                                                    : overallAverage >= 50
+                                                        ? "orange"
+                                                        : "red"
+                                    }}>
+                                        {overallAverage !== null ? `${overallAverage}%` : "-"}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <button onClick={downloadCSV} className="downloadButton">Download Results.csv</button>
                 </div>
             </div>
         </div>

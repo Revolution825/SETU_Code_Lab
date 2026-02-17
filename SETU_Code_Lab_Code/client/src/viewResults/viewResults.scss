@@ -29,10 +29,74 @@
     padding: 12px;
 }
 
+.tableWrapper {
+    width: 100%;
+    max-height: 700px;
+    overflow: auto;
+}
+
+.resultsTable {
+    width: 100%;
+    min-width: max-content;
+}
+
+.firstResultTableHeading {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: left;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.resultColumn {
+    text-align: start;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.totalResultColumn {
+    text-align: center;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.resultsRow:nth-child(odd) {
+    background-color: #363636;
+}
+
+.resultsRow:nth-child(even) {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    background-color: #262626;
+    box-shadow: none;
+}
+
+.lastResultTableHeading {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.stickyRight {
+    position: sticky;
+    right: 0;
+    background-color: #363636;
+    z-index: 2;
+}
+
+.resultsTable thead .stickyRight {
+    z-index: 3;
+    background-color: #363636;
+}
+
+
 .downloadButton {
+    width: 276px;
+    height: 46px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
     display: flex;
     background-color: #e74751;
     margin-top: 12px;
-    margin-left: auto;
-    margin-right: 24px;
 }
