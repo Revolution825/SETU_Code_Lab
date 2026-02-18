@@ -12,6 +12,7 @@ import { formatTime } from "../solveProblem/submissionAlert.component";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import type { TestCase } from "../types/TestCase";
 import toast from "react-hot-toast";
+import CodeEditor from "../solveProblem/codeEditor.component";
 
 export default function ViewResult() {
     const { user } = useAuth();
@@ -72,27 +73,25 @@ export default function ViewResult() {
                             <tbody>
                                 <tr>
                                     <td>Submitted: </td>
-                                    <td><p>{submittedAtFormatted}</p></td>
+                                    <td><p className="resultData">{submittedAtFormatted}</p></td>
                                 </tr>
                                 <tr>
                                     <td>Overall Status: </td>
-                                    <td>{submission.overall_status ? <p style={{ color: "green" }}>Pass</p> : <p style={{ color: "red" }}>Fail</p>}</td>
+                                    <td>{submission.overall_status ? <p className="resultData" style={{ color: "green" }}>Pass</p> : <p className="resultData" style={{ color: "red" }}>Fail</p>}</td>
                                 </tr>
                                 <tr>
                                     <td>Time Taken: </td>
-                                    <td><p>{formatTime(submission.time_taken)}</p></td>
+                                    <td><p className="resultData">{formatTime(submission.time_taken)}</p></td>
                                 </tr>
                                 <tr>
                                     <td><p>Submitted Code: </p></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div>
-                            <textarea
-                                className="submittedCode"
+                        <div className="submittedCode">
+                            <CodeEditor
                                 value={submission.submitted_code.toString()}
                                 onChange={() => null}
-                                spellCheck={false}
                             />
                         </div>
                     </div>
@@ -110,7 +109,7 @@ export default function ViewResult() {
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <td>
+                                                    <td className="resultHeading">
                                                         Input:
                                                     </td>
                                                     <td>
@@ -118,7 +117,7 @@ export default function ViewResult() {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td className="resultHeading">
                                                         Expected Output:
                                                     </td>
                                                     <td>
@@ -126,7 +125,7 @@ export default function ViewResult() {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td className="resultHeading">
                                                         Actual Output:
                                                     </td>
                                                     <td>
@@ -134,7 +133,7 @@ export default function ViewResult() {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td className="resultHeading">
                                                         Result:
                                                     </td>
                                                     <td>
@@ -142,7 +141,7 @@ export default function ViewResult() {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td className="resultHeading">
                                                         Runtime:
                                                     </td>
                                                     <td>
