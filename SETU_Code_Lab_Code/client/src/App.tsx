@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import ManageClasses from './createClass/manageClasses.component'
 import CreateClass from './createClass/createClasses.component'
 import ViewResults from './viewResults/viewResults.component'
+import ViewResult from './viewResults/viewResult.component'
 
 export default function App() {
 
@@ -45,6 +46,9 @@ export default function App() {
         </RequireAuth>} />
         <Route path="/viewResults" element={<RequireAuth>
           <ViewResults />
+        </RequireAuth>} />
+        <Route path="/viewResult" element={<RequireAuth>
+          <ViewResult />
         </RequireAuth>} />
       </Routes></>
   )

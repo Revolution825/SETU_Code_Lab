@@ -1,9 +1,15 @@
 import { pool } from "../infrastructure/database";
-import { TestCase } from "../types/testCase";
+import { TestCase, TestCaseResult } from "../types/testCase";
 
 export async function fetchTestCases(problem_id: string): Promise<TestCase[]> {
   const query = "SELECT * FROM test_case WHERE problem_id=$1";
   const result = await pool.query(query, [problem_id]);
+  return result.rows;
+}
+
+export async function fetchTestCaseResults(submission_id: string): Promise<TestCaseResult[]> {
+  const result = await pool.query("SELECT * FROM test_case_result WHERE submission_id=$1", [submission_id]);
+  console.log("fetchTestCaseResults result ", result);
   return result.rows;
 }
 
