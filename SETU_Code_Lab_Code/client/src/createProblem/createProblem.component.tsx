@@ -8,8 +8,35 @@ import type { Problem } from "../types/problem";
 import type { TestCase } from "../types/TestCase";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import CodeEditor from "../solveProblem/codeEditor.component";
 
 export default function CreateProblem() {
+
+  const descriptionPlaceholder = `eg. (markdown formatting is supported)
+
+Given an integer \`x\`, return \`true\` if \`x\` is a **palindrome**, and \`false\` otherwise.
+
+---
+
+### Example 1
+
+**Input:**
+
+x = 121
+
+**Output:**
+
+true
+
+**Explanation:**
+
+\`121\` reads as \`121\` from left to right and from right to left...`;
+  const placeholderCodePlaceholder = `
+// **EXAMPLE**
+// public static boolean isPalindrome(int x) {
+//     **student code goes here**
+// }`
+
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,7 +44,7 @@ export default function CreateProblem() {
   const [title, setTitle] = useState(problem?.problem_title ?? "");
   const [difficulty, setDifficulty] = useState(problem?.difficulty ?? 1);
   const [description, setDescription] = useState(problem?.problem_description ?? "");
-  const [placeholderCode, setPlaceholderCode] = useState(problem?.placeholder_code ?? "");
+  const [placeholderCode, setPlaceholderCode] = useState(problem?.placeholder_code ?? placeholderCodePlaceholder);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
 
   const updateProblem = async (preparedTestCases: TestCase[]) => {
@@ -80,18 +107,27 @@ export default function CreateProblem() {
     }
   }
 
+  function isValidJSON(str: string) {
+    try {
+      return JSON.parse(str);
+    } catch {
+      toast.error("Invalid JSON in test cases");
+      throw new Error("Invalid JSON in test cases");
+    }
+  }
+
   const handleSubmit = async () => {
     const preparedTestCases = testCases.map(testCase => {
       let id, input, output, deleted;
       try {
         id = testCase?.test_case_id;
-        input = JSON.parse(testCase.input_value);
-        output = JSON.parse(testCase.expected_value);
+        input = isValidJSON(testCase.input_value);
+        output = isValidJSON(testCase.expected_value);
         deleted = testCase.deleted;
+        return { test_case_id: id, input_value: input, expected_value: output, deleted: deleted }
       } catch (error: any) {
-        console.error(error.message);
+        throw new Error(error.message);
       }
-      return { test_case_id: id, input_value: input, expected_value: output, deleted: deleted }
     });
     try {
       if (testCases.length < 1) {
@@ -136,30 +172,6 @@ export default function CreateProblem() {
     }
     fetchTestCases();
   }, [problem?.problem_id]);
-
-  const descriptionPlaceholder = `eg. (markdown formatting is supported)
-
-Given an integer \`x\`, return \`true\` if \`x\` is a **palindrome**, and \`false\` otherwise.
-
----
-
-### Example 1
-
-**Input:**
-
-x = 121
-
-**Output:**
-
-true
-
-**Explanation:**
-
-\`121\` reads as \`121\` from left to right and from right to left...`;
-  const placeholderCodePlaceholder = `eg.
-public static boolean isPalindrome(int x) {
-    *student code goes here*
-}`
 
   return (
     <div>
@@ -224,13 +236,8 @@ public static boolean isPalindrome(int x) {
               <div className="createProblemHeader">
                 Placeholder Code
               </div>
-              <div className="createProblemInput">
-                <textarea
-                  className="textAreaInput placeholderCodeInput bottomRounded topRounded"
-                  placeholder={placeholderCodePlaceholder}
-                  value={placeholderCode}
-                  onChange={(e) => setPlaceholderCode(e.target.value)}
-                  required />
+              <div className="placeholderCodeEditor">
+                <CodeEditor value={placeholderCode} onChange={(e) => setPlaceholderCode(e)} />
               </div>
             </div>
             <TestCaseForm

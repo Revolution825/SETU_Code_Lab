@@ -137,3 +137,13 @@ textarea:focus {
     margin-left: auto;
     margin-right: 24px;
 }
+
+.placeholderCodeEditor {
+    width: auto;
+    height: 296px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    flex: 1;
+    min-height: 0;
+}
