@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import type { Problem } from "../types/problem";
 import type { User } from "../types/user";
 import type { Submission } from "../types/Submission";
+import toast from "react-hot-toast";
 
 export default function ViewResults() {
     const navigate = useNavigate();
@@ -21,6 +22,14 @@ export default function ViewResults() {
     submissions.forEach(submission => {
         submissionMap.set(`${submission.user_id}-${submission.problem_id}`, submission);
     });
+
+    function resultClicked(submission: Submission | undefined, student: User, problem: Problem) {
+        if (submission) {
+            navigate("/viewResult", { state: { submission, student, problem } });
+        } else {
+            toast.error("Submission not found");
+        }
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -173,7 +182,7 @@ export default function ViewResults() {
                                 <tr>
                                     <th className="firstResultTableHeading">Student</th>
                                     {problems.map((p) => (
-                                        <th className="resultColumn" key={p.problem_id}>{p.problem_title}</th>
+                                        <th className="staticColumn" key={p.problem_id}>{p.problem_title}</th>
                                     ))}
                                     <th className="lastResultTableHeading stickyRight">Total</th>
                                 </tr>
@@ -185,7 +194,7 @@ export default function ViewResults() {
 
                                     return (
                                         <tr className="resultsRow" key={student.user_id}>
-                                            <td className="resultColumn">{index + 1}. {student.user_name}</td>
+                                            <td className="staticColumn">{index + 1}. {student.user_name}</td>
                                             {problems.map(problem => {
                                                 const sub = submissionMap.get(
                                                     `${student.user_id}-${problem.problem_id}`
@@ -199,21 +208,21 @@ export default function ViewResults() {
                                                 }
 
                                                 return (
-                                                    <td
-                                                        className="resultColumn"
-                                                        key={problem.problem_id}
-                                                        style={{
-                                                            color:
-                                                                percentage === null
-                                                                    ? "grey"
-                                                                    : percentage >= 80
-                                                                        ? "green"
-                                                                        : percentage >= 50
-                                                                            ? "orange"
-                                                                            : "red",
-                                                        }}
-                                                    >
-                                                        {percentage !== null ? `${percentage}%` : "-"}
+                                                    <td className="resultColumn" key={problem.problem_id}>
+                                                        <button
+                                                            onClick={() => resultClicked(sub, student, problem)}
+                                                            style={{
+                                                                color:
+                                                                    percentage === null
+                                                                        ? "grey"
+                                                                        : percentage >= 80
+                                                                            ? "green"
+                                                                            : percentage >= 50
+                                                                                ? "orange"
+                                                                                : "red",
+                                                            }} className="resultButton">
+                                                            {percentage !== null ? `${percentage}%` : "-"}
+                                                        </button>
                                                     </td>
                                                 );
                                             })}
@@ -245,7 +254,7 @@ export default function ViewResults() {
                                     {problemAverages.map((avg, index) => (
                                         <td
                                             key={index}
-                                            className="resultColumn"
+                                            className="staticColumn"
                                             style={{
                                                 fontWeight: "bold",
                                                 color:

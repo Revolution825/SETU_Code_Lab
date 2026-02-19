@@ -1,6 +1,8 @@
-import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror, { EditorState, highlightActiveLine, highlightActiveLineGutter, lineNumbers } from '@uiw/react-codemirror';
 import { java } from '@codemirror/lang-java';
-import { oneDark } from '@codemirror/theme-one-dark';
+import { bracketMatching, indentOnInput, indentUnit, syntaxHighlighting } from '@codemirror/language';
+import { closeBrackets } from '@codemirror/autocomplete';
+import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark';
 
 interface CodeEditorProps {
   value: string;
@@ -12,9 +14,21 @@ export default function CodeEditor({ value, onChange }: Readonly<CodeEditorProps
   return (
     <CodeMirror
       value={value}
-      extensions={[java()]}
-      style={{height:'100%'}}
-      theme={oneDark}
+      basicSetup={false}
+      theme={oneDarkTheme}
+      extensions={[
+        java(),
+        syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }),
+        lineNumbers(),
+        highlightActiveLine(),
+        highlightActiveLineGutter(),
+        bracketMatching(),
+        closeBrackets(),
+        indentOnInput(),
+        indentUnit.of("    "),
+        EditorState.tabSize.of(4),
+      ]}
+      style={{ height: '100%' }}
       onChange={(val) => onChange(val)}
     />
   );
