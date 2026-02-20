@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { getStudents } from "../controllers/user.controller";
-import { fetchStudentsOnCourse } from "../controllers/user.controller";
+import { getStudents, fetchUser, fetchStudentsOnCourse, deleteAccount } from "../controllers/user.controller";
 
 const router: Router = Router();
 
 router.get("/students", getStudents);
 router.post("/studentsOnCourse", fetchStudentsOnCourse);
+router.get("/fetchUser", fetchUser);
+router.delete("/deleteAccount", deleteAccount);
 
 export default router;

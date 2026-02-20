@@ -12,6 +12,7 @@ import ManageClasses from './createClass/manageClasses.component'
 import CreateClass from './createClass/createClasses.component'
 import ViewResults from './viewResults/viewResults.component'
 import ViewResult from './viewResults/viewResult.component'
+import ViewProfile from './viewProfile/viewProfile.component'
 
 export default function App() {
 
@@ -49,6 +50,9 @@ export default function App() {
         </RequireAuth>} />
         <Route path="/viewResult" element={<RequireAuth>
           <ViewResult />
+        </RequireAuth>} />
+        <Route path="/profile" element={<RequireAuth>
+          <ViewProfile />
         </RequireAuth>} />
       </Routes></>
   )

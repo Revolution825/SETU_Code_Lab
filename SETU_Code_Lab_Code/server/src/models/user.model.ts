@@ -13,3 +13,16 @@ export const fetchStudentsOnCourse = async (course_id: number) => {
     );
     return result.rows;
 }
+
+export const fetchUserData = async (user_id: number) => {
+    const result = await pool.query(
+        "SELECT user_id, user_name, email, role FROM users WHERE user_id = $1", [user_id]
+    );
+    return result.rows[0];
+}
+
+export const deleteAccount = async (user_id: number) => {
+    await pool.query(
+        "DELETE FROM users WHERE user_id = $1", [user_id]
+    );
+}

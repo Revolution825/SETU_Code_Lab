@@ -1,0 +1,136 @@
+.profileScreenBody {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+}
+
+.profileCard {
+    margin-top: 24px;
+    margin-right: 24px;
+    display: flex;
+    flex-direction: column;
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+    width: 400px;
+    height: 600px;
+}
+
+.profileContent {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    align-items: center;
+    border-bottom: #262626;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+}
+
+.avatar {
+    height: 100px;
+    width: 100px;
+}
+
+.userName {
+    margin-top: 12px;
+    margin-bottom: 0px;
+    font-size: 18px;
+}
+
+.userRole {
+    font-size: 14px;
+    color: #626262;
+    margin-top: 6px;
+    margin-bottom: 0px;
+}
+
+.profileStats {
+    padding: 12px;
+}
+
+.deleteAccountButton {
+    width: 276px;
+    height: 46px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    display: flex;
+    background-color: #e74751;
+    margin-top: 128px;
+    margin-bottom: 12px;
+}
+
+.submissionTable {
+    border-collapse: separate;
+    border: none;
+    border-spacing: 0 0px;
+    min-width: max-content;
+}
+
+.profileTableHeading {
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+    padding-left: 12px;
+    font-weight: 600;
+    padding-bottom: 12px;
+    padding-top: 12px;
+}
+
+.submissionRow {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+}
+
+.submissionRow:hover {
+    transform: translateY(-2px);
+    box-shadow: 7px 4px 10px 3px #262626;
+}
+
+.submissionRow div.submissionData {
+    background-color: #363636;
+    padding: 12px;
+}
+
+.submissionRow:nth-child(even) div.submissionData {
+    background-color: #262626;
+}
+
+.submissionRow div.submissionDataStart {
+    background-color: #363636;
+    padding: 12px;
+}
+
+.submissionRow:nth-child(even) div.submissionDataStart {
+    background-color: #262626;
+}
+
+.submissionRow div.submissionDataEnd {
+    background-color: #363636;
+    padding: 12px;
+}
+
+.submissionRow:nth-child(even) div.submissionDataEnd {
+    background-color: #262626;
+}
+
+.submissionDataStart {
+    padding: 12px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    min-width: 800px;
+}
+
+.submissionData {
+    padding: 12px;
+    min-width: 200px;
+}
+
+
+.submissionDataEnd {
+    padding: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}

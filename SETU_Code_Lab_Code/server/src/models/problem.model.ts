@@ -79,3 +79,12 @@ export const deleteProblem = async (
     )
     return result;
 }
+
+export const getProblemsByIds = async (problem_ids: number[]) => {
+    if (!problem_ids.length) return [];
+    const result = await pool.query(
+        "SELECT * FROM problem WHERE problem_id=ANY($1::int[])",
+        [problem_ids]
+    );
+    return result.rows;
+}

@@ -28,7 +28,6 @@
 .resultsContent {
     padding: 24px;
     padding-top: 12px;
-    overflow-y: auto;
 }
 
 .tableWrapper {
@@ -39,28 +38,22 @@
 
 .resultsTable {
     width: 100%;
+    border-collapse: separate;
+    border: none;
+    border-spacing: 0 0px;
     min-width: max-content;
-}
-
-.firstResultTableHeading {
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-    justify-content: left;
-    padding-left: 12px;
-    padding-right: 12px;
 }
 
 .staticColumn {
     text-align: start;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 12px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
 }
 
 .resultColumn {
     text-align: start;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 0px;
     cursor: pointer;
 }
 
@@ -69,29 +62,34 @@
     height: 100%;
     text-align: start;
     background: none;
-    padding: 0px;
+    padding: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     font-size: 16px;
 }
 
-.resultColumn:hover {
-    backdrop-filter: brightness(85%);
+.resultColumn button:hover {
+    transform: translateY(-2px);
+    box-shadow: 7px 4px 10px 6px #262626;
 }
 
 .totalResultColumn {
     text-align: center;
-    padding-left: 12px;
-    padding-right: 12px;
 }
 
-.resultsRow:nth-child(odd) {
+.resultsRow:nth-child(odd) td {
     background-color: #363636;
 }
 
-.resultsRow:nth-child(even) {
+.resultsRow:nth-child(even) td {
     margin-top: 6px;
     margin-bottom: 6px;
     background-color: #262626;
     box-shadow: none;
+}
+
+.resultsRow td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .lastResultTableHeading {

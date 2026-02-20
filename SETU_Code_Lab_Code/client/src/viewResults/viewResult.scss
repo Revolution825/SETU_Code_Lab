@@ -35,6 +35,12 @@
     height: 545px;
 }
 
+.testCaseResultTable {
+    min-height: 0;
+    max-height: 630px;
+    overflow-y: auto;
+}
+
 .testCaseResult {
     background-color: #262626;
     box-shadow: 5px 0 5px 2px #202020;

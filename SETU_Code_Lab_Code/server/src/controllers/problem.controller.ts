@@ -5,7 +5,8 @@ import {
     getAllAvailableProblems,
     createProblem,
     updateProblem,
-    deleteProblem
+    deleteProblem,
+    getSubmissionProblems
 } from "../services/problem.service";
 
 export const getCourseProblems = async (req: Request, res: Response) => {
@@ -126,6 +127,17 @@ export const deleteProblemController = async (req: Request, res: Response) => {
         res.status(201).json({ problem: problem })
     } catch (error: any) {
         console.error("Error deleting problem:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const getSubmittedProblems = async (req: Request, res: Response) => {
+    try {
+        const problem_ids = req.body.problem_ids;
+        const problems = await getSubmissionProblems(problem_ids);
+        res.status(200).json(problems);
+    } catch (error: any) {
+        console.error("Error fetching submitted problem:", error);
         res.status(500).json({ message: error.message });
     }
 }

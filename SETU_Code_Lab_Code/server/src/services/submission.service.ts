@@ -1,5 +1,5 @@
 import { pool } from "../infrastructure/database";
-import { createSubmission, getSubmissionsForCourse } from "../models/submission.model";
+import { createSubmission, getSubmissionsForCourse, getSubmissionsForUser } from "../models/submission.model";
 import { createTestCaseResult } from "../models/testCaseResult.model";
 import { TestCaseResult } from "../types/testCase";
 
@@ -52,5 +52,10 @@ export const makeSubmission = async (
 
 export const fetchSubmissionsForCourse = async (student_ids: number[], problem_ids: number[], created_at: string) => {
     const submissions = await getSubmissionsForCourse(student_ids, problem_ids, created_at);
+    return submissions;
+}
+
+export const fetchSubmissionsForUser = async (user_id: number) => {
+    const submissions = await getSubmissionsForUser(user_id);
     return submissions;
 }

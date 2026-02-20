@@ -29,25 +29,25 @@ export async function createSubmission(
 export async function getSubmissionsForCourse(student_ids: number[], problem_ids: number[], created_at: string) {
     const result = await pool.query(
         `
-        SELECT DISTINCT ON (s.user_id, s.problem_id)
-            s.submission_id,
-            s.user_id,
-            s.problem_id,
-            s.submitted_code,
-            s.submitted_at,
-            s.overall_status,
-            s.time_taken,
-            s.percentage
-        FROM submission s
-        WHERE s.user_id = ANY($1)
-          AND s.problem_id = ANY($2)
-          AND s.submitted_at > $3::timestamp
+        SELECT DISTINCT ON (user_id, problem_id)
+            *
+        FROM submission
+        WHERE user_id = ANY($1)
+          AND problem_id = ANY($2)
+          AND submitted_at > $3::timestamp
         ORDER BY 
-            s.user_id,
-            s.problem_id,
-            s.submitted_at DESC
+            user_id,
+            problem_id,
+            submitted_at DESC
         `,
         [student_ids, problem_ids, created_at]
+    );
+    return result.rows;
+}
+
+export async function getSubmissionsForUser(user_id: number) {
+    const result = await pool.query(`SELECT * FROM submission WHERE user_id = $1 ORDER BY submitted_at DESC`,
+        [user_id]
     );
     return result.rows;
 }

@@ -180,7 +180,7 @@ export default function ViewResults() {
                         <table className="resultsTable">
                             <thead>
                                 <tr>
-                                    <th className="firstResultTableHeading">Student</th>
+                                    <th className="staticColumn">Student</th>
                                     {problems.map((p) => (
                                         <th className="staticColumn" key={p.problem_id}>{p.problem_title}</th>
                                     ))}

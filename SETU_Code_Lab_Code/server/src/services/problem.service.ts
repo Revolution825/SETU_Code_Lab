@@ -140,3 +140,10 @@ export const deleteProblem = async (
     await client.release();
   }
 }
+
+export const getSubmissionProblems = async (
+  problem_ids: number[]
+) => {
+  const problem = await ProblemModel.getProblemsByIds(problem_ids);
+  return problem;
+}

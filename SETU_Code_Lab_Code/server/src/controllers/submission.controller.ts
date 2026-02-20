@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { makeSubmission, fetchSubmissionsForCourse } from "../services/submission.service";
+import { makeSubmission, fetchSubmissionsForCourse, fetchSubmissionsForUser } from "../services/submission.service";
 
 export const makeSubmissionHandler = async (req: Request, res: Response) => {
     try {
@@ -35,6 +35,16 @@ export const getSubmissionsForCourse = async (req: Request, res: Response) => {
     const { student_ids, problem_ids, created_at } = req.body;
     try {
         const submissions = await fetchSubmissionsForCourse(student_ids, problem_ids, created_at);
+        res.status(200).json(submissions);
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const getSubmissionsForUser = async (req: Request, res: Response) => {
+    const user_id = req.user!.user_id;
+    try {
+        const submissions = await fetchSubmissionsForUser(user_id);
         res.status(200).json(submissions);
     } catch (error: any) {
         res.status(500).json({ message: error.message });

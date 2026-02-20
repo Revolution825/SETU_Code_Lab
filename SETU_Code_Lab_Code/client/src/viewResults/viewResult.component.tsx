@@ -64,7 +64,7 @@ export default function ViewResult() {
             <NavBar />
             {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
             <div className="resultScreenBody">
-                <div className="resultBody" style={{ marginLeft: 212 }}>
+                <div className="resultBody" style={user?.role === "lecturer" ? { marginLeft: "212px" } : { marginLeft: "24px" }}>
                     <div className="resultHeader">
                         <p>{student.user_name} - {problem.problem_title}</p>
                     </div>
@@ -102,58 +102,60 @@ export default function ViewResult() {
                     </div>
                     <div className="resultsContent">
                         <p style={{ fontSize: "18px" }}>{testCaseResults.filter(tcr => tcr.passed).length}/{testCaseResults.length} Test cases passed</p>
-                        {
-                            testCaseResults.map((testCaseResult, index) => {
-                                return (
-                                    <div className="testCaseResult" key={index}>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td className="resultHeading">
-                                                        Input:
-                                                    </td>
-                                                    <td>
-                                                        <p className="resultData">{JSON.stringify(testCases[index]?.input_value)}</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="resultHeading">
-                                                        Expected Output:
-                                                    </td>
-                                                    <td>
-                                                        <p className="resultData">{JSON.stringify(testCases[index]?.expected_value)}</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="resultHeading">
-                                                        Actual Output:
-                                                    </td>
-                                                    <td>
-                                                        <p className="resultData">{testCaseResult.actual_output}</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="resultHeading">
-                                                        Result:
-                                                    </td>
-                                                    <td>
-                                                        {testCaseResult.passed ? <p className="resultData" style={{ color: "green" }}>Pass</p> : <p className="resultData" style={{ color: "red" }}>Fail</p>}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="resultHeading">
-                                                        Runtime:
-                                                    </td>
-                                                    <td>
-                                                        <p className="resultData">{testCaseResult.runtime_ms}ms</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                );
-                            })
-                        }
+                        <div className="testCaseResultTable">
+                            {
+                                testCaseResults.map((testCaseResult, index) => {
+                                    return (
+                                        <div className="testCaseResult" key={index}>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="resultHeading">
+                                                            Input:
+                                                        </td>
+                                                        <td>
+                                                            <p className="resultData">{JSON.stringify(testCases[index]?.input_value)}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="resultHeading">
+                                                            Expected Output:
+                                                        </td>
+                                                        <td>
+                                                            <p className="resultData">{JSON.stringify(testCases[index]?.expected_value)}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="resultHeading">
+                                                            Actual Output:
+                                                        </td>
+                                                        <td>
+                                                            <p className="resultData">{testCaseResult.actual_output}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="resultHeading">
+                                                            Result:
+                                                        </td>
+                                                        <td>
+                                                            {testCaseResult.passed ? <p className="resultData" style={{ color: "green" }}>Pass</p> : <p className="resultData" style={{ color: "red" }}>Fail</p>}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="resultHeading">
+                                                            Runtime:
+                                                        </td>
+                                                        <td>
+                                                            <p className="resultData">{testCaseResult.runtime_ms}ms</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
