@@ -24,11 +24,11 @@ export const fetchStudentsOnCourse = async (req: Request, res: Response) => {
 
 export const fetchUser = async (req: Request, res: Response) => {
     try {
-        const user = req.user;
-        if (!user) {
-            return res.status(401).json({ message: "Unauthorized" });
-        }
-        const userData = await getUserData(user.user_id);
+        const userId = req.query.userId
+            ? Number(req.query.userId)
+            : req.user!.user_id;
+
+        const userData = await getUserData(userId);
         res.json(userData);
     } catch (error: any) {
         console.error("Error fetching user data: ", error.message);

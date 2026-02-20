@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext";
 import LecturerSideBar from "../lecturerSideBar.component";
 import NavBar from "../navBar.component";
@@ -13,7 +13,9 @@ import toast from "react-hot-toast";
 export default function ViewProfile() {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const [userData, setUserData] = useState<User>();
+    const location = useLocation();
+    const otherUser = location.state as User | undefined;
+    const [userData, setUserData] = useState<User | undefined>(undefined);
     const [submissions, setSubmissions] = useState<Submission[]>([]);
     const [problems, setSubmittedProblems] = useState<Problem[]>([]);
 
@@ -44,24 +46,45 @@ export default function ViewProfile() {
     }
 
     useEffect(() => {
+        let activeUserId: number;
+
+        if (otherUser) {
+            activeUserId = otherUser.user_id;
+        } else if (user) {
+            activeUserId = user.user_id;
+        } else {
+            navigate("/problems");
+            return;
+        }
+
         async function fetchData() {
-            const user = await fetch('/api/fetchUser', {
-                method: "GET",
-                credentials: "include"
-            });
-            if (user.ok) {
-                setUserData(await user.json());
+            const userRes = await fetch(
+                `/api/fetchUser?userId=` + activeUserId,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+            if (userRes.ok) {
+                const fullUser: User = await userRes.json();
+                setUserData(fullUser);
             } else {
-                const errorData = await user.json();
-                console.error("Error fetching user data: ", errorData.message);
-                navigate("/problems");
+                const errorData = await userRes.json();
+                console.error("Error fetching user: ", errorData.message);
+                return;
             }
 
             let submissionsData: Submission[] = [];
-            const submissionsRes = await fetch('/api/fetchSubmissions', {
-                method: "GET",
-                credentials: "include"
-            });
+
+            const submissionsRes = await fetch(
+                `/api/fetchSubmissions?userId=${activeUserId}`,
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
             if (submissionsRes.ok) {
                 submissionsData = await submissionsRes.json();
                 setSubmissions(submissionsData);
@@ -70,9 +93,14 @@ export default function ViewProfile() {
                 console.error("Error fetching submissions: ", errorData.message);
             }
 
-            const problemIds = submissionsData.map(submission => submission.problem_id);
+            const problemIds = submissionsData.map(s => s.problem_id);
 
-            const problemsData = await fetch('/api/fetchSubmittedProblems', {
+            if (problemIds.length === 0) {
+                setSubmittedProblems([]);
+                return;
+            }
+
+            const problemsRes = await fetch('/api/fetchSubmittedProblems', {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -80,22 +108,26 @@ export default function ViewProfile() {
                 },
                 body: JSON.stringify({ problem_ids: problemIds })
             });
-            if (problemsData.ok) {
-                setSubmittedProblems(await problemsData.json());
+
+            if (problemsRes.ok) {
+                setSubmittedProblems(await problemsRes.json());
             } else {
-                const errorData = await problemsData.json();
+                const errorData = await problemsRes.json();
                 console.error("Error fetching submitted problems: ", errorData.message);
             }
         }
+
         fetchData();
-    }, []);
+    }, [otherUser, user, navigate]);
+
+    console.log("userData", userData);
 
     return (
         <div>
             <NavBar />
             {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
             <div className="profileScreenBody">
-                <div className="profileCard" style={userData?.role == "lecturer" ? { marginLeft: 212 } : { marginLeft: 24 }}>
+                <div className="profileCard" style={user?.role == "lecturer" ? { marginLeft: 212 } : { marginLeft: 24 }}>
                     <div className="profileContent">
                         <img src="/profileIcon.svg" alt="profileIcon" className="avatar" />
                         <p className="userName">{userData?.user_name}</p>

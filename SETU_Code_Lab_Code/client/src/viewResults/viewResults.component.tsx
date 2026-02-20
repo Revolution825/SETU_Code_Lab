@@ -31,6 +31,10 @@ export default function ViewResults() {
         }
     }
 
+    function studentProfileClicked(student: User) {
+        navigate("/profile", { state: student });
+    }
+
     useEffect(() => {
         async function fetchData() {
             const problems = await fetch('/api/problems', {
@@ -194,7 +198,11 @@ export default function ViewResults() {
 
                                     return (
                                         <tr className="resultsRow" key={student.user_id}>
-                                            <td className="staticColumn">{index + 1}. {student.user_name}</td>
+                                            <td className="resultColumn roundedLeft">
+                                                <button onClick={() => studentProfileClicked(student)}>
+                                                    {index + 1}. {student.user_name}
+                                                </button>
+                                            </td>
                                             {problems.map(problem => {
                                                 const sub = submissionMap.get(
                                                     `${student.user_id}-${problem.problem_id}`

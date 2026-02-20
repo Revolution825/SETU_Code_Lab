@@ -42,11 +42,14 @@ export const getSubmissionsForCourse = async (req: Request, res: Response) => {
 }
 
 export const getSubmissionsForUser = async (req: Request, res: Response) => {
-    const user_id = req.user!.user_id;
+    const requestedUserId = Number(req.query.userId);
+    if (req.user!.role !== "lecturer" && requestedUserId !== req.user!.user_id) {
+        return res.status(403).json({ message: "Forbidden" });
+    }
     try {
-        const submissions = await fetchSubmissionsForUser(user_id);
+        const submissions = await fetchSubmissionsForUser(requestedUserId);
         res.status(200).json(submissions);
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
-}
+};
