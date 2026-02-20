@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Problem } from "../types/problem";
-import NavBar from "../viewProblems/navBar.component";
+import NavBar from "../navBar.component";
 import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
 import { ResizableBox } from 'react-resizable';

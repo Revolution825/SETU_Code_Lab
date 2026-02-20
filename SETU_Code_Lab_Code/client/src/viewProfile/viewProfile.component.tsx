@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext";
-import LecturerSideBar from "../viewProblems/lecturerSideBar.component";
-import NavBar from "../viewProblems/navBar.component";
+import LecturerSideBar from "../lecturerSideBar.component";
+import NavBar from "../navBar.component";
 import { useEffect, useState } from "react";
 import "./viewProfile.scss";
 import type { User } from "../types/user";

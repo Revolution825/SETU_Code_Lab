@@ -1,0 +1,82 @@
+.navBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 80px;
+    width: 100vw;
+    background-color: #363636;
+    font-size: 24px;
+}
+
+.menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: fit-content;
+}
+
+.menuButton {
+    font-size: 18px;
+    background: none;
+    padding: 12px;
+    transition: color 0.15s ease, color 0.15s ease;
+}
+
+.menuButton:hover {
+    color: #626262 !important;
+}
+
+.logo {
+    width: 63px;
+    height: 53px;
+    margin: 12px;
+}
+
+.logoButton {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.profileDropdown {
+    margin-left: auto;
+    z-index: 10;
+}
+
+.profileDropdownButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.dropdownMenu {
+    position: absolute;
+    margin-right: 24px;
+    margin-top: 12px;
+    right: 0;
+
+    width: 120px;
+    border-radius: 8px;
+    background-color: #262626;
+    box-shadow: 5px 0 5px 2px #202020;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdownButtons {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    background-color: #262626;
+}
+
+.dropdownButtons:hover {
+    background-color: #363636;
+}

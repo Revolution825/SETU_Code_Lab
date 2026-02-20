@@ -1,6 +1,7 @@
 import { Dropdown } from "./dropdown.component";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../authContext";
+import { useAuth } from "./authContext";
+import "./navBar.scss";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function NavBar() {
       <div className="menu">
         <button onClick={leaderboardClick} className="menuButton" style={{ color: isActive("/leaderboard") ? "#626262" : "#dedede" }}>Leaderboard</button>
         |
-        <button onClick={problemsClick} className="menuButton" style={{ color: isActive("/problems") ? "#626262" : "#dedede" }}>Problems</button>
+        <button onClick={problemsClick} className="menuButton" style={{ color: isActive("/problems") ? "#626262" : "#dedede" }}>Homepage</button>
         |
         <button onClick={profileClick} className="menuButton" style={{ color: isActive("/profile") ? "#626262" : "#dedede" }}>Profile</button>
       </div>

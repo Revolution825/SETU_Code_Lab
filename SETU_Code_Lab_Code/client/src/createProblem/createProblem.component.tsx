@@ -1,5 +1,5 @@
-import NavBar from "../viewProblems/navBar.component";
-import LecturerSideBar from "../viewProblems/lecturerSideBar.component";
+import NavBar from "../navBar.component";
+import LecturerSideBar from "../lecturerSideBar.component";
 import TestCaseForm from "./testCaseForm.component";
 import "./createProblem.scss";
 import { useAuth } from "../authContext";

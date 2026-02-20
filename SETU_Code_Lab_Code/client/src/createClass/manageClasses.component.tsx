@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import LecturerSideBar from "../viewProblems/lecturerSideBar.component";
-import NavBar from "../viewProblems/navBar.component";
+import LecturerSideBar from "../lecturerSideBar.component";
+import NavBar from "../navBar.component";
 import { useAuth } from "../authContext";
 import { useEffect, useState } from "react";
 import type { Course } from "../types/course";

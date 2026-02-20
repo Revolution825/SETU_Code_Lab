@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import "./viewProblems.scss";
 import { useNavigate } from "react-router-dom";
-import NavBar from "./navBar.component";
-import LecturerSideBar from "./lecturerSideBar.component";
+import NavBar from "../navBar.component";
 import { useAuth } from "../authContext";
 import type { Problem } from "../types/problem";
 import type { Course } from "../types/course";
-import CourseOptions from "./courseOptions.component";
-import "./lecturerSideBar.scss"
+import SideBar from "../sidebar.component";
 
 export default function Problems() {
   const navigate = useNavigate();
@@ -63,12 +61,7 @@ export default function Problems() {
   return (
     <div className="main">
       <NavBar />
-      <div className="sideBar">
-        <CourseOptions courses={courses} selectedCourse={selectedCourse} onSelectCourse={setSelectedCourse} />
-        {
-          user?.role == "lecturer" ? <LecturerSideBar /> : null
-        }
-      </div>
+      <SideBar user={user} courses={courses} selectedCourse={selectedCourse} onSelectCourse={setSelectedCourse} />
       <ul className="problemList">
         {Array.isArray(problems)
           ? problems.map((p) => <button
