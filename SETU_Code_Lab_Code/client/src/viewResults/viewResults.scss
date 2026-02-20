@@ -63,13 +63,7 @@
     text-align: start;
     background: none;
     padding: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     font-size: 16px;
-}
-
-.resultColumn button:hover {
-    transform: translateY(-2px);
-    box-shadow: 7px 4px 10px 6px #262626;
 }
 
 .totalResultColumn {
@@ -85,6 +79,14 @@
     margin-bottom: 6px;
     background-color: #262626;
     box-shadow: none;
+}
+
+.resultsRow:nth-child(even) .resultColumn:hover {
+    background-color: #2a2a2a;
+}
+
+.resultsRow:nth-child(odd) .resultColumn:hover {
+    background-color: #3a3a3a;
 }
 
 .resultsRow td:last-child {

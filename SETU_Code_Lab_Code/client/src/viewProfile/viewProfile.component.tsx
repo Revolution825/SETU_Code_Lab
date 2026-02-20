@@ -152,17 +152,17 @@ export default function ViewProfile() {
                                         return (
                                             <tr onClick={() => submissionClicked(submission, userData, problems.find(p => (p.problem_id === submission.problem_id)))} className="submissionRow" key={submission.submission_id}>
                                                 <td style={{ padding: "0px" }}>
-                                                    <div className="submissionDataStart">
+                                                    <div className="submissionCell start">
                                                         {problems.find(p => p.problem_id === submission.problem_id)?.problem_title}
                                                     </div>
                                                 </td>
                                                 <td style={submission.overall_status ? { color: "green", padding: "0px" } : { color: "red", padding: "0px" }}>
-                                                    <div className="submissionData">
+                                                    <div className="submissionCell middle">
                                                         {submission.overall_status ? "Pass" : "Fail"}
                                                     </div>
                                                 </td>
                                                 <td style={{ padding: "0px", width: "100%" }}>
-                                                    <div className="submissionDataEnd">{submittedAtFormatted}</div>
+                                                    <div className="submissionCell end">{submittedAtFormatted}</div>
                                                 </td>
                                             </tr>
                                         );

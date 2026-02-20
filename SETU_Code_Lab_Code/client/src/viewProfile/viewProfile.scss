@@ -63,74 +63,53 @@
 
 .submissionTable {
     border-collapse: separate;
-    border: none;
-    border-spacing: 0 0px;
+    border-spacing: 0;
     min-width: max-content;
 }
 
 .profileTableHeading {
-    font-weight: 400;
     font-size: 16px;
-    text-align: left;
-    padding-left: 12px;
     font-weight: 600;
-    padding-bottom: 12px;
-    padding-top: 12px;
+    text-align: left;
+    padding: 12px 0 12px 12px;
 }
 
 .submissionRow {
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border-radius: 12px;
+    transition: background-color 0.2s ease;
 }
 
-.submissionRow:hover {
-    transform: translateY(-2px);
-    box-shadow: 7px 4px 10px 3px #262626;
-}
-
-.submissionRow div.submissionData {
+.submissionRow:nth-child(odd) .submissionCell {
     background-color: #363636;
-    padding: 12px;
 }
 
-.submissionRow:nth-child(even) div.submissionData {
+.submissionRow:nth-child(even) .submissionCell {
     background-color: #262626;
 }
 
-.submissionRow div.submissionDataStart {
-    background-color: #363636;
+.submissionRow:nth-child(odd):hover .submissionCell {
+    background-color: #3a3a3a;
+}
+
+.submissionRow:nth-child(even):hover .submissionCell {
+    background-color: #2a2a2a;
+}
+
+.submissionCell {
     padding: 12px;
 }
 
-.submissionRow:nth-child(even) div.submissionDataStart {
-    background-color: #262626;
-}
-
-.submissionRow div.submissionDataEnd {
-    background-color: #363636;
-    padding: 12px;
-}
-
-.submissionRow:nth-child(even) div.submissionDataEnd {
-    background-color: #262626;
-}
-
-.submissionDataStart {
-    padding: 12px;
+.submissionCell.start {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     min-width: 800px;
 }
 
-.submissionData {
-    padding: 12px;
+.submissionCell.middle {
     min-width: 200px;
 }
 
-
-.submissionDataEnd {
-    padding: 12px;
+.submissionCell.end {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
 }
