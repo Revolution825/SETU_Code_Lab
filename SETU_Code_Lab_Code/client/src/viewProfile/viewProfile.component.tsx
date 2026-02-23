@@ -159,49 +159,51 @@ export default function ViewProfile() {
                         <p>Submission History</p>
                     </div>
                     <div className="resultsContent">
-                        <table className="submissionTable">
-                            <thead>
-                                <tr>
-                                    <th className="profileTableHeading">
-                                        Problem:
-                                    </th>
-                                    <th className="profileTableHeading">
-                                        Overall Status:
-                                    </th>
-                                    <th className="profileTableHeading">
-                                        Submitted at:
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    submissions.map((submission) => {
-                                        const submittedAt = new Date(submission.submitted_at)
-                                        const submittedAtFormatted = new Intl.DateTimeFormat("en-IE", {
-                                            dateStyle: "medium",
-                                            timeStyle: "short"
-                                        }).format(submittedAt);
-                                        return (
-                                            <tr onClick={() => submissionClicked(submission, userData, problems.find(p => (p.problem_id === submission.problem_id)))} className="submissionRow" key={submission.submission_id}>
-                                                <td style={{ padding: "0px" }}>
-                                                    <div className="submissionCell start">
-                                                        {problems.find(p => p.problem_id === submission.problem_id)?.problem_title}
-                                                    </div>
-                                                </td>
-                                                <td style={submission.overall_status ? { color: "green", padding: "0px" } : { color: "red", padding: "0px" }}>
-                                                    <div className="submissionCell middle">
-                                                        {submission.overall_status ? "Pass" : "Fail"}
-                                                    </div>
-                                                </td>
-                                                <td style={{ padding: "0px", width: "100%" }}>
-                                                    <div className="submissionCell end">{submittedAtFormatted}</div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })
-                                }
-                            </tbody>
-                        </table>
+                        {submissions.length > 1 ?
+                            <table className="submissionTable">
+                                <thead>
+                                    <tr>
+                                        <th className="profileTableHeading">
+                                            Problem:
+                                        </th>
+                                        <th className="profileTableHeading">
+                                            Overall Status:
+                                        </th>
+                                        <th className="profileTableHeading">
+                                            Submitted at:
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        submissions.map((submission) => {
+                                            const submittedAt = new Date(submission.submitted_at)
+                                            const submittedAtFormatted = new Intl.DateTimeFormat("en-IE", {
+                                                dateStyle: "medium",
+                                                timeStyle: "short"
+                                            }).format(submittedAt);
+                                            return (
+                                                <tr onClick={() => submissionClicked(submission, userData, problems.find(p => (p.problem_id === submission.problem_id)))} className="submissionRow" key={submission.submission_id}>
+                                                    <td style={{ padding: "0px" }}>
+                                                        <div className="submissionCell start">
+                                                            {problems.find(p => p.problem_id === submission.problem_id)?.problem_title}
+                                                        </div>
+                                                    </td>
+                                                    <td style={submission.overall_status ? { color: "green", padding: "0px" } : { color: "red", padding: "0px" }}>
+                                                        <div className="submissionCell middle">
+                                                            {submission.overall_status ? "Pass" : "Fail"}
+                                                        </div>
+                                                    </td>
+                                                    <td style={{ padding: "0px", width: "100%" }}>
+                                                        <div className="submissionCell end">{submittedAtFormatted}</div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            : <p style={{ textAlign: "center", height: "600px", alignContent: "center", fontSize: "20px" }}>This user has not made any submsisions yet :(</p>}
                     </div>
                 </div>
             </div>
