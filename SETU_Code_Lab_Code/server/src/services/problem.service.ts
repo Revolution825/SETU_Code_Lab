@@ -28,6 +28,7 @@ export const createProblem = async (
 ) => {
   const client = await pool.connect();
   try {
+    const points = parseInt(difficulty) * 100;
     await client.query("BEGIN");
     const problem = await ProblemModel.insertProblem(
       client,
@@ -35,7 +36,8 @@ export const createProblem = async (
       problem_title,
       problem_description,
       difficulty,
-      placeholder_code
+      placeholder_code,
+      points
     );
 
     const problem_id = problem.problem_id
@@ -68,6 +70,7 @@ export const updateProblem = async (
 ) => {
   const client = await pool.connect();
   try {
+    const points = difficulty * 100;
     await client.query("BEGIN");
     const problem = await ProblemModel.updateProblem(
       client,
@@ -75,7 +78,8 @@ export const updateProblem = async (
       problem_title,
       problem_description,
       difficulty,
-      placeholder_code
+      placeholder_code,
+      points
     );
 
     for (const testCase of testCases) {

@@ -1,6 +1,7 @@
 import { pool } from "../infrastructure/database";
 import { createSubmission, getSubmissionsForCourse, getSubmissionsForUser } from "../models/submission.model";
 import { createTestCaseResult } from "../models/testCaseResult.model";
+import { updateUserPoints } from "../models/user.model";
 import { TestCaseResult } from "../types/testCase";
 
 export const makeSubmission = async (
@@ -9,13 +10,16 @@ export const makeSubmission = async (
     submitted_code: string,
     overall_status: boolean,
     time_taken: number,
-    testCaseResults: TestCaseResult[]
+    testCaseResults: TestCaseResult[],
+    points: number
 ) => {
     const client = await pool.connect();
     const numberTestCasesPassed = testCaseResults.filter(
         (testCase) => testCase.passed
     ).length;
     const percentage = (numberTestCasesPassed / testCaseResults.length) * 100;
+    const speedBonus = time_taken < 1800 ? 100 : time_taken < 3600 ? 50 : time_taken < 5400 ? 25 : 0;
+    const points_awarded = percentage < 100 ? 0 : points + speedBonus;
     try {
         await client.query("BEGIN");
 
@@ -26,8 +30,15 @@ export const makeSubmission = async (
             submitted_code,
             overall_status,
             time_taken,
-            percentage
+            percentage,
+            points_awarded
         );
+
+        await updateUserPoints(
+            client,
+            user_id,
+            points_awarded
+        )
 
         for (const testCase of testCaseResults) {
             await createTestCaseResult(

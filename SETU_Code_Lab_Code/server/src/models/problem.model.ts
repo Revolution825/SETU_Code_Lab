@@ -31,16 +31,18 @@ export const insertProblem = async (
     problem_title: string,
     problem_description: string,
     difficulty: string,
-    placeholder_code: string
+    placeholder_code: string,
+    points: number
 ) => {
     const result = await client.query(
-        "INSERT INTO problem (user_Id, problem_title, problem_description, difficulty, placeholder_code) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        "INSERT INTO problem (user_Id, problem_title, problem_description, difficulty, placeholder_code, points) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
         [
             user_Id,
             problem_title,
             problem_description,
             difficulty,
-            placeholder_code
+            placeholder_code,
+            points
         ]
     )
     return result.rows[0];
@@ -52,15 +54,17 @@ export const updateProblem = async (
     problem_title: string,
     problem_description: string,
     difficulty: number,
-    placeholder_code: string
+    placeholder_code: string,
+    points: number
 ) => {
     const result = await client.query(
-        "UPDATE problem SET problem_title=$1, problem_description=$2, difficulty=$3, placeholder_code=$4 WHERE problem_id=$5 RETURNING *",
+        "UPDATE problem SET problem_title=$1, problem_description=$2, difficulty=$3, placeholder_code=$4, points=$5 WHERE problem_id=$6 RETURNING *",
         [
             problem_title,
             problem_description,
             difficulty,
             placeholder_code,
+            points,
             problem_id
         ]
     )

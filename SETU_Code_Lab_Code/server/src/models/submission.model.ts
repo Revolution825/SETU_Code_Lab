@@ -8,11 +8,12 @@ export async function createSubmission(
     submitted_code: string,
     overall_status: boolean,
     time_taken: number,
-    percentage: number
+    percentage: number,
+    points_awarded: number
 ): Promise<Submission> {
     const result = await client.query(
-        `INSERT INTO submission (user_id, problem_id, submitted_code, overall_status, time_taken, percentage) 
-         VALUES ($1, $2, $3, $4, $5, $6) 
+        `INSERT INTO submission (user_id, problem_id, submitted_code, overall_status, time_taken, percentage, points_awarded) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7) 
          RETURNING *`,
         [
             user_id,
@@ -20,7 +21,8 @@ export async function createSubmission(
             submitted_code,
             overall_status,
             time_taken,
-            percentage
+            percentage,
+            points_awarded
         ]
     );
     return result.rows[0]

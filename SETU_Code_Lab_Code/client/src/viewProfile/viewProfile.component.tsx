@@ -145,12 +145,19 @@ export default function ViewProfile() {
                                     <td className="profileStats">TODO</td>
                                 </tr>
                                 <tr>
-                                    <td><p>Rank: </p></td>
+                                    <td><p>Current Streak: </p></td>
                                     <td className="profileStats">TODO</td>
+                                </tr>
+                                <tr>
+                                    <td><p>Points: </p></td>
+                                    <td className="profileStats">{userData?.total_points}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button className="deleteAccountButton" onClick={deleteAccount}>Delete Account</button>
+                        {
+                            userData?.user_id === user?.user_id ? <button className="deleteAccountButton" onClick={deleteAccount}>Delete Account</button> : null
+                        }
+
                     </div>
 
                 </div>
