@@ -16,7 +16,7 @@ export const fetchStudentsOnCourse = async (course_id: number) => {
 
 export const fetchUserData = async (user_id: number) => {
     const result = await pool.query(
-        "SELECT user_id, user_name, email, role FROM users WHERE user_id = $1", [user_id]
+        "SELECT user_id, user_name, email, role, total_points FROM users WHERE user_id = $1", [user_id]
     );
     return result.rows[0];
 }
@@ -25,4 +25,13 @@ export const deleteAccount = async (user_id: number) => {
     await pool.query(
         "DELETE FROM users WHERE user_id = $1", [user_id]
     );
+}
+
+export const updateUserPoints = async (client: any, user_id: number, points_awarded: number) => {
+    const result = await client.query(
+        `UPDATE users SET total_points = total_points + $1
+            WHERE user_id = $2`,
+        [points_awarded, user_id]
+    );
+    return result.rows[0]
 }

@@ -6,4 +6,5 @@ export interface Problem {
     user_name: string;
     difficulty: number;
     placeholder_code?: string;
+    points: number;
 }

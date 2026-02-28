@@ -5,4 +5,5 @@ export interface Problem {
     problem_description: string;
     difficulty: number;
     placeholder_code?: string;
+    points: number;
 }

@@ -3,4 +3,5 @@ export interface User {
     email: string;
     password: string;
     role: string;
+    total_points: number;
 }

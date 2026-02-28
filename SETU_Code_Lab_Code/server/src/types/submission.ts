@@ -6,4 +6,5 @@ export interface Submission {
     submitted_at: number;
     overall_status: boolean;
     time_taken: number;
+    points_awarded: number;
 }

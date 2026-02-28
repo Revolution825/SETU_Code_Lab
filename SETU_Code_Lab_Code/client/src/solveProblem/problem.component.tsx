@@ -39,7 +39,8 @@ export default function Problem() {
   const [submissionSummary, setSubmissionSummary] = useState<{
     overall_status: boolean,
     testCaseResults: TestCaseResult[],
-    time_taken: number
+    time_taken: number,
+    points_awarded: number
   } | null>(null);
 
   useEffect(() => {
@@ -147,7 +148,8 @@ export default function Problem() {
           submitted_code: submittedCode,
           overall_status: overallStatus,
           time_taken: timeTaken,
-          testCaseResults: results
+          testCaseResults: results,
+          points: problem.points,
         })
       });
 
@@ -157,7 +159,8 @@ export default function Problem() {
         setSubmissionSummary({
           overall_status: overallStatus,
           testCaseResults: results,
-          time_taken: timeTaken
+          time_taken: timeTaken,
+          points_awarded: data.submission.points_awarded
         });
         setShowSubmissionAlert(true);
       } else {
@@ -259,7 +262,6 @@ export default function Problem() {
                       const result = testCaseResults.find(
                         (r) => r.test_case_id === testCase.test_case_id
                       );
-                      console.log("result ", result);
                       return (
                         <div className="testCase" key={testCase.test_case_id}>
                           <h3>

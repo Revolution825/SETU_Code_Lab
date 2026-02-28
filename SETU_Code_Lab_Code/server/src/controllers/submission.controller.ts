@@ -11,7 +11,8 @@ export const makeSubmissionHandler = async (req: Request, res: Response) => {
             submitted_code,
             overall_status,
             time_taken,
-            testCaseResults
+            testCaseResults,
+            points
         } = req.body;
 
 
@@ -22,7 +23,8 @@ export const makeSubmissionHandler = async (req: Request, res: Response) => {
             submitted_code,
             overall_status,
             time_taken,
-            testCaseResults
+            testCaseResults,
+            points
         );
 
         res.status(200).json({ message: "Submission successful", submission: submission });

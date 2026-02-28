@@ -8,6 +8,7 @@ interface submissionAlertProps {
         overall_status: boolean;
         testCaseResults: TestCaseResult[];
         time_taken: number;
+        points_awarded: number;
     };
 }
 
@@ -69,6 +70,10 @@ export default function submissionAlert({
                     <span>{Math.max(
                         ...summary.testCaseResults.map((testCaseResult) => testCaseResult.runtime_ms)
                     )} ms</span>
+                </div>
+                <div className="alertBoxRow">
+                    <span>Points Awarded: </span>
+                    <span>{summary.points_awarded}</span>
                 </div>
                 <div className="buttonContainer">
                     <button
