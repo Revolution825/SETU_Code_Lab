@@ -53,3 +53,10 @@ export async function getSubmissionsForUser(user_id: number) {
     );
     return result.rows;
 }
+
+export async function checkFirstSolve(client: any, user_id: number, problem_id: number) {
+    const result = await client.query(
+        `SELECT submission_id FROM submission WHERE user_id = $1 AND problem_id = $2 AND overall_status = true`, [user_id, problem_id]
+    )
+    return result.rows.length === 0;
+}

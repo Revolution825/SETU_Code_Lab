@@ -142,14 +142,14 @@ export default function ViewProfile() {
                                 </tr>
                                 <tr>
                                     <td><p>Longest Streak: </p></td>
-                                    <td className="profileStats">TODO</td>
+                                    <td className="profileStats">{userData?.longest_streak}</td>
                                 </tr>
                                 <tr>
                                     <td><p>Current Streak: </p></td>
-                                    <td className="profileStats">TODO</td>
+                                    <td className="profileStats">{userData?.current_streak}</td>
                                 </tr>
                                 <tr>
-                                    <td><p>Points: </p></td>
+                                    <td><p>Total Points: </p></td>
                                     <td className="profileStats">{userData?.total_points}</td>
                                 </tr>
                             </tbody>
@@ -166,7 +166,7 @@ export default function ViewProfile() {
                         <p>Submission History</p>
                     </div>
                     <div className="resultsContent">
-                        {submissions.length > 1 ?
+                        {submissions.length > 0 ?
                             <table className="submissionTable">
                                 <thead>
                                     <tr>

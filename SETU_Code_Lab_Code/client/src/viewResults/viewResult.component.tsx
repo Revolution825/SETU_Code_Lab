@@ -59,6 +59,10 @@ export default function ViewResult() {
         fetchData();
     }, []);
 
+    const totalPointsAwarded = submission.points_awarded;
+    const speedBonus = submission.time_taken < 1800 ? 100 : submission.time_taken < 3600 ? 50 : submission.time_taken < 5400 ? 25 : 0;
+    const basePointsAwarded = totalPointsAwarded - speedBonus;
+
     return (
         <div>
             <NavBar />
@@ -74,14 +78,20 @@ export default function ViewResult() {
                                 <tr>
                                     <td>Submitted: </td>
                                     <td><p className="resultData">{submittedAtFormatted}</p></td>
+                                    <td>Points Awarded: </td>
+                                    <td><p className="resultData">{basePointsAwarded}</p></td>
                                 </tr>
                                 <tr>
                                     <td>Overall Status: </td>
                                     <td>{submission.overall_status ? <p className="resultData" style={{ color: "green" }}>Pass</p> : <p className="resultData" style={{ color: "red" }}>Fail</p>}</td>
+                                    <td>Speed Bonus: </td>
+                                    <td><p className="resultData">{speedBonus}</p></td>
                                 </tr>
                                 <tr>
                                     <td>Time Taken: </td>
                                     <td><p className="resultData">{formatTime(submission.time_taken)}</p></td>
+                                    <td>Total Points: </td>
+                                    <td><p className="resultData">{totalPointsAwarded}</p></td>
                                 </tr>
                                 <tr>
                                     <td><p>Submitted Code: </p></td>

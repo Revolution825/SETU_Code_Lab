@@ -1,7 +1,7 @@
 import { pool } from "../infrastructure/database";
-import { createSubmission, getSubmissionsForCourse, getSubmissionsForUser } from "../models/submission.model";
+import { createSubmission, getSubmissionsForCourse, getSubmissionsForUser, checkFirstSolve } from "../models/submission.model";
 import { createTestCaseResult } from "../models/testCaseResult.model";
-import { updateUserPoints } from "../models/user.model";
+import { updateUserPoints, getStreakData, updateStreak } from "../models/user.model";
 import { TestCaseResult } from "../types/testCase";
 
 export const makeSubmission = async (
@@ -23,6 +23,39 @@ export const makeSubmission = async (
     try {
         await client.query("BEGIN");
 
+        const isFirstSolve = await checkFirstSolve(client, user_id, problem_id);
+        if (isFirstSolve) {
+
+            if (overall_status && isFirstSolve) {
+                const todaysDate = new Date();
+                todaysDate.setHours(0, 0, 0, 0);
+                const yesterdaysDate = new Date(todaysDate);
+                yesterdaysDate.setDate(todaysDate.getDate() - 1);
+
+                const { last_solved_date, current_streak } = await getStreakData(client, user_id);
+
+                if (last_solved_date == null) {
+                    await updateStreak(client, user_id, 1);
+                } else {
+                    const lastSolvedDate = new Date(last_solved_date);
+                    lastSolvedDate.setHours(0, 0, 0, 0);
+
+                    if (lastSolvedDate.getTime() === todaysDate.getTime()) {
+                    } else if (lastSolvedDate.getTime() === yesterdaysDate.getTime()) {
+                        await updateStreak(client, user_id, current_streak + 1);
+                    } else {
+                        await updateStreak(client, user_id, 1);
+                    }
+                }
+            }
+
+            await updateUserPoints(
+                client,
+                user_id,
+                points_awarded
+            )
+        }
+
         const submission = await createSubmission(
             client,
             user_id,
@@ -34,11 +67,7 @@ export const makeSubmission = async (
             points_awarded
         );
 
-        await updateUserPoints(
-            client,
-            user_id,
-            points_awarded
-        )
+
 
         for (const testCase of testCaseResults) {
             await createTestCaseResult(

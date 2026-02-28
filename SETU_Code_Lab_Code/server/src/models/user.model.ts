@@ -16,7 +16,7 @@ export const fetchStudentsOnCourse = async (course_id: number) => {
 
 export const fetchUserData = async (user_id: number) => {
     const result = await pool.query(
-        "SELECT user_id, user_name, email, role, total_points FROM users WHERE user_id = $1", [user_id]
+        "SELECT user_id, user_name, email, role, total_points, current_streak, longest_streak, last_solved_date FROM users WHERE user_id = $1", [user_id]
     );
     return result.rows[0];
 }
@@ -34,4 +34,20 @@ export const updateUserPoints = async (client: any, user_id: number, points_awar
         [points_awarded, user_id]
     );
     return result.rows[0]
+}
+
+export const getStreakData = async (client: any, user_id: number) => {
+    const result = await client.query(
+        `SELECT last_solved_date, current_streak, longest_streak
+            FROM users
+            WHERE user_id = $1`,
+        [user_id]
+    );
+    return result.rows[0];
+}
+
+export const updateStreak = async (client: any, user_id: number, currentStreak: number) => {
+    await client.query(
+        `UPDATE users SET current_streak=$1, longest_streak=GREATEST(longest_streak, $1), last_solved_date=CURRENT_DATE WHERE user_id=$2`, [currentStreak, user_id]
+    );
 }
