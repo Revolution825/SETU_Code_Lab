@@ -56,7 +56,7 @@ export default function Leaderboard() {
                     <div className="leaderboardCardHeader">
                         <p>Leaderboard</p>
                     </div>
-                    <div style={{ maxWidth: "1550px" }}>
+                    <div className="leaderboardWrapper">
                         {
                             leaderboardEntries.length > 0 ? <table className="leaderboard">
                                 <thead>

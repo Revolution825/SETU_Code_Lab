@@ -27,6 +27,7 @@
     flex-direction: row;
     width: auto;
     padding-left: 12px;
+    z-index: 9999;
 }
 
 .leaderboardSidebar {
@@ -58,9 +59,16 @@
     border-bottom: 2px solid #363636;
 }
 
+.leaderboardWrapper {
+    max-width: 1576px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 24px;
+}
+
 .leaderboard {
     margin: 24px;
-    width: 100%;
+    width: 1548px;
     border-collapse: separate;
     border: none;
     border-spacing: 0 0px;
@@ -96,6 +104,11 @@
 
 .leaderboardHeadings {
     text-align: left;
+    position: sticky;
+    top: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #363636;
 }
 
 .radioButton {
