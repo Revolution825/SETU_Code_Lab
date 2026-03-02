@@ -9,14 +9,14 @@ export const addUserToCourse = async (client: any, user_id: number) => {
 
 export const fetchCourseByUserId = async (user_id: number) => {
     const result = await pool.query(
-        "SELECT c.* FROM course c JOIN enrollment e ON c.course_id = e.course_id WHERE e.user_id = $1", [user_id]
+        "SELECT c.* FROM course c JOIN enrollment e ON c.course_id = e.course_id WHERE e.user_id = $1 ORDER BY c.course_id ASC", [user_id]
     )
     return result.rows;
 }
 
 export const fetchCreatedCoursesByUserId = async (user_id: number) => {
     const result = await pool.query(
-        "SELECT * FROM course WHERE owner_id=$1 OR course_id=1", [user_id]
+        "SELECT * FROM course WHERE owner_id=$1 OR course_id=1 ORDER BY course_id ASC", [user_id]
     )
     return result.rows;
 }

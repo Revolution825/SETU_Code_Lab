@@ -19,33 +19,30 @@ export const makeSubmission = async (
     ).length;
     const percentage = (numberTestCasesPassed / testCaseResults.length) * 100;
     const speedBonus = time_taken < 1800 ? 100 : time_taken < 3600 ? 50 : time_taken < 5400 ? 25 : 0;
-    const points_awarded = percentage < 100 ? 0 : points + speedBonus;
+
     try {
         await client.query("BEGIN");
-
         const isFirstSolve = await checkFirstSolve(client, user_id, problem_id);
-        if (isFirstSolve) {
+        const points_awarded = percentage < 100 || !isFirstSolve ? 0 : points + speedBonus;
+        if (overall_status && isFirstSolve) {
+            const todaysDate = new Date();
+            todaysDate.setHours(0, 0, 0, 0);
+            const yesterdaysDate = new Date(todaysDate);
+            yesterdaysDate.setDate(todaysDate.getDate() - 1);
 
-            if (overall_status && isFirstSolve) {
-                const todaysDate = new Date();
-                todaysDate.setHours(0, 0, 0, 0);
-                const yesterdaysDate = new Date(todaysDate);
-                yesterdaysDate.setDate(todaysDate.getDate() - 1);
+            const { last_solved_date, current_streak } = await getStreakData(client, user_id);
 
-                const { last_solved_date, current_streak } = await getStreakData(client, user_id);
+            if (last_solved_date == null) {
+                await updateStreak(client, user_id, 1);
+            } else {
+                const lastSolvedDate = new Date(last_solved_date);
+                lastSolvedDate.setHours(0, 0, 0, 0);
 
-                if (last_solved_date == null) {
-                    await updateStreak(client, user_id, 1);
+                if (lastSolvedDate.getTime() === todaysDate.getTime()) {
+                } else if (lastSolvedDate.getTime() === yesterdaysDate.getTime()) {
+                    await updateStreak(client, user_id, current_streak + 1);
                 } else {
-                    const lastSolvedDate = new Date(last_solved_date);
-                    lastSolvedDate.setHours(0, 0, 0, 0);
-
-                    if (lastSolvedDate.getTime() === todaysDate.getTime()) {
-                    } else if (lastSolvedDate.getTime() === yesterdaysDate.getTime()) {
-                        await updateStreak(client, user_id, current_streak + 1);
-                    } else {
-                        await updateStreak(client, user_id, 1);
-                    }
+                    await updateStreak(client, user_id, 1);
                 }
             }
 

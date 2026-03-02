@@ -1,0 +1,111 @@
+.leaderboardScreenBody {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+}
+
+.leaderboardCard {
+    margin: 24px;
+    display: flex;
+    flex-direction: column;
+    color: #dedede;
+    box-shadow: 5px 0 5px -2px #202020;
+    background-color: #363636;
+    border-radius: 15px;
+    min-width: 1600px;
+    height: 800px;
+}
+
+.leaderboardCardHeader {
+    background-color: #454545;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    margin: 0px;
+    font-size: 18px;
+    box-shadow: 5px 0 5px 2px #202020;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    padding-left: 12px;
+}
+
+.leaderboardSidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    height: 92vh;
+    width: 100%;
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-color: #363636;
+    overflow-y: auto;
+}
+
+.leaderboardSetting {
+    display: flex;
+    flex-direction: column;
+    padding-left: 12px;
+    padding-bottom: 12px;
+}
+
+.leaderboardSettingHeading {
+    color: #626262;
+    font-size: 18px;
+}
+
+.borderBottom {
+    border-radius: 0px;
+    border-bottom: 2px solid #363636;
+}
+
+.leaderboard {
+    margin: 24px;
+    width: 100%;
+    border-collapse: separate;
+    border: none;
+    border-spacing: 0 0px;
+    min-width: max-content;
+}
+
+.leaderboardEntry:nth-child(odd) td {
+    background-color: #363636;
+    padding: 12px;
+}
+
+.leaderboardEntry:nth-child(even) td {
+    padding: 12px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    background-color: #262626;
+    box-shadow: none;
+}
+
+.highlighted td {
+    font-weight: 800;
+}
+
+.roundedLeft {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.roundedRight {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.leaderboardHeadings {
+    text-align: left;
+}
+
+.radioButton {
+    width: 12px;
+}
+
+.noUsersFoundMessage {
+    display: flex;
+    width: 1600px;
+    height: 600px;
+    align-items: center;
+    justify-content: center;
+}

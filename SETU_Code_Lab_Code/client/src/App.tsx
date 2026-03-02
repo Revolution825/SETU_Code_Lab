@@ -13,6 +13,7 @@ import CreateClass from './createClass/createClasses.component'
 import ViewResults from './viewResults/viewResults.component'
 import ViewResult from './viewResults/viewResult.component'
 import ViewProfile from './viewProfile/viewProfile.component'
+import Leaderboard from './leaderboard/leaderboard'
 
 export default function App() {
 
@@ -53,6 +54,9 @@ export default function App() {
         </RequireAuth>} />
         <Route path="/profile" element={<RequireAuth>
           <ViewProfile />
+        </RequireAuth>} />
+        <Route path="/leaderboard" element={<RequireAuth>
+          <Leaderboard />
         </RequireAuth>} />
       </Routes></>
   )
