@@ -19,10 +19,38 @@ ul button.problem:nth-child(even) {
   box-shadow: none;
 }
 
+.problemsBody {
+  margin: auto;
+  width: 50%;
+}
+
+.greetingMessage {
+  font-size: 48px;
+  margin: 12px;
+}
+
+.searchBar {
+  margin-left: 12px;
+  width: 50%;
+  padding: 12px;
+  padding-left: 48px;
+  border-radius: 24px;
+  background: #363636;
+  border-width: 0;
+  box-shadow: 5px 0 5px 2px #262626;
+  font-size: 16px;
+}
+
+.searchIcon {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 24px;
+}
+
 .problemList {
   margin: auto;
-  margin-top: 10%;
-  width: 50%;
+  margin-top: 12px;
+  width: 100%;
   padding: 12px;
   height: 68vh;
   scrollbar-width: none;
