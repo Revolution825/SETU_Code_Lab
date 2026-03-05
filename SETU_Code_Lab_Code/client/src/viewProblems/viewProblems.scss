@@ -106,10 +106,14 @@ ul button.problem:nth-child(even) {
   border-radius: 15px;
   font-size: 18px;
   padding: 10px;
-  padding-left: 48px;
   width: 100%;
   text-align: left;
   display: flex;
+}
+
+.completedTick {
+  margin-left: 6px;
+  margin-right: 12px;
 }
 
 .problemListItem {

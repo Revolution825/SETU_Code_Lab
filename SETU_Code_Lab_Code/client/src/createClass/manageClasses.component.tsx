@@ -87,7 +87,7 @@ export default function ManageClasses() {
                                 <li className="manageProblemsRow" key={c.course_id}>
                                     <button
                                         style={{ height: 55 }}
-                                        className="problem"
+                                        className="problem manageProblem"
                                         key={c.course_id}
                                         onClick={() => courseClick(c)}
                                     >

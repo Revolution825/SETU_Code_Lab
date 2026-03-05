@@ -59,7 +59,7 @@ export default function ViewProfile() {
 
         async function fetchData() {
             const userRes = await fetch(
-                `/api/fetchUser?userId=` + activeUserId,
+                `/api/fetchUser?userId=${activeUserId}`,
                 {
                     method: "GET",
                     credentials: "include"

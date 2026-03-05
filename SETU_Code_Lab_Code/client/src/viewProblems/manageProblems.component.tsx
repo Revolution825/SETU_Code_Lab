@@ -86,7 +86,7 @@ export default function ManageProblems() {
                             ? problems.map((p) =>
                                 <li className="manageProblemsRow" key={p.problem_id}>
                                     <button
-                                        className="problem"
+                                        className="problem manageProblem"
                                         key={p.problem_id}
                                         onClick={() => problemClick(p)}>
                                         {problems.indexOf(p) + 1}. {p.problem_title}
