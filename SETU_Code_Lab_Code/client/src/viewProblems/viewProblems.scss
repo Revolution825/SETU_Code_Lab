@@ -19,10 +19,80 @@ ul button.problem:nth-child(even) {
   box-shadow: none;
 }
 
+.problemsBody {
+  margin: auto;
+  width: 60%;
+}
+
+.greetingMessage {
+  font-size: 48px;
+  margin: 24px;
+}
+
+.filteringOptions {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchBar {
+  margin-left: 12px;
+  width: 50%;
+  padding: 12px;
+  padding-left: 48px;
+  border-radius: 24px;
+  background: #363636;
+  border-width: 0;
+  box-shadow: 5px 0 5px 2px #262626;
+  font-size: 16px;
+}
+
+.searchIcon {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 24px;
+}
+
+.difficultyFilter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: 24px;
+}
+
+.difficultyButton {
+  background-color: #363636;
+  width: 80px;
+  margin-right: 12px;
+
+  &.active {
+    &:nth-child(2) {
+      background-color: grey;
+    }
+
+    &:nth-child(3) {
+      background-color: green;
+    }
+
+    &:nth-child(4) {
+      background-color: orange;
+    }
+
+    &:nth-child(5) {
+      background-color: red;
+    }
+  }
+}
+
+.difficultyButton:hover {
+  background-color: #626262;
+}
+
 .problemList {
   margin: auto;
-  margin-top: 10%;
-  width: 50%;
+  margin-top: 12px;
+  width: 100%;
   padding: 12px;
   height: 68vh;
   scrollbar-width: none;
