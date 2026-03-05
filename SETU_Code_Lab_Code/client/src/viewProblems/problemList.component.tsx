@@ -15,8 +15,16 @@ export default function Problems() {
   const { user } = useAuth();
   const [userName, setUserName] = useState<String>("");
   const [search, setSearch] = useState("");
-  const filteredProblems = problems.filter((problem) =>
-    problem.problem_title.toLowerCase().includes(search.toLowerCase())
+  const [difficulty, setDifficulty] = useState<"all" | "easy" | "medium" | "hard">("all");
+  const filteredProblems = problems.filter((problem) => {
+    const matchesSearch = problem.problem_title.toLowerCase().includes(search.toLowerCase());
+    const matchesDifficulty =
+      difficulty === "all" ? true
+        : difficulty === "easy" ? problem.difficulty <= 2
+          : difficulty === "medium" ? problem.difficulty === 3
+            : problem.difficulty >= 4;
+    return matchesSearch && matchesDifficulty;
+  }
   );
 
   const currentTime = new Date();
@@ -101,14 +109,28 @@ export default function Problems() {
       <SideBar user={user} courses={courses} selectedCourse={selectedCourse} onSelectCourse={setSelectedCourse} />
       <div className="problemsBody">
         <p className="greetingMessage">{getGreeting(currentHour)} {userName}</p>
-        <img src="search.svg" alt="search icon" className="searchIcon" />
-        <input
-          className="searchBar"
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={"Search Problems..."}
-        />
+        <div className="filteringOptions">
+          <img src="search.svg" alt="search icon" className="searchIcon" />
+          <input
+            className="searchBar"
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={"Search Problems..."}
+          />
+          <div className="difficultyFilter">
+            <p style={{ marginRight: "24px", marginTop: "0px", marginBottom: "0px" }}>Filter: </p>
+            {["all", "easy", "medium", "hard"].map((d) => (
+              <button
+                key={d}
+                className={`difficultyButton ${difficulty === d ? "active" : ""}`}
+                onClick={() => setDifficulty(d as "all" | "easy" | "medium" | "hard")}
+              >
+                {d.charAt(0).toUpperCase() + d.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
         <ul className="problemList">
           {Array.isArray(filteredProblems)
             ? filteredProblems.map((p) => <button
