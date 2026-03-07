@@ -2,6 +2,9 @@ export function extractParamNames(paramsList: string): string[] {
     const params = splitParams(paramsList);
     return params.map(p => {
         const tokens = p.trim().split(/\s+/);
+        if (tokens.length < 2) {
+            throw new Error(`Parameter "${p.trim()}" is missing a type.`);
+        }
         return tokens[tokens.length - 1]
     });
 }

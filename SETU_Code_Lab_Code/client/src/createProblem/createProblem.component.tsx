@@ -67,13 +67,13 @@ true
       });
 
       if (!res.ok) {
-        toast.error("Failed to update problem. Please try again.");
-        throw new Error("Failed to update problem");
+        const data = await res.json();
+        throw new Error(data.message);
       }
       toast.success("Problem updated successfully");
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to update problem. Please try again.");
+      toast.error("Failed to update problem : " + error.message);
       console.error("Error updating problem :", error.message);
     }
   }
@@ -97,13 +97,13 @@ true
       });
 
       if (!res.ok) {
-        toast.error("Failed to create problem. Please try again.");
-        throw new Error("Failed to create problem");
+        const data = await res.json();
+        throw new Error(data.message);
       }
       toast.success("Problem created successfully")
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to create problem. Please try again.");
+      toast.error("Failed to create problem : " + error.message);
       console.error("Error creating problem :", error.message);
     }
   }
