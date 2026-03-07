@@ -13,6 +13,7 @@ import type { TestCaseResult } from "../types/TestCaseResult";
 import type { TestCase } from "../types/TestCase";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
+import { jsonToParamValues } from "../sharedUtils";
 
 export default function ViewResult() {
     const { user } = useAuth();
@@ -124,7 +125,7 @@ export default function ViewResult() {
                                                             Input:
                                                         </td>
                                                         <td>
-                                                            <p className="resultData">{JSON.stringify(testCases[index]?.input_value)}</p>
+                                                            <p className="resultData">{jsonToParamValues(JSON.stringify(testCases[index]?.input_value))}</p>
                                                         </td>
                                                     </tr>
                                                     <tr>

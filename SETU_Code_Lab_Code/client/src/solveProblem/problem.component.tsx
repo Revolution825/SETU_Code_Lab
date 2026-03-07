@@ -14,6 +14,7 @@ import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
 import { useAntiCheat } from "../antiCheat";
 import { FadeLoader } from 'react-spinners';
+import { jsonToParamValues } from "../sharedUtils";
 
 export default function Problem() {
   const { shouldAutoSubmit } = useAntiCheat();
@@ -273,7 +274,7 @@ export default function Problem() {
                                 ? "Pass"
                                 : "Fail"}</span></p>
                             : ""}
-                          <p><strong>Input:</strong> {JSON.stringify(testCase.input_value)}</p>
+                          <p><strong>Input:</strong> {jsonToParamValues(JSON.stringify(testCase.input_value))}</p>
                           <p><strong>Expected:</strong> {JSON.stringify(testCase.expected_value)}</p>
                           {result && (
                             <>

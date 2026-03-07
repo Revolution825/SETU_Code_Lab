@@ -1,5 +1,6 @@
 import docker from "../infrastructure/docker";
 import { TestCase, TestCaseResult } from "../types/testCase";
+import { splitParams } from "./sharedUtils";
 
 function preprocessJavaInput(placeholder_code: string, code: string): string {
     const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
@@ -10,28 +11,6 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
     const returnType = match[1];
     const functionName = match[2];
     const paramsList = match[3];
-
-    function splitParams(paramsList: string): string[] {
-        const params: string[] = [];
-        let current = "";
-        let depth = 0;
-
-        for (let i = 0; i < paramsList.length; i++) {
-            const c = paramsList[i];
-            if (c === '<') depth++;
-            if (c === '>') depth--;
-            if (c === ',' && depth === 0) {
-                params.push(current.trim());
-                current = "";
-            } else {
-                current += c;
-            }
-        }
-        if (current.trim() !== "") {
-            params.push(current.trim());
-        }
-        return params;
-    }
 
     const params = splitParams(paramsList);
     const parsedParams = params.map(p => {
