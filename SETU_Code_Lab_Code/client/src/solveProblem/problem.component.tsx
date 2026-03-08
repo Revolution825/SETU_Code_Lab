@@ -12,12 +12,12 @@ import SubmissionAlert from "./submissionAlert.component";
 import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
-import { useAntiCheat } from "../antiCheat";
+// import { useAntiCheat } from "../antiCheat";
 import { FadeLoader } from 'react-spinners';
 import { api, jsonToParamValues } from "../sharedUtils";
 
 export default function Problem() {
-  const { shouldAutoSubmit } = useAntiCheat();
+  //  const { shouldAutoSubmit } = useAntiCheat();
   const navigate = useNavigate();
   const location = useLocation();
   const problem: Problem = location.state;
@@ -59,11 +59,11 @@ export default function Problem() {
 
   }, []);
 
-  useEffect(() => {
-    if (shouldAutoSubmit) {
-      handleSubmit();
-    }
-  }, [shouldAutoSubmit]);
+  //  useEffect(() => {
+  //    if (shouldAutoSubmit) {
+  //      handleSubmit();
+  //    }
+  //  }, [shouldAutoSubmit]);
 
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
