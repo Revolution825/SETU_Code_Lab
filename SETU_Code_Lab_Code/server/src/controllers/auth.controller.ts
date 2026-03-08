@@ -112,7 +112,7 @@ export const refresh = (req: Request, res: Response) => {
 
         res.cookie("token", newAccessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: false,
             sameSite: "lax",
             path: "/",
             maxAge: 3 * 60 * 60 * 1000
