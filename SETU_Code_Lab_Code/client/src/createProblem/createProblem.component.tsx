@@ -131,10 +131,7 @@ true
   useEffect(() => {
     if (!problem?.problem_id) return;
     async function fetchTestCases() {
-      const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
-        method: "GET",
-        credentials: "include"
-      });
+      const res = await api.get('api/testCases?problem_id=' + problem.problem_id);
       if (!res.ok) {
         const errorData = await res.json();
         console.error("Error fetching test cases:", errorData.message);

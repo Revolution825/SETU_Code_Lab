@@ -44,12 +44,7 @@ export default function ViewResults() {
             const problemsData = problems.ok ? await problems.json() : [];
             setProblems(problemsData);
             const students = await api.post('/api/studentsOnCourse', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ course_id: course.course_id })
+                course_id: course.course_id
             });
             const studentData = students.ok ? await students.json() : [];
             setStudents(studentData);
