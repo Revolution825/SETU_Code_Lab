@@ -13,7 +13,7 @@ import type { TestCaseResult } from "../types/TestCaseResult";
 import type { TestCase } from "../types/TestCase";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
-import { jsonToParamValues } from "../sharedUtils";
+import { api, jsonToParamValues } from "../sharedUtils";
 
 export default function ViewResult() {
     const { user } = useAuth();
@@ -32,10 +32,8 @@ export default function ViewResult() {
 
     useEffect(() => {
         async function fetchData() {
-            const testCaseResults = await fetch('/api/testCaseResults?submission_id=' + submission.submission_id, {
-                method: "GET",
-                credentials: "include",
-            });
+            const testCaseResults = await api.get('/api/testCaseResults?submission_id=' + submission.submission_id);
+
             if (testCaseResults.ok) {
                 setTestCaseResults(await testCaseResults.json());
             } else {
@@ -44,11 +42,7 @@ export default function ViewResult() {
                 console.error("Error fetching test case results: ", errorData.message);
             }
 
-            const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
-                method: "GET",
-                credentials: "include"
-            });
-            console.log("res", res);
+            const res = await api.get('api/testCases?problem_id=' + problem.problem_id);
             if (res.ok) {
                 setTestCases(await res.json());
             } else {

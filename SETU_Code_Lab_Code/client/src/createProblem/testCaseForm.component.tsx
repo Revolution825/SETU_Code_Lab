@@ -61,7 +61,7 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
                                     className="testCaseInputBox topRounded"
                                     type="text"
                                     maxLength={1000}
-                                    placeholder='eg. {"x": 313}'
+                                    placeholder='eg. 313'
                                     value={testCase.input_value}
                                     onChange={
                                         (e) => { updateTestCase(id, "input_value", e.target.value) }}

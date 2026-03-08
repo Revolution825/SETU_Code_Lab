@@ -4,6 +4,7 @@ import * as courseModel from "../models/course.model";
 import { User } from "../types/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
 interface LoginResult {
     user: Omit<User, "password">;
@@ -66,5 +67,30 @@ export async function signUpUser(name: string, role: string, email: string, pass
         throw error;
     } finally {
         await client.release();
+    }
+}
+
+export function refreshToken(req: Request, res: Response) {
+    const token = req.cookies.refreshToken;
+    if (!token) return res.status(401).json({ message: "No refresh token" });
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET!) as { user_id: string };
+
+        const newAccessToken = jwt.sign(
+            { user_id: decoded.user_id },
+            process.env.JWT_SECRET!,
+            { expiresIn: "3h" }
+        );
+
+        res.cookie("token", newAccessToken, {
+            httpOnly: true,
+            maxAge: 3 * 60 * 60 * 1000
+        });
+
+        return res.status(200).json({ message: "Token refreshed" });
+
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid refresh token" });
     }
 }

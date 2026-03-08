@@ -9,7 +9,7 @@ import type { TestCase } from "../types/TestCase";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
-import { jsonToParamValues } from "../sharedUtils";
+import { api, jsonToParamValues } from "../sharedUtils";
 
 export default function CreateProblem() {
 
@@ -50,20 +50,13 @@ true
 
   const updateProblem = async (preparedTestCases: TestCase[]) => {
     try {
-      const res = await fetch('/api/updateProblem', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          problem_id: problem?.problem_id,
-          problem_title: title,
-          problem_description: description,
-          difficulty: difficulty,
-          placeholder_code: placeholderCode,
-          testCases: preparedTestCases
-        })
+      const res = await api.post('/api/updateProblem', {
+        problem_id: problem?.problem_id,
+        problem_title: title,
+        problem_description: description,
+        difficulty: difficulty,
+        placeholder_code: placeholderCode,
+        testCases: preparedTestCases
       });
 
       if (!res.ok) {
@@ -80,20 +73,13 @@ true
 
   const createNewProblem = async (preparedTestCases: TestCase[]) => {
     try {
-      const res = await fetch('/api/createNewProblem', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          problem_id: problem?.problem_id,
-          problem_title: title,
-          problem_description: description,
-          difficulty: difficulty,
-          placeholder_code: placeholderCode,
-          testCases: preparedTestCases
-        })
+      const res = await api.post('/api/createNewProblem', {
+        problem_id: problem?.problem_id,
+        problem_title: title,
+        problem_description: description,
+        difficulty: difficulty,
+        placeholder_code: placeholderCode,
+        testCases: preparedTestCases
       });
 
       if (!res.ok) {

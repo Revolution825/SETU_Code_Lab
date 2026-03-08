@@ -18,19 +18,19 @@ export const useAntiCheat = () => {
                 alert("You left the tab. Your work has been automatically submitted.");
             }
         }
-        document.addEventListener("visibilitychange", handleVisibility);
-        document.addEventListener("copy", prevent);
-        document.addEventListener("paste", prevent);
-        document.addEventListener("cut", prevent);
-        document.addEventListener("contextmenu", preventContext);
-        document.addEventListener("keydown", handleKeyDown);
+        // document.addEventListener("visibilitychange", handleVisibility);
+        // document.addEventListener("copy", prevent);
+        // document.addEventListener("paste", prevent);
+        // document.addEventListener("cut", prevent);
+        // document.addEventListener("contextmenu", preventContext);
+        // document.addEventListener("keydown", handleKeyDown);
         return () => {
-            document.removeEventListener("visibilitychange", handleVisibility);
-            document.removeEventListener("copy", prevent);
-            document.removeEventListener("paste", prevent);
-            document.removeEventListener("cut", prevent);
-            document.removeEventListener("contextmenu", preventContext);
-            document.removeEventListener("keydown", handleKeyDown);
+            // document.removeEventListener("visibilitychange", handleVisibility);
+            // document.removeEventListener("copy", prevent);
+            // document.removeEventListener("paste", prevent);
+            // document.removeEventListener("cut", prevent);
+            // document.removeEventListener("contextmenu", preventContext);
+            // document.removeEventListener("keydown", handleKeyDown);
         };
     }, []);
     return { shouldAutoSubmit }

@@ -7,6 +7,7 @@ import type { Problem } from "../types/problem";
 import type { Course } from "../types/course";
 import SideBar from "../sidebar.component";
 import type { Submission } from "../types/Submission";
+import { api } from "../sharedUtils";
 
 export default function Problems() {
   const navigate = useNavigate();
@@ -50,15 +51,8 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchCourseProblems() {
-      const res = await fetch('/api/problems', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          selectedCourse: selectedCourse
-        })
+      const res = await api.post('/api/problems', {
+        selectedCourse: selectedCourse
       });
       if (res.ok) {
         setProblems(await res.json());
@@ -74,10 +68,7 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchCourses() {
-      const res = await fetch('/api/fetchCourses', {
-        method: "GET",
-        credentials: "include"
-      });
+      const res = await api.get('/api/fetchCourses');
       if (res.ok) {
         setCourses(await res.json());
       } else {
@@ -90,10 +81,7 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchUserName() {
-      const res = await fetch(`/api/fetchUser?userId=` + user?.user_id, {
-        method: "GET",
-        credentials: "include"
-      });
+      const res = await api.get(`/api/fetchUser?userId=` + user?.user_id);
       if (res.ok) {
         const user = await res.json();
         setUserName(user.user_name);
@@ -107,13 +95,7 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchSubmissions() {
-      const res = await fetch(
-        `/api/fetchSubmissions?userId=${user?.user_id}`,
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
+      const res = await api.get(`/api/fetchSubmissions?userId=${user?.user_id}`);
 
       if (res.ok) {
         const submissions = await res.json();
