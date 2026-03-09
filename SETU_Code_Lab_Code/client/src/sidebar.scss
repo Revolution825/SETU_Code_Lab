@@ -31,6 +31,8 @@
     border-radius: 0px;
     cursor: pointer;
     transition: background-color 0.15s ease;
+    display: flex;
+    justify-content: center;
 }
 
 .dropdownTitle:hover {
@@ -58,7 +60,7 @@
 
 .arrow {
     rotate: 180deg;
-    padding-left: 3px;
+    padding-left: 6px;
     transition: transform 0.2s ease;
 }
 

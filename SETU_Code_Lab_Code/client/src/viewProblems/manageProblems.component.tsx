@@ -8,6 +8,7 @@ import { useAuth } from "../authContext";
 import type { Problem } from "../types/problem";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
+import ToolTip from "../tooltip";
 
 export default function ManageProblems() {
     const navigate = useNavigate();
@@ -92,12 +93,16 @@ export default function ManageProblems() {
                                             ))}
                                         </span>
                                     </button>
-                                    <button onClick={() => editProblemClick(p)} className="manageProblemButton">
-                                        <img className="manageIcons" src="editIcon.svg" alt="edit" />
-                                    </button>
-                                    <button onClick={() => deleteProblemClick(p.problem_id)} className="manageProblemButton">
-                                        <img className="manageIcons" src="binIcon.svg" alt="delete" />
-                                    </button>
+                                    <ToolTip text="Edit">
+                                        <button onClick={() => editProblemClick(p)} className="manageProblemButton">
+                                            <img className="manageIcons" src="editIcon.svg" alt="edit" />
+                                        </button>
+                                    </ToolTip>
+                                    <ToolTip text="Delete">
+                                        <button onClick={() => deleteProblemClick(p.problem_id)} className="manageProblemButton">
+                                            <img className="manageIcons" src="binIcon.svg" alt="delete" />
+                                        </button>
+                                    </ToolTip>
                                 </li>)
                             : <li>No problems found</li>}
                     </ul>
