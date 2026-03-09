@@ -16,6 +16,13 @@ import fs from "fs";
 const app: Application = express();
 const port: number = 3000;
 
+app.use((req, res, next) => {
+    if (req.headers["x-forwarded-proto"] !== "https") {
+        return res.redirect("https://" + req.headers.host + req.url);
+    }
+    next();
+});
+
 app.use((req, _res, next) => {
     console.log("Incoming request:", req.method, req.originalUrl);
     next();
