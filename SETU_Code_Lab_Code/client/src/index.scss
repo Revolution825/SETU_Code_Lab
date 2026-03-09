@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap");
-  
-  :root {
+
+:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -41,3 +41,30 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.tooltipContainer {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  display: flex;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.tooltipBox {
+  position: fixed;
+  transform: translateX(-50%);
+  background-color: #161616;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}

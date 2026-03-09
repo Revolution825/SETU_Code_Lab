@@ -3,6 +3,7 @@ import "./createProblem.scss";
 import "../viewProblems/manageProblems.scss";
 import type { TestCase } from "../types/TestCase";
 import { v4 as uuidv4 } from 'uuid';
+import ToolTip from "../tooltip";
 interface Props {
     testCases: TestCase[],
     setTestCases: React.Dispatch<React.SetStateAction<TestCase[]>>
@@ -54,6 +55,9 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
                         < div key={id} className="testCaseBackground">
                             <button onClick={() => deleteTestCase(id)} type="button" className="testCaseXButton">x</button>
                             <div className="createProblemInput">
+                                <ToolTip text="Separate multiple inputs using a comma">
+                                    <img className="tooltip" src="tooltip.svg" alt="?" />
+                                </ToolTip>
                                 <label>
                                     Sample Input:
                                 </label>
@@ -68,7 +72,7 @@ export default function TestCaseForm({ testCases, setTestCases }: Props) {
                                     required />
                             </div>
                             <div className="createProblemInput">
-                                <label>
+                                <label style={{ marginLeft: 32 }}>
                                     Expected Output:
                                 </label>
                                 <input

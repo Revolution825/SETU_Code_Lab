@@ -8,6 +8,7 @@ import "../viewProblems/manageProblems.scss";
 import "../viewProblems/viewProblems.scss";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
+import ToolTip from "../tooltip";
 export default function ManageClasses() {
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -84,12 +85,16 @@ export default function ManageClasses() {
                                     >
                                         {courses.indexOf(c) + 1}. {c.course_title}
                                     </button>
-                                    <button className="manageProblemButton" onClick={() => editCourseClick(c)}>
-                                        <img className="manageIcons" src="editIcon.svg" alt="edit" />
-                                    </button>
-                                    <button className="manageProblemButton" onClick={() => deleteCourseClick(c.course_id)}>
-                                        <img className="manageIcons" src="binIcon.svg" alt="delete" />
-                                    </button>
+                                    <ToolTip text="Edit">
+                                        <button className="manageProblemButton" onClick={() => editCourseClick(c)}>
+                                            <img className="manageIcons" src="editIcon.svg" alt="edit" />
+                                        </button>
+                                    </ToolTip>
+                                    <ToolTip text="Delete">
+                                        <button className="manageProblemButton" onClick={() => deleteCourseClick(c.course_id)}>
+                                            <img className="manageIcons" src="binIcon.svg" alt="delete" />
+                                        </button>
+                                    </ToolTip>
                                 </li>)
                             : <li>No problems found</li>}
                     </ul>
