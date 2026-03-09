@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Course } from "../types/course";
 import type { LeaderboardEntry } from "../types/leaderboard";
 import { useAuth } from "../authContext";
+import { api } from "../sharedUtils";
 
 
 export default function Leaderboard() {
@@ -16,10 +17,7 @@ export default function Leaderboard() {
 
     useEffect(() => {
         async function fetchCourses() {
-            const res = await fetch('/api/fetchCourses', {
-                method: "GET",
-                credentials: "include"
-            });
+            const res = await api.get('/api/fetchCourses');
             if (res.ok) {
                 setCourses(await res.json());
             } else {
@@ -32,10 +30,7 @@ export default function Leaderboard() {
 
     useEffect(() => {
         async function fetchLeaderboard() {
-            const res = await fetch(`/api/fetchLeaderboard?dateRange=${dateRange}&filterBy=${filterBy}&courseId=${selectedCourse}`, {
-                method: "GET",
-                credentials: "include"
-            });
+            const res = await api.get(`/api/fetchLeaderboard?dateRange=${dateRange}&filterBy=${filterBy}&courseId=${selectedCourse}`);
             if (res.ok) {
                 setLeaderboardEntries(await res.json());
             } else {
@@ -45,8 +40,6 @@ export default function Leaderboard() {
         }
         fetchLeaderboard();
     }, [dateRange, filterBy, selectedCourse])
-
-    console.log("leaderboard", leaderboardEntries)
 
     return (
         <div>

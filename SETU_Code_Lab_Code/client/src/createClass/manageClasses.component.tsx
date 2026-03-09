@@ -7,6 +7,7 @@ import type { Course } from "../types/course";
 import "../viewProblems/manageProblems.scss";
 import "../viewProblems/viewProblems.scss";
 import toast from "react-hot-toast";
+import { api } from "../sharedUtils";
 export default function ManageClasses() {
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -28,15 +29,8 @@ export default function ManageClasses() {
         let userConfirmed = confirm("Are you sure you want to delete this course permanently?");
         if (userConfirmed) {
             try {
-                const res = await fetch('/api/deleteCourse', {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        course_id: course_id
-                    })
+                const res = await api.post('/api/deleteCourse', {
+                    course_id: course_id
                 });
                 if (!res.ok) {
                     const errorData = await res.json();
@@ -56,10 +50,7 @@ export default function ManageClasses() {
 
     useEffect(() => {
         async function fetchCourses() {
-            const res = await fetch('/api/myCourses', {
-                method: "GET",
-                credentials: "include"
-            });
+            const res = await api.get('/api/myCourses');
             if (res.ok) {
                 setCourses(await res.json());
             } else {

@@ -9,6 +9,7 @@ import type { Problem } from "../types/problem";
 import type { User } from "../types/user";
 import type { Submission } from "../types/Submission";
 import toast from "react-hot-toast";
+import { api } from "../sharedUtils";
 
 export default function ViewResults() {
     const navigate = useNavigate();
@@ -37,33 +38,18 @@ export default function ViewResults() {
 
     useEffect(() => {
         async function fetchData() {
-            const problems = await fetch('/api/problems', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ selectedCourse: course.course_id })
+            const problems = await api.post('/api/problems', {
+                selectedCourse: course.course_id
             });
             const problemsData = problems.ok ? await problems.json() : [];
             setProblems(problemsData);
-            const students = await fetch('/api/studentsOnCourse', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ course_id: course.course_id })
+            const students = await api.post('/api/studentsOnCourse', {
+                course_id: course.course_id
             });
             const studentData = students.ok ? await students.json() : [];
             setStudents(studentData);
-            const submissionsRes = await fetch('/api/submissionsForCourse', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ student_ids: studentData.map((s: User) => s.user_id), problem_ids: problemsData.map((p: Problem) => p.problem_id), created_at: course.created_at })
+            const submissionsRes = await api.post('/api/submissionsForCourse', {
+                student_ids: studentData.map((s: User) => s.user_id), problem_ids: problemsData.map((p: Problem) => p.problem_id), created_at: course.created_at
             });
             const submissionsData = submissionsRes.ok ? await submissionsRes.json() : [];
             setSubmissions(submissionsData);

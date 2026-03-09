@@ -1,9 +1,4 @@
-
-export interface JwtPayload {
-    user_id: number;
-    email: string;
-    role: string;
-}
+import { JwtPayload } from "./express";
 
 declare global {
     namespace Express {

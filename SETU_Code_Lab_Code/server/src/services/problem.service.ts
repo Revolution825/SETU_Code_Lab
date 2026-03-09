@@ -2,6 +2,7 @@ import * as ProblemModel from "../models/problem.model";
 import * as TestCaseModel from "../models/testCase.model";
 import { pool } from "../infrastructure/database";
 import type { TestCase } from "../types/testCase";
+import { splitParams, extractParamNames } from "./sharedUtils";
 
 export const getAllCourseProblems = async (selectedCourseId: Number) => {
   const problems = await ProblemModel.fetchCourseProblems(selectedCourseId);
@@ -40,8 +41,25 @@ export const createProblem = async (
       points
     );
 
+    const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+    const match = placeholder_code.match(signatureRegex);
+    if (!match) {
+      throw new Error("Could not find method signature in placeholder code.");
+    }
+    const paramsList = match[3];
+    const paramNames = extractParamNames(paramsList);
+
     const problem_id = problem.problem_id
     for (const testCase of testCases) {
+      const inputValues = splitParams(testCase.input_value);
+      if (inputValues.length !== paramNames.length) {
+        throw new Error("Number of input values does not match number of parameters in placeholder code.");
+      }
+      const inputValuesJson: Record<string, any> = {}
+      paramNames.forEach((name, i) => {
+        inputValuesJson[name] = JSON.parse(inputValues[i].trim());
+      });
+      testCase.input_value = JSON.stringify(inputValuesJson);
       await TestCaseModel.createTestCase(
         client,
         problem_id,
@@ -82,6 +100,14 @@ export const updateProblem = async (
       points
     );
 
+    const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+    const match = placeholder_code.match(signatureRegex);
+    if (!match) {
+      throw new Error("Could not find method signature in placeholder code.");
+    }
+    const paramsList = match[3];
+    const paramNames = extractParamNames(paramsList);
+
     for (const testCase of testCases) {
       if (testCase.deleted) {
         if (testCase.test_case_id) {
@@ -95,6 +121,15 @@ export const updateProblem = async (
         if (testCase.input_value == null || testCase.expected_value == null) {
           throw new Error("Invalid test case data");
         }
+        const inputValues = splitParams(testCase.input_value);
+        if (inputValues.length !== paramNames.length) {
+          throw new Error("Number of input values does not match number of parameters in placeholder code.");
+        }
+        const inputValuesJson: Record<string, any> = {}
+        paramNames.forEach((name, i) => {
+          inputValuesJson[name] = JSON.parse(inputValues[i].trim());
+        });
+        testCase.input_value = JSON.stringify(inputValuesJson);
         await TestCaseModel.updateTestCase(
           client,
           testCase

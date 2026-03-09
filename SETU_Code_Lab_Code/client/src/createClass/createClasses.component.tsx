@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import type { Problem } from "../types/problem";
 import type { Course } from "../types/course";
 import toast from "react-hot-toast";
+import { api } from "../sharedUtils";
 
 export default function CreateClass() {
     const navigate = useNavigate();
@@ -40,25 +41,19 @@ export default function CreateClass() {
         async function fetchAllData() {
             try {
 
-                const problemsRes = await fetch('/api/AvailableProblems', { method: 'GET', credentials: 'include' });
+                const problemsRes = await api.get('/api/AvailableProblems');
                 const problemsData = problemsRes.ok ? await problemsRes.json() : [];
                 setProblems(problemsData);
 
-                const studentsRes = await fetch('/api/students', { method: 'GET', credentials: 'include' });
+                const studentsRes = await api.get('/api/students');
                 const studentsData = studentsRes.ok ? await studentsRes.json() : [];
                 setStudents(studentsData);
                 console.log("Fetched students:", studentsData);
 
                 if (course?.course_id) {
-                    const assocRes = await fetch('/api/problemStudentId', {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ course_id: course.course_id })
-                    });
+                    const assocRes = await api.post('/api/problemStudentId', { course_id: JSON.stringify(course.course_id) });
                     if (assocRes.ok) {
                         const assocData = await assocRes.json();
-                        console.log("Fetched course associations:", assocData);
 
                         const problemIds = assocData.problemIds?.map((p: { problem_id: number }) => p.problem_id) ?? [];
                         const studentIds = assocData.studentIds?.map((s: { user_id: number }) => s.user_id) ?? [];
@@ -92,18 +87,11 @@ export default function CreateClass() {
 
     const createNewCourse = async () => {
         try {
-            const res = await fetch('/api/createCourse', {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    course_title: title,
-                    course_description: description,
-                    problem_ids: selectedProblems,
-                    student_ids: selectedStudents
-                })
+            const res = await api.post('/api/createCourse', {
+                course_title: title,
+                course_description: description,
+                problem_ids: selectedProblems,
+                student_ids: selectedStudents
             });
             if (!res.ok) {
                 toast.error("Failed to create course. Please try again.");
@@ -119,19 +107,12 @@ export default function CreateClass() {
 
     const updateCourse = async () => {
         try {
-            const res = await fetch('/api/updateCourse', {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    course_id: course?.course_id,
-                    course_title: title,
-                    course_description: description,
-                    problem_ids: selectedProblems,
-                    student_ids: selectedStudents
-                })
+            const res = await api.post('/api/updateCourse', {
+                course_id: course?.course_id,
+                course_title: title,
+                course_description: description,
+                problem_ids: selectedProblems,
+                student_ids: selectedStudents
             });
             if (!res.ok) {
                 toast.error("Failed to update course. Please try again.");

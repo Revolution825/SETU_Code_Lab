@@ -12,11 +12,12 @@ import SubmissionAlert from "./submissionAlert.component";
 import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
-import { useAntiCheat } from "../antiCheat";
+// import { useAntiCheat } from "../antiCheat";
 import { FadeLoader } from 'react-spinners';
+import { api, jsonToParamValues } from "../sharedUtils";
 
 export default function Problem() {
-  const { shouldAutoSubmit } = useAntiCheat();
+  //  const { shouldAutoSubmit } = useAntiCheat();
   const navigate = useNavigate();
   const location = useLocation();
   const problem: Problem = location.state;
@@ -45,10 +46,7 @@ export default function Problem() {
 
   useEffect(() => {
     async function fetchTestCases() {
-      const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
-        method: "GET",
-        credentials: "include"
-      });
+      const res = await api.get('api/testCases?problem_id=' + problem.problem_id);
       if (res.ok) {
         setTestCases(await res.json());
       } else {
@@ -61,11 +59,11 @@ export default function Problem() {
 
   }, []);
 
-  useEffect(() => {
-    if (shouldAutoSubmit) {
-      handleSubmit();
-    }
-  }, [shouldAutoSubmit]);
+  //  useEffect(() => {
+  //    if (shouldAutoSubmit) {
+  //      handleSubmit();
+  //    }
+  //  }, [shouldAutoSubmit]);
 
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
@@ -84,18 +82,11 @@ export default function Problem() {
 
   async function runTestCase(testCase: TestCase): Promise<TestCaseResult | null> {
     try {
-      const res = await fetch('docker/start', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          image: image,
-          placeholder_code: problem.placeholder_code,
-          code: code,
-          testCase: testCase
-        })
+      const res = await api.post('docker/start', {
+        image: image,
+        placeholder_code: problem.placeholder_code,
+        code: code,
+        testCase: testCase
       });
 
       const data = await res.json();
@@ -137,20 +128,13 @@ export default function Problem() {
         return;
       }
       const overallStatus = results.every(tc => tc.passed);
-      const res = await fetch('/api/submission', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          problem_id: problem.problem_id,
-          submitted_code: submittedCode,
-          overall_status: overallStatus,
-          time_taken: timeTaken,
-          testCaseResults: results,
-          points: problem.points,
-        })
+      const res = await api.post('/api/submission', {
+        problem_id: problem.problem_id,
+        submitted_code: submittedCode,
+        overall_status: overallStatus,
+        time_taken: timeTaken,
+        testCaseResults: results,
+        points: problem.points,
       });
 
       const data = await res.json();
@@ -273,7 +257,7 @@ export default function Problem() {
                                 ? "Pass"
                                 : "Fail"}</span></p>
                             : ""}
-                          <p><strong>Input:</strong> {JSON.stringify(testCase.input_value)}</p>
+                          <p><strong>Input:</strong> {jsonToParamValues(JSON.stringify(testCase.input_value))}</p>
                           <p><strong>Expected:</strong> {JSON.stringify(testCase.expected_value)}</p>
                           {result && (
                             <>

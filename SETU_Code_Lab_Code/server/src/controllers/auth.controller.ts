@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            path: "/auth/refresh",
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -72,7 +72,7 @@ export const signUp = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            path: "/auth/refresh",
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -112,7 +112,7 @@ export const refresh = (req: Request, res: Response) => {
 
         res.cookie("token", newAccessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: false,
             sameSite: "lax",
             path: "/",
             maxAge: 3 * 60 * 60 * 1000
@@ -126,7 +126,7 @@ export const refresh = (req: Request, res: Response) => {
 
 export const logout = (req: Request, res: Response) => {
     res.clearCookie("token", { path: "/" });
-    res.clearCookie("refreshToken", { path: "/auth/refresh" });
+    res.clearCookie("refreshToken", { path: "/" });
     res.json({ message: "Logged out" });
 };
 

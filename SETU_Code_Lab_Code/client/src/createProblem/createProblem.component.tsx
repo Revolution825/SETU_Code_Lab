@@ -9,6 +9,7 @@ import type { TestCase } from "../types/TestCase";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
+import { api, jsonToParamValues } from "../sharedUtils";
 
 export default function CreateProblem() {
 
@@ -49,70 +50,47 @@ true
 
   const updateProblem = async (preparedTestCases: TestCase[]) => {
     try {
-      const res = await fetch('/api/updateProblem', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          problem_id: problem?.problem_id,
-          problem_title: title,
-          problem_description: description,
-          difficulty: difficulty,
-          placeholder_code: placeholderCode,
-          testCases: preparedTestCases
-        })
+      const res = await api.post('/api/updateProblem', {
+        problem_id: problem?.problem_id,
+        problem_title: title,
+        problem_description: description,
+        difficulty: difficulty,
+        placeholder_code: placeholderCode,
+        testCases: preparedTestCases
       });
 
       if (!res.ok) {
-        toast.error("Failed to update problem. Please try again.");
-        throw new Error("Failed to update problem");
+        const data = await res.json();
+        throw new Error(data.message);
       }
       toast.success("Problem updated successfully");
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to update problem. Please try again.");
+      toast.error("Failed to update problem : " + error.message);
       console.error("Error updating problem :", error.message);
     }
   }
 
   const createNewProblem = async (preparedTestCases: TestCase[]) => {
     try {
-      const res = await fetch('/api/createNewProblem', {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          problem_id: problem?.problem_id,
-          problem_title: title,
-          problem_description: description,
-          difficulty: difficulty,
-          placeholder_code: placeholderCode,
-          testCases: preparedTestCases
-        })
+      const res = await api.post('/api/createNewProblem', {
+        problem_id: problem?.problem_id,
+        problem_title: title,
+        problem_description: description,
+        difficulty: difficulty,
+        placeholder_code: placeholderCode,
+        testCases: preparedTestCases
       });
 
       if (!res.ok) {
-        toast.error("Failed to create problem. Please try again.");
-        throw new Error("Failed to create problem");
+        const data = await res.json();
+        throw new Error(data.message);
       }
       toast.success("Problem created successfully")
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to create problem. Please try again.");
+      toast.error("Failed to create problem : " + error.message);
       console.error("Error creating problem :", error.message);
-    }
-  }
-
-  function isValidJSON(str: string) {
-    try {
-      return JSON.parse(str);
-    } catch {
-      toast.error("Invalid JSON in test cases");
-      throw new Error("Invalid JSON in test cases");
     }
   }
 
@@ -121,8 +99,8 @@ true
       let id, input, output, deleted;
       try {
         id = testCase?.test_case_id;
-        input = isValidJSON(testCase.input_value);
-        output = isValidJSON(testCase.expected_value);
+        input = testCase.input_value;
+        output = testCase.expected_value;
         deleted = testCase.deleted;
         return { test_case_id: id, input_value: input, expected_value: output, deleted: deleted }
       } catch (error: any) {
@@ -153,10 +131,7 @@ true
   useEffect(() => {
     if (!problem?.problem_id) return;
     async function fetchTestCases() {
-      const res = await fetch('api/testCases?problem_id=' + problem.problem_id, {
-        method: "GET",
-        credentials: "include"
-      });
+      const res = await api.get('api/testCases?problem_id=' + problem.problem_id);
       if (!res.ok) {
         const errorData = await res.json();
         console.error("Error fetching test cases:", errorData.message);
@@ -165,7 +140,7 @@ true
       const dbTestCases = await res.json();
       const formFriendlyTestCases = dbTestCases.map((tc: any) => ({
         test_case_id: tc.test_case_id,
-        input_value: JSON.stringify(tc.input_value),
+        input_value: jsonToParamValues(JSON.stringify(tc.input_value)),
         expected_value: JSON.stringify(tc.expected_value),
       }));
       setTestCases(formFriendlyTestCases);

@@ -7,6 +7,7 @@ import LecturerSideBar from "../lecturerSideBar.component";
 import { useAuth } from "../authContext";
 import type { Problem } from "../types/problem";
 import toast from "react-hot-toast";
+import { api } from "../sharedUtils";
 
 export default function ManageProblems() {
     const navigate = useNavigate();
@@ -29,15 +30,8 @@ export default function ManageProblems() {
         let userConfirmed = confirm("Are you sure you want to delete this problem and all of it's associated test cases?");
         if (userConfirmed) {
             try {
-                const res = await fetch('/api/deleteProblem', {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        problem_id: problem_id
-                    })
+                const res = await api.post('/api/deleteProblem', {
+                    problem_id: problem_id
                 });
                 if (!res.ok) {
                     toast.error("Failed to delete problem. Please try again.");
@@ -56,10 +50,7 @@ export default function ManageProblems() {
     }
     useEffect(() => {
         async function fetchProblems() {
-            const res = await fetch('/api/myProblems', {
-                method: "GET",
-                credentials: "include"
-            });
+            const res = await api.get('/api/myProblems');
             if (res.ok) {
                 setProblems(await res.json());
             } else {

@@ -8,6 +8,7 @@ import type { User } from "../types/user";
 import type { Submission } from "../types/Submission";
 import type { Problem } from "../types/problem";
 import toast from "react-hot-toast";
+import { api } from "../sharedUtils";
 
 
 export default function ViewProfile() {
@@ -22,10 +23,7 @@ export default function ViewProfile() {
     async function deleteAccount() {
         let userConfirmed = confirm("Are you sure you want to delete your account and all of its associated data, this action is irrevesible!");
         if (userConfirmed) {
-            const deletedAccount = await fetch('/api/deleteAccount', {
-                method: "DELETE",
-                credentials: "include"
-            });
+            const deletedAccount = await api.delete('/api/deleteAccount');
             if (deletedAccount.ok) {
                 toast.success("Account deleted successfully");
                 navigate("/");
@@ -58,13 +56,7 @@ export default function ViewProfile() {
         }
 
         async function fetchData() {
-            const userRes = await fetch(
-                `/api/fetchUser?userId=${activeUserId}`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
+            const userRes = await api.get(`/api/fetchUser?userId=${activeUserId}`);
 
             if (userRes.ok) {
                 const fullUser: User = await userRes.json();
@@ -77,13 +69,7 @@ export default function ViewProfile() {
 
             let submissionsData: Submission[] = [];
 
-            const submissionsRes = await fetch(
-                `/api/fetchSubmissions?userId=${activeUserId}`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
+            const submissionsRes = await api.get(`/api/fetchSubmissions?userId=${activeUserId}`);
 
             if (submissionsRes.ok) {
                 submissionsData = await submissionsRes.json();
@@ -100,14 +86,8 @@ export default function ViewProfile() {
                 return;
             }
 
-            const problemsRes = await fetch('/api/fetchSubmittedProblems', {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ problem_ids: problemIds })
-            });
+            const problemsRes = await api.post('/api/fetchSubmittedProblems',
+                { problem_ids: problemIds });
 
             if (problemsRes.ok) {
                 setSubmittedProblems(await problemsRes.json());
@@ -119,8 +99,6 @@ export default function ViewProfile() {
 
         fetchData();
     }, [otherUser, user, navigate]);
-
-    console.log("userData", userData);
 
     return (
         <div>

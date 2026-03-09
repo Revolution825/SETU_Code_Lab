@@ -2,6 +2,7 @@ import { Dropdown } from "./dropdown.component";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./authContext";
 import "./navBar.scss";
+import { api } from "./sharedUtils";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -12,10 +13,7 @@ export default function NavBar() {
 
   const logOutClick = async () => {
     try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include"
-      });
+      await api.post("/api/auth/logout", {});
     } catch (error) {
       console.error("Logout request failed, clearing local state anyway", error);
     } finally {
