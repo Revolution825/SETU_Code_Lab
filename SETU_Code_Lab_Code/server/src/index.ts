@@ -10,6 +10,8 @@ import leaderboardRouter from "./routes/leaderboard.routes"
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
 import cookieParser from "cookie-parser";
+import https from "https";
+import fs from "fs";
 
 const app: Application = express();
 const port: number = 3000;
@@ -32,6 +34,16 @@ app.use("/api", verifyToken, leaderboardRouter);
 app.use("/docker", dockerRouter);
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`Server is running smoothly on http://134.209.178.129:${port} or http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === "production") {
+    const options = {
+        cert: fs.readFileSync("/etc/letsencrypt/live/setucodelab.com/fullchain.pem"),
+        key: fs.readFileSync("/etc/letsencrypt/live/setucodelab.com/privkey.pem")
+    };
+    https.createServer(options, app).listen(443, () => {
+        console.log("HTTPS running on port 443");
+    });
+} else {
+    app.listen(3000, () => {
+        console.log(`HTTP running on http://localhost:${port}`);
+    });
+}

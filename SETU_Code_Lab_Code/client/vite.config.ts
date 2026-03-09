@@ -9,12 +9,12 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: false
+        secure: process.env.NODE_ENV === 'production'
       },
       '/docker': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: false
+        secure: process.env.NODE_ENV === 'production'
       }
     }
   }
