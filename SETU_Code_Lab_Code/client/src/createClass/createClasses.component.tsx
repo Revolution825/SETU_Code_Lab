@@ -19,7 +19,18 @@ export default function CreateClass() {
     const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
     const [title, setTitle] = useState(course?.course_title ?? "");
     const [description, setDescription] = useState(course?.course_description ?? "");
+    const [problemSearch, setProblemSearch] = useState("");
+    const [studentSearch, setStudentSearch] = useState("");
     const { user } = useAuth();
+
+    const filteredProblems = problems.filter((problem) => {
+        const matchesSearch = problem.problem_title.toLowerCase().includes(problemSearch.toLowerCase());
+        return matchesSearch;
+    });
+    const filteredStudents = students.filter((student) => {
+        const matchesSearch = student.student_name.toLowerCase().includes(studentSearch.toLowerCase());
+        return matchesSearch;
+    });
 
     const toggleProblem = (problem_id: number) => {
         setSelectedProblems(prev =>
@@ -178,8 +189,18 @@ export default function CreateClass() {
                                 <div className="createProblemHeader">
                                     Select Problems
                                 </div>
+                                <div className="filteringOptions">
+                                    <img src="search.svg" alt="search icon" className="createClassSearchIcon" />
+                                    <input
+                                        className="createClassSearchBar"
+                                        type="text"
+                                        value={problemSearch}
+                                        onChange={(e) => setProblemSearch(e.target.value)}
+                                        placeholder={"Search Problems..."}
+                                    />
+                                </div>
                                 <div className="problemSelectionList">
-                                    {problems.map(problem => (
+                                    {filteredProblems.map(problem => (
                                         <label key={problem.problem_id} className="problemItem">
                                             <input
                                                 type="checkbox"
@@ -195,8 +216,18 @@ export default function CreateClass() {
                                 <div className="createProblemHeader">
                                     Select Students
                                 </div>
+                                <div className="filteringOptions">
+                                    <img src="search.svg" alt="search icon" className="createClassSearchIcon" />
+                                    <input
+                                        className="createClassSearchBar"
+                                        type="text"
+                                        value={studentSearch}
+                                        onChange={(e) => setStudentSearch(e.target.value)}
+                                        placeholder={"Search Students..."}
+                                    />
+                                </div>
                                 <div className="problemSelectionList">
-                                    {students.map(student => (
+                                    {filteredStudents.map(student => (
                                         <label key={student.student_id} className="problemItem">
                                             <input
                                                 type="checkbox"
