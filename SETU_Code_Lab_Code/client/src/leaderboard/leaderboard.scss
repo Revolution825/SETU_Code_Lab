@@ -1,6 +1,7 @@
 .leaderboardScreenBody {
     display: flex;
     flex-direction: row;
+    height: auto;
     width: auto;
 }
 
@@ -12,8 +13,8 @@
     box-shadow: 5px 0 5px -2px #202020;
     background-color: #363636;
     border-radius: 15px;
-    min-width: 1600px;
-    height: 800px;
+    width: 80%;
+    height: 100%;
 }
 
 .leaderboardCardHeader {
@@ -26,6 +27,7 @@
     display: flex;
     flex-direction: row;
     width: auto;
+    height: auto;
     padding-left: 12px;
     z-index: 9999;
 }
@@ -35,7 +37,7 @@
     flex-direction: column;
     align-items: left;
     height: 92vh;
-    width: 100%;
+    width: 20%;
     border-left-width: 2px;
     border-left-style: solid;
     border-color: #363636;
@@ -60,7 +62,7 @@
 }
 
 .leaderboardWrapper {
-    max-width: 1576px;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 24px;
@@ -68,11 +70,10 @@
 
 .leaderboard {
     margin: 24px;
-    width: 1548px;
+    width: calc(100% - 48px);;
     border-collapse: separate;
     border: none;
     border-spacing: 0 0px;
-    min-width: max-content;
 }
 
 .leaderboardEntry:nth-child(odd) td {
@@ -117,8 +118,8 @@
 
 .noUsersFoundMessage {
     display: flex;
-    width: 1600px;
-    height: 600px;
+    width: 100%;
+    height: calc(100vh - 220px);
     align-items: center;
     justify-content: center;
 }

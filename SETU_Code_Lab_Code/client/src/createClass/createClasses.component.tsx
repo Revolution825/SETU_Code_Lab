@@ -185,7 +185,7 @@ export default function CreateClass() {
 
                         </div>
                         <div className="selectionContainer">
-                            <div className="problemSelection">
+                            <div className="selectionBox" style={{marginRight:"24px"}}>
                                 <div className="createProblemHeader">
                                     Select Problems
                                 </div>
@@ -212,7 +212,7 @@ export default function CreateClass() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="studentSelection">
+                            <div className="selectionBox">
                                 <div className="createProblemHeader">
                                     Select Students
                                 </div>

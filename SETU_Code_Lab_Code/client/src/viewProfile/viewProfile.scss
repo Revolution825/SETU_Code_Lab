@@ -1,7 +1,8 @@
 .profileScreenBody {
     display: flex;
     flex-direction: row;
-    width: auto;
+    width: 100%;
+    height: 100%;
 }
 
 .profileCard {
@@ -64,7 +65,7 @@
 .submissionTable {
     border-collapse: separate;
     border-spacing: 0;
-    min-width: max-content;
+    width: 100%;
 }
 
 .profileTableHeading {
@@ -102,7 +103,8 @@
 .submissionCell.start {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
-    min-width: 800px;
+    min-width: unset;
+    width: 100%;
 }
 
 .submissionCell.middle {

@@ -1,6 +1,8 @@
 .createProblemForm {
     margin-left: 200px;
     display: flex;
+    flex: 1;
+    height: calc(100vh - 120px);
     flex-direction: row;
 }
 
@@ -20,7 +22,12 @@
 .formContent {
     margin-top: 24px;
     margin-left: 24px;
-    width: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .formBackground {
@@ -31,7 +38,7 @@
 }
 
 .createProblemContent {
-    height: auto;
+    height: 100%;
 }
 
 .placeholderCodeContentBox {
@@ -50,7 +57,7 @@ label.createProblemForm {
 }
 
 .inputBox {
-    width: 80%;
+    width: 72%;
     background-color: #363636;
     border-color: #a0a0a0;
     padding: 15px;
@@ -60,7 +67,7 @@ label.createProblemForm {
 
 .textAreaInput {
     width: 100%;
-    margin-bottom: 24px;
+    height: calc(100vh - 420px);
     background-color: #363636;
     border-color: #a0a0a0;
     padding: 15px;
@@ -69,7 +76,6 @@ label.createProblemForm {
 
 .problemDescriptionInput {
     margin-top: 12px;
-    height: 55vh;
 }
 
 .placeholderCodeInput {
@@ -105,7 +111,7 @@ textarea:focus {
 }
 
 .testCaseInputBox {
-    width: 70%;
+    width: 55%;
     background-color: #363636;
     border-color: #a0a0a0;
     padding: 15px;

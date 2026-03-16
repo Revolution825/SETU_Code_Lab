@@ -179,7 +179,7 @@ export default function ViewProfile() {
                                                             {submission.overall_status ? "Pass" : "Fail"}
                                                         </div>
                                                     </td>
-                                                    <td style={{ padding: "0px", width: "100%" }}>
+                                                    <td style={{ padding: "0px" }}>
                                                         <div className="submissionCell end">{submittedAtFormatted}</div>
                                                     </td>
                                                 </tr>

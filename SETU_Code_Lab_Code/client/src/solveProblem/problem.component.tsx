@@ -167,9 +167,9 @@ export default function Problem() {
           <ResizableBox
             className="pane"
             width={leftWidth}
-            height={topHeight}
-            minConstraints={[12, topHeight]}
-            maxConstraints={[window.innerWidth * 0.5, topHeight]}
+            height={Infinity}
+            minConstraints={[12, Infinity]}
+            maxConstraints={[window.innerWidth * 0.5, Infinity]}
             onResizeStop={(_, { size }) => setLeftWidth(size.width)}
             resizeHandles={["e"]}
           >

@@ -7,15 +7,17 @@ import { oneDarkTheme, oneDarkHighlightStyle } from '@codemirror/theme-one-dark'
 interface CodeEditorProps {
   value: string;
   height?: string;
+  editable?: boolean;
   onChange: (value: string) => void;
 }
 
-export default function CodeEditor({ value, onChange }: Readonly<CodeEditorProps>) {
+export default function CodeEditor({ value, editable, onChange }: Readonly<CodeEditorProps>) {
   return (
     <CodeMirror
       value={value}
       basicSetup={false}
       theme={oneDarkTheme}
+      editable={editable}
       extensions={[
         java(),
         syntaxHighlighting(oneDarkHighlightStyle, { fallback: true }),

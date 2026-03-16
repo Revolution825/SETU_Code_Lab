@@ -9,7 +9,6 @@
     background-color: #363636;
     border-radius: 15px;
     width: auto;
-    height: auto;
 }
 
 .resultsHeader {
@@ -28,12 +27,18 @@
 .resultsContent {
     padding: 24px;
     padding-top: 12px;
+    padding-bottom: 24px;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .tableWrapper {
     width: 100%;
-    max-height: 700px;
+    flex: 1;
+    min-height: 0;
     overflow: auto;
+    max-height: calc(100vh - 368px);
 }
 
 .resultsTable {
@@ -42,6 +47,7 @@
     border: none;
     border-spacing: 0 0px;
     min-width: max-content;
+    overflow: auto;
 }
 
 .staticColumn {
@@ -105,6 +111,13 @@
 .stickyRight {
     position: sticky;
     right: 0;
+    background-color: #363636;
+    z-index: 2;
+}
+
+.stickyTop {
+    position: sticky;
+    top: 0;
     background-color: #363636;
     z-index: 2;
 }

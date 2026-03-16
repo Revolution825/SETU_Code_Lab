@@ -54,7 +54,7 @@ export default function Leaderboard() {
                             leaderboardEntries.length > 0 ? <table className="leaderboard">
                                 <thead>
                                     <tr>
-                                        <th style={{ width: "1000px" }} className="leaderboardHeadings">Student</th>
+                                        <th className="leaderboardHeadings">Student</th>
                                         <th className="leaderboardHeadings">Current Streak</th>
                                         <th className="leaderboardHeadings">Total Score</th>
                                     </tr>

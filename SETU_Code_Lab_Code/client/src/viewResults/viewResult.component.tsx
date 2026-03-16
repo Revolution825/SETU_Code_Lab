@@ -97,6 +97,7 @@ export default function ViewResult() {
                             <CodeEditor
                                 value={submission.submitted_code.toString()}
                                 onChange={() => null}
+                                editable={false}
                             />
                         </div>
                     </div>
@@ -105,7 +106,7 @@ export default function ViewResult() {
                     <div className="resultHeader">
                         <p>Test Case Results</p>
                     </div>
-                    <div className="resultsContent">
+                    <div className="resultContent">
                         <p style={{ fontSize: "18px" }}>{testCaseResults.filter(tcr => tcr.passed).length}/{testCaseResults.length} Test cases passed</p>
                         <div className="testCaseResultTable">
                             {

@@ -170,11 +170,11 @@ export default function ViewResults() {
                         <table className="resultsTable">
                             <thead>
                                 <tr>
-                                    <th className="staticColumn">Student</th>
+                                    <th className="staticColumn stickyTop">Student</th>
                                     {problems.map((p) => (
-                                        <th className="staticColumn" key={p.problem_id}>{p.problem_title}</th>
+                                        <th className="staticColumn stickyTop" key={p.problem_id}>{p.problem_title}</th>
                                     ))}
-                                    <th className="lastResultTableHeading stickyRight">Total</th>
+                                    <th className="lastResultTableHeading stickyRight stickyTop">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
