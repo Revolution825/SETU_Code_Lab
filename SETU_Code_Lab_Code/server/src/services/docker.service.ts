@@ -44,7 +44,7 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
         }
         public static void main(String[] args) {
             try {
-                Input input = mapper.readValue(args[0], Input.class);
+                Input input = mapper.readValue(System.in, Input.class);
                 ${functionCallLine}
                 System.out.println(mapper.writeValueAsString(result));
             } catch (Exception e) {
@@ -58,10 +58,10 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 }
 
 export async function startContainer(image: string, placeholder_code: string, code: string, testCase: TestCase): Promise<TestCaseResult> {
-
     const processedInput = JSON.stringify(testCase.input_value);
     const preprocessedCode = preprocessJavaInput(placeholder_code, code);
     const startTime = Date.now();
+
     const container = await docker.createContainer({
         Image: image,
         WorkingDir: "/app",
@@ -70,7 +70,7 @@ cat << 'EOF' > Main.java
 ${preprocessedCode}
 EOF
 javac Main.java
-java -cp ".:/app/*" Main '${processedInput}'
+echo ${JSON.stringify(processedInput)} | java -cp ".:/app/*" Main
 `],
         Tty: false,
         AttachStdout: true,
@@ -78,53 +78,61 @@ java -cp ".:/app/*" Main '${processedInput}'
         HostConfig: {
             NetworkMode: "none",
             Memory: 256 * 1024 * 1024,
-            CpuShares: 256
+            CpuPeriod: 100000,
+            CpuQuota: 50000,
+            PidsLimit: 50,
         }
     });
 
     await container.start();
-    await container.wait();
 
-    function stripDockerHeader(buffer: Buffer): string {
-        let result = "";
-        let i = 0;
+    const timeout = setTimeout(async () => {
+        try { await container.kill(); } catch {}
+    }, 100000);
 
-        while (i < buffer.length) {
-            const headerSize = 8;
-            const payloadLength = buffer.readUInt32BE(i + 4);
-            const payloadStart = i + headerSize;
-            const payloadEnd = payloadStart + payloadLength;
-
-            result += buffer.slice(payloadStart, payloadEnd).toString("utf8");
-            i = payloadEnd;
-        }
-
-        return result.trim();
+    try {
+        await container.wait();
+    } finally {
+        clearTimeout(timeout);
     }
 
-    const logs = await container.logs({
-        stdout: true,
-        stderr: true
-    });
-    await container.remove();
     const endTime = Date.now();
-    const combinedOutput = stripDockerHeader(logs);
-    let actualOutput: any
+    const logs = await container.logs({ stdout: true, stderr: true });
+    await container.remove({ force: true }).catch(() => {});
+
+    const combinedOutput = stripDockerHeader(logs as Buffer);
+
+    let actualOutput: any;
     try {
         actualOutput = JSON.parse(combinedOutput);
     } catch {
         actualOutput = combinedOutput;
     }
+
     function deepEqual(a: any, b: any): boolean {
-        return JSON.stringify(a, Object.keys(a).sort()) === JSON.stringify(b, Object.keys(b).sort());
+        return JSON.stringify(a) === JSON.stringify(b);
     }
+
     const passed = deepEqual(actualOutput, testCase.expected_value);
-    let result: TestCaseResult = {
+
+    return {
         test_case_id: testCase.test_case_id as number,
-        passed: passed,
+        passed,
         actual_output: combinedOutput,
         runtime_ms: endTime - startTime
     };
+}
 
-    return result;
+function stripDockerHeader(buffer: Buffer): string {
+    let result = "";
+    let i = 0;
+    while (i < buffer.length) {
+        const headerSize = 8;
+        const payloadLength = buffer.readUInt32BE(i + 4);
+        const payloadStart = i + headerSize;
+        const payloadEnd = payloadStart + payloadLength;
+        result += buffer.slice(payloadStart, payloadEnd).toString("utf8");
+        i = payloadEnd;
+    }
+    return result.trim();
 }
