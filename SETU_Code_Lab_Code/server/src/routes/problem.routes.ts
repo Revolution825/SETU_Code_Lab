@@ -1,5 +1,14 @@
 import { Router } from "express";
-import { getCourseProblems, getMyProblems, createProblemController, updateProblemController, deleteProblemController, getAvailableProblems, getSubmittedProblems } from "../controllers/problem.controller";
+import {
+  getCourseProblems,
+  getMyProblems,
+  createProblemController,
+  updateProblemController,
+  deleteProblemController,
+  getAvailableProblems,
+  getSubmittedProblems,
+  getProblemLanguages,
+} from "../controllers/problem.controller";
 
 const router: Router = Router();
 
@@ -10,5 +19,6 @@ router.get("/AvailableProblems", getAvailableProblems);
 router.post("/createNewProblem", createProblemController);
 router.post("/updateProblem", updateProblemController);
 router.post("/deleteProblem", deleteProblemController);
+router.get("/problemLanguages", getProblemLanguages);
 
 export default router;

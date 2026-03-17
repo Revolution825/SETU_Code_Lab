@@ -3,36 +3,39 @@ import { TestCase, TestCaseResult } from "../types/testCase";
 import { splitParams } from "./sharedUtils";
 
 function preprocessJavaInput(placeholder_code: string, code: string): string {
-    const signatureRegex = /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
-    const match = placeholder_code.match(signatureRegex);
+  const signatureRegex =
+    /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+  const match = placeholder_code.match(signatureRegex);
+  if (!match) {
+    throw new Error("Could not find method signature in placeholder code.");
+  }
+  const returnType = match[1];
+  const functionName = match[2];
+  const paramsList = match[3];
+
+  const params = splitParams(paramsList);
+  const parsedParams = params.map((p) => {
+    const match = p.match(/(.+)\s+(\w+)$/);
     if (!match) {
-        throw new Error("Could not find method signature in placeholder code.");
+      throw new Error("Invalid parameter format: " + p);
     }
-    const returnType = match[1];
-    const functionName = match[2];
-    const paramsList = match[3];
+    return {
+      type: match[1].trim(),
+      name: match[2].trim(),
+    };
+  });
 
-    const params = splitParams(paramsList);
-    const parsedParams = params.map(p => {
-        const match = p.match(/(.+)\s+(\w+)$/);
-        if (!match) {
-            throw new Error("Invalid parameter format: " + p);
-        }
-        return {
-            type: match[1].trim(),
-            name: match[2].trim()
-        };
-    });
+  const inputFields = parsedParams
+    .map((p) => {
+      return `public ${p.type} ${p.name};`;
+    })
+    .join("\n    ");
 
-    const inputFields = parsedParams.map(p => {
-        return `public ${p.type} ${p.name};`;
-    }).join("\n    ");
+  const paramNames = parsedParams.map((p) => p.name);
 
-    const paramNames = parsedParams.map(p => p.name);
+  const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map((n) => "input." + n).join(", ")});`;
 
-    const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map(n => "input." + n).join(", ")});`;
-
-    const processedCode = `
+  return `
     import com.fasterxml.jackson.databind.ObjectMapper;
     import java.util.*;
 
@@ -53,86 +56,127 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
         }
     }
     `;
-
-    return processedCode;
 }
 
-export async function startContainer(image: string, placeholder_code: string, code: string, testCase: TestCase): Promise<TestCaseResult> {
-    const processedInput = JSON.stringify(testCase.input_value);
-    const preprocessedCode = preprocessJavaInput(placeholder_code, code);
-    const startTime = Date.now();
+function preprocessPythonInput(placeholder_code: string, code: string): string {
+  const signatureRegex = /def\s+(\w+)\s*\(([^)]*)\)/;
+  const match = placeholder_code.match(signatureRegex);
+  if (!match) {
+    throw new Error(
+      "Could not find method signature in Python placeholder code.",
+    );
+  }
+  const functionName = match[1];
 
-    const container = await docker.createContainer({
-        Image: image,
-        WorkingDir: "/app",
-        Cmd: ["sh", "-c", `
+  return `
+import json
+import sys
+
+${code}
+
+input_data = json.load(sys.stdin)
+result = ${functionName}(**input_data)
+print(json.dumps(result))
+`;
+}
+
+export async function startContainer(
+  image: string,
+  placeholder_code: string,
+  code: string,
+  testCase: TestCase,
+  language: string,
+): Promise<TestCaseResult> {
+  const processedInput = JSON.stringify(testCase.input_value);
+  const preprocessedCode =
+    language === "python"
+      ? preprocessPythonInput(placeholder_code, code)
+      : preprocessJavaInput(placeholder_code, code);
+  const startTime = Date.now();
+
+  const cmd =
+    language === "python"
+      ? `
+cat << 'EOF' > main.py
+${preprocessedCode}
+EOF
+echo ${JSON.stringify(processedInput)} | python3 main.py
+`
+      : `
 cat << 'EOF' > Main.java
 ${preprocessedCode}
 EOF
 javac Main.java
 echo ${JSON.stringify(processedInput)} | java -cp ".:/app/*" Main
-`],
-        Tty: false,
-        AttachStdout: true,
-        AttachStderr: true,
-        HostConfig: {
-            NetworkMode: "none",
-            Memory: 256 * 1024 * 1024,
-            CpuPeriod: 100000,
-            CpuQuota: 50000,
-            PidsLimit: 50,
-        }
-    });
+`;
 
-    await container.start();
+  const container = await docker.createContainer({
+    Image: image,
+    WorkingDir: "/app",
+    Cmd: ["sh", "-c", cmd],
+    Tty: false,
+    AttachStdout: true,
+    AttachStderr: true,
+    HostConfig: {
+      NetworkMode: "none",
+      Memory: 256 * 1024 * 1024,
+      CpuPeriod: 100000,
+      CpuQuota: 50000,
+      PidsLimit: 50,
+    },
+  });
 
-    const timeout = setTimeout(async () => {
-        try { await container.kill(); } catch {}
-    }, 100000);
+  await container.start();
 
+  const timeout = setTimeout(async () => {
     try {
-        await container.wait();
-    } finally {
-        clearTimeout(timeout);
-    }
+      await container.kill();
+    } catch {}
+  }, 100000);
 
-    const endTime = Date.now();
-    const logs = await container.logs({ stdout: true, stderr: true });
-    await container.remove({ force: true }).catch(() => {});
+  try {
+    await container.wait();
+  } finally {
+    clearTimeout(timeout);
+  }
 
-    const combinedOutput = stripDockerHeader(logs as Buffer);
+  const endTime = Date.now();
+  const logs = await container.logs({ stdout: true, stderr: true });
+  await container.remove({ force: true }).catch(() => {});
 
-    let actualOutput: any;
-    try {
-        actualOutput = JSON.parse(combinedOutput);
-    } catch {
-        actualOutput = combinedOutput;
-    }
+  const combinedOutput = stripDockerHeader(logs as Buffer);
 
-    function deepEqual(a: any, b: any): boolean {
-        return JSON.stringify(a) === JSON.stringify(b);
-    }
+  let actualOutput: any;
+  try {
+    actualOutput = JSON.parse(combinedOutput);
+  } catch {
+    actualOutput = combinedOutput;
+  }
 
-    const passed = deepEqual(actualOutput, testCase.expected_value);
+  function deepEqual(a: any, b: any): boolean {
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
 
-    return {
-        test_case_id: testCase.test_case_id as number,
-        passed,
-        actual_output: combinedOutput,
-        runtime_ms: endTime - startTime
-    };
+  const passed = deepEqual(actualOutput, testCase.expected_value);
+
+  return {
+    test_case_id: testCase.test_case_id as number,
+    passed,
+    actual_output: combinedOutput,
+    runtime_ms: endTime - startTime,
+  };
 }
 
 function stripDockerHeader(buffer: Buffer): string {
-    let result = "";
-    let i = 0;
-    while (i < buffer.length) {
-        const headerSize = 8;
-        const payloadLength = buffer.readUInt32BE(i + 4);
-        const payloadStart = i + headerSize;
-        const payloadEnd = payloadStart + payloadLength;
-        result += buffer.slice(payloadStart, payloadEnd).toString("utf8");
-        i = payloadEnd;
-    }
-    return result.trim();
+  let result = "";
+  let i = 0;
+  while (i < buffer.length) {
+    const headerSize = 8;
+    const payloadLength = buffer.readUInt32BE(i + 4);
+    const payloadStart = i + headerSize;
+    const payloadEnd = payloadStart + payloadLength;
+    result += buffer.slice(payloadStart, payloadEnd).toString("utf8");
+    i = payloadEnd;
+  }
+  return result.trim();
 }

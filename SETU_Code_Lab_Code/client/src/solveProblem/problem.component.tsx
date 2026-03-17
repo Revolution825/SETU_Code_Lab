@@ -3,7 +3,7 @@ import type { Problem } from "../types/problem";
 import NavBar from "../navBar.component";
 import "./solveProblem.scss";
 import "react-resizable/css/styles.css";
-import { ResizableBox } from 'react-resizable';
+import { ResizableBox } from "react-resizable";
 import { useEffect, useRef, useState } from "react";
 import CodeEditor from "./codeEditor.component";
 import Stopwatch, { type StopwatchHandle } from "./stopwatch.component";
@@ -13,8 +13,9 @@ import type { TestCase } from "../types/TestCase";
 import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
 // import { useAntiCheat } from "../antiCheat";
-import { FadeLoader } from 'react-spinners';
+import { FadeLoader } from "react-spinners";
 import { api, jsonToParamValues } from "../sharedUtils";
+import type { ProblemLanguage } from "../types/ProblemLanguage";
 
 export default function Problem() {
   //  const { shouldAutoSubmit } = useAntiCheat();
@@ -24,29 +25,31 @@ export default function Problem() {
 
   const [leftWidth, setLeftWidth] = useState(window.innerWidth * 0.5);
   const topHeight = window.innerHeight - 104;
-  const [rightHeight, setRightHeight] = useState(topHeight - 332)
+  const [rightHeight, setRightHeight] = useState(topHeight - 332);
   const HIDE_TEXT_AT = 120;
 
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [testCaseResults, setTestCaseResults] = useState<TestCaseResult[]>([]);
-  const [code, setCode] = useState(
-    problem.placeholder_code ?? ""
-  );
+
+  const [languages, setLanguages] = useState<ProblemLanguage[]>([]);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("java");
+  const [code, setCode] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const stopwatchRef = useRef<StopwatchHandle | null>(null);
-  const image = "java-sandbox";
 
   const [showSubmissionAlert, setShowSubmissionAlert] = useState(false);
   const [submissionSummary, setSubmissionSummary] = useState<{
-    overall_status: boolean,
-    testCaseResults: TestCaseResult[],
-    time_taken: number,
-    points_awarded: number
+    overall_status: boolean;
+    testCaseResults: TestCaseResult[];
+    time_taken: number;
+    points_awarded: number;
   } | null>(null);
 
   useEffect(() => {
     async function fetchTestCases() {
-      const res = await api.get('api/testCases?problem_id=' + problem.problem_id);
+      const res = await api.get(
+        "api/testCases?problem_id=" + problem.problem_id,
+      );
       if (res.ok) {
         setTestCases(await res.json());
       } else {
@@ -55,8 +58,23 @@ export default function Problem() {
         console.error("Error fetching test cases: ", errorData.message);
       }
     }
+    async function fetchProblemLanguages() {
+      const res = await api.get(
+        "api/problemLanguages?problem_id=" + problem.problem_id,
+      );
+      const data: ProblemLanguage[] = await res.json();
+      if (res.ok) {
+        setLanguages(data);
+        if (data.length > 0) {
+          setSelectedLanguage(data[0].language);
+          setCode(data[0].placeholder_code);
+        } else {
+          toast.error("Error fetching languages");
+        }
+      }
+    }
     fetchTestCases();
-
+    fetchProblemLanguages();
   }, []);
 
   //  useEffect(() => {
@@ -65,6 +83,14 @@ export default function Problem() {
   //    }
   //  }, [shouldAutoSubmit]);
 
+  const handleLanguageChange = (language: string) => {
+    const selected = languages.find((l) => l.language === language);
+    if (selected) {
+      setSelectedLanguage(language);
+      setCode(selected.placeholder_code);
+    }
+  };
+
   const handleRun = async (): Promise<TestCaseResult[]> => {
     const results: TestCaseResult[] = [];
     setIsRunning(true);
@@ -72,7 +98,9 @@ export default function Problem() {
       const result = await runTestCase(testCase);
       if (!result) {
         setIsRunning(false);
-        throw new Error("Failed to get result for test case ID: " + testCase.test_case_id);
+        throw new Error(
+          "Failed to get result for test case ID: " + testCase.test_case_id,
+        );
       }
       results.push(result);
     }
@@ -80,25 +108,32 @@ export default function Problem() {
     return results;
   };
 
-  async function runTestCase(testCase: TestCase): Promise<TestCaseResult | null> {
+  async function runTestCase(
+    testCase: TestCase,
+  ): Promise<TestCaseResult | null> {
     try {
-      const res = await api.post('docker/start', {
-        image: image,
-        placeholder_code: problem.placeholder_code,
+      const res = await api.post("docker/start", {
+        image: selectedLanguage === "java" ? "java-sandbox" : "python-sandbox",
+        placeholder_code:
+          languages.find((l) => l.language === selectedLanguage)
+            ?.placeholder_code ?? "",
         code: code,
-        testCase: testCase
+        testCase: testCase,
+        language: selectedLanguage,
       });
 
       const data = await res.json();
       if (res.ok) {
         const testCaseResult: TestCaseResult = data.output;
-        setTestCaseResults(prev => {
-          const exists = prev.some(tc => tc.test_case_id === testCase.test_case_id);
+        setTestCaseResults((prev) => {
+          const exists = prev.some(
+            (tc) => tc.test_case_id === testCase.test_case_id,
+          );
           if (exists) {
-            return prev.map(tc =>
+            return prev.map((tc) =>
               tc.test_case_id === testCase.test_case_id
                 ? { ...tc, ...testCaseResult }
-                : tc
+                : tc,
             );
           } else {
             return [...prev, testCaseResult];
@@ -127,14 +162,15 @@ export default function Problem() {
         toast.error("Error: not all test cases ran, please try again");
         return;
       }
-      const overallStatus = results.every(tc => tc.passed);
-      const res = await api.post('/api/submission', {
+      const overallStatus = results.every((tc) => tc.passed);
+      const res = await api.post("/api/submission", {
         problem_id: problem.problem_id,
         submitted_code: submittedCode,
         overall_status: overallStatus,
         time_taken: timeTaken,
         testCaseResults: results,
         points: problem.points,
+        language: selectedLanguage,
       });
 
       const data = await res.json();
@@ -144,7 +180,7 @@ export default function Problem() {
           overall_status: overallStatus,
           testCaseResults: results,
           time_taken: timeTaken,
-          points_awarded: data.submission.points_awarded
+          points_awarded: data.submission.points_awarded,
         });
         setShowSubmissionAlert(true);
       } else {
@@ -157,7 +193,7 @@ export default function Problem() {
       toast.error("Error: test cases could not be executed");
       console.error(error.message);
     }
-  }
+  };
 
   return (
     <div>
@@ -179,14 +215,22 @@ export default function Problem() {
                   <div className="paneTitle">
                     {problem.problem_title} | {problem.user_name}
                   </div>
-                  <div className="warning"><img className="warningIcon" src="warning.svg" alt="WARNING" /> Leaving this tab before fully completing the problem will automatically submit your current work</div>
+                  <div className="warning">
+                    <img
+                      className="warningIcon"
+                      src="warning.svg"
+                      alt="WARNING"
+                    />{" "}
+                    Leaving this tab before fully completing the problem will
+                    automatically submit your current work
+                  </div>
                   <div className="descriptionContent">
                     <MarkdownPreview
                       source={problem.problem_description}
                       style={{
                         backgroundColor: "transparent",
-                        fontFamily: 'Inter Tight, sans-serif',
-                        color: '#dedede',
+                        fontFamily: "Inter Tight, sans-serif",
+                        color: "#dedede",
                       }}
                     />
                   </div>
@@ -209,6 +253,17 @@ export default function Problem() {
               <div className="paneTitle">
                 Code editor
                 <div className="submissionButtons">
+                  <select
+                    className={"languageSelect"}
+                    value={selectedLanguage}
+                    onChange={(e) => handleLanguageChange(e.target.value)}
+                  >
+                    {languages.map((l) => (
+                      <option key={l.language} value={l.language}>
+                        {l.language}
+                      </option>
+                    ))}
+                  </select>
                   <Stopwatch ref={stopwatchRef} />
                   <button
                     className="runButton"
@@ -228,6 +283,7 @@ export default function Problem() {
               </div>
               <div className="editorContainer">
                 <CodeEditor
+                  language={selectedLanguage}
                   value={code ?? ""}
                   onChange={setCode}
                 />
@@ -237,33 +293,47 @@ export default function Problem() {
           <div className="testCasesPane">
             <div className="pane">
               <div className="paneContent">
-                <div className="paneTitle">
-                  Test cases
-                </div>
+                <div className="paneTitle">Test cases</div>
                 <div className="testCases">
                   {Array.isArray(testCases) && testCases.length > 0 ? (
                     testCases.slice(0, 4).map((testCase, idx) => {
                       const result = testCaseResults.find(
-                        (r) => r.test_case_id === testCase.test_case_id
+                        (r) => r.test_case_id === testCase.test_case_id,
                       );
                       return (
                         <div className="testCase" key={testCase.test_case_id}>
-                          <h3>
-                            Test Case {idx + 1}{" "}
-                          </h3>
-                          {result?.passed != null
-                            ? <p><strong>Status: </strong><span style={{ color: result.passed ? "green" : "red" }}>
-                              {result?.passed === true
-                                ? "Pass"
-                                : "Fail"}</span></p>
-                            : ""}
-                          <p><strong>Input:</strong> {jsonToParamValues(JSON.stringify(testCase.input_value))}</p>
-                          <p><strong>Expected:</strong> {JSON.stringify(testCase.expected_value)}</p>
+                          <h3>Test Case {idx + 1} </h3>
+                          {result?.passed != null ? (
+                            <p>
+                              <strong>Status: </strong>
+                              <span
+                                style={{
+                                  color: result.passed ? "green" : "red",
+                                }}
+                              >
+                                {result?.passed === true ? "Pass" : "Fail"}
+                              </span>
+                            </p>
+                          ) : (
+                            ""
+                          )}
+                          <p>
+                            <strong>Input:</strong>{" "}
+                            {jsonToParamValues(
+                              JSON.stringify(testCase.input_value),
+                            )}
+                          </p>
+                          <p>
+                            <strong>Expected:</strong>{" "}
+                            {JSON.stringify(testCase.expected_value)}
+                          </p>
                           {result && (
                             <>
                               <strong>Output:</strong>
                               <pre
-                                style={{ color: result.passed ? "green" : "red" }}
+                                style={{
+                                  color: result.passed ? "green" : "red",
+                                }}
                                 className="testOutput"
                               >
                                 <p>{result.actual_output}</p>
@@ -292,11 +362,12 @@ export default function Problem() {
           }}
         />
       )}
-      {isRunning &&
+      {isRunning && (
         <div className="spinner">
           <FadeLoader color="#dedede" />
           <p style={{ margin: 24 }}>Hang tight, running test cases...</p>
-        </div>}
+        </div>
+      )}
     </div>
-  )
+  );
 }

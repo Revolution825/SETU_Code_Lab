@@ -18,17 +18,23 @@ export default function Problems() {
   const { user } = useAuth();
   const [userName, setUserName] = useState<String>("");
   const [search, setSearch] = useState("");
-  const [difficulty, setDifficulty] = useState<"all" | "easy" | "medium" | "hard">("all");
+  const [difficulty, setDifficulty] = useState<
+    "all" | "easy" | "medium" | "hard"
+  >("all");
   const filteredProblems = problems.filter((problem) => {
-    const matchesSearch = problem.problem_title.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = problem.problem_title
+      .toLowerCase()
+      .includes(search.toLowerCase());
     const matchesDifficulty =
-      difficulty === "all" ? true
-        : difficulty === "easy" ? problem.difficulty <= 2
-          : difficulty === "medium" ? problem.difficulty === 3
+      difficulty === "all"
+        ? true
+        : difficulty === "easy"
+          ? problem.difficulty <= 2
+          : difficulty === "medium"
+            ? problem.difficulty === 3
             : problem.difficulty >= 4;
     return matchesSearch && matchesDifficulty;
-  }
-  );
+  });
 
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -51,8 +57,8 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchCourseProblems() {
-      const res = await api.post('/api/problems', {
-        selectedCourse: selectedCourse
+      const res = await api.post("/api/problems", {
+        selectedCourse: selectedCourse,
       });
       if (res.ok) {
         setProblems(await res.json());
@@ -68,7 +74,7 @@ export default function Problems() {
 
   useEffect(() => {
     async function fetchCourses() {
-      const res = await api.get('/api/fetchCourses');
+      const res = await api.get("/api/fetchCourses");
       if (res.ok) {
         setCourses(await res.json());
       } else {
@@ -91,11 +97,13 @@ export default function Problems() {
       }
     }
     fetchUserName();
-  }, [])
+  }, []);
 
   useEffect(() => {
     async function fetchSubmissions() {
-      const res = await api.get(`/api/fetchSubmissions?userId=${user?.user_id}`);
+      const res = await api.get(
+        `/api/fetchSubmissions?userId=${user?.user_id}`,
+      );
 
       if (res.ok) {
         const submissions = await res.json();
@@ -106,15 +114,22 @@ export default function Problems() {
         return;
       }
     }
-    fetchSubmissions()
-  }, [])
+    fetchSubmissions();
+  }, []);
 
   return (
     <div className="main">
       <NavBar />
-      <SideBar user={user} courses={courses} selectedCourse={selectedCourse} onSelectCourse={setSelectedCourse} />
+      <SideBar
+        user={user}
+        courses={courses}
+        selectedCourse={selectedCourse}
+        onSelectCourse={setSelectedCourse}
+      />
       <div className="problemsBody">
-        <p className="greetingMessage">{getGreeting(currentHour)} {userName}</p>
+        <p className="greetingMessage">
+          {getGreeting(currentHour)} {userName}
+        </p>
         <div className="filteringOptions">
           <img src="search.svg" alt="search icon" className="searchIcon" />
           <input
@@ -125,12 +140,22 @@ export default function Problems() {
             placeholder={"Search Problems..."}
           />
           <div className="difficultyFilter">
-            <p style={{ marginRight: "24px", marginTop: "0px", marginBottom: "0px" }}>Filter: </p>
+            <p
+              style={{
+                marginRight: "24px",
+                marginTop: "0px",
+                marginBottom: "0px",
+              }}
+            >
+              Filter:{" "}
+            </p>
             {["all", "easy", "medium", "hard"].map((d) => (
               <button
                 key={d}
                 className={`difficultyButton ${difficulty === d ? "active" : ""}`}
-                onClick={() => setDifficulty(d as "all" | "easy" | "medium" | "hard")}
+                onClick={() =>
+                  setDifficulty(d as "all" | "easy" | "medium" | "hard")
+                }
               >
                 {d.charAt(0).toUpperCase() + d.slice(1)}
               </button>
@@ -138,33 +163,47 @@ export default function Problems() {
           </div>
         </div>
         <ul className="problemList">
-          {Array.isArray(filteredProblems)
-            ? filteredProblems.map((p) => {
-
-              const isCompleted = submissions.find((s) => s.user_id === user?.user_id && p.problem_id === s.problem_id);
+          {Array.isArray(filteredProblems) ? (
+            filteredProblems.map((p) => {
+              const isCompleted = submissions.find(
+                (s) =>
+                  s.user_id === user?.user_id && p.problem_id === s.problem_id,
+              );
 
               return (
                 <button
                   className="problem"
                   key={p.problem_id}
-                  onClick={() => problemClick(p)}>
-                  <img src="tick.svg" alt="tick" className="completedTick" style={{ visibility: isCompleted ? 'visible' : 'hidden' }} />
-                  {
-                    filteredProblems.indexOf(p) + 1}. {p.problem_title}
+                  onClick={() => problemClick(p)}
+                >
+                  <img
+                    src="tick.svg"
+                    alt="tick"
+                    className="completedTick"
+                    style={{ visibility: isCompleted ? "visible" : "hidden" }}
+                  />
+                  {filteredProblems.indexOf(p) + 1}. {p.problem_title}
                   <span className="problemListItem">| {p.user_name}</span>
                   <span className="stars">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <img
                         key={i}
                         className="star"
-                        src={i < p.difficulty ? "/filledStar.svg" : "/emptyStar.svg"}
+                        src={
+                          i < p.difficulty
+                            ? "/filledStar.svg"
+                            : "/emptyStar.svg"
+                        }
                         alt="star"
                       />
                     ))}
                   </span>
-                </button>);
+                </button>
+              );
             })
-            : <li>No problems found</li>}
+          ) : (
+            <li>No problems found</li>
+          )}
         </ul>
       </div>
     </div>

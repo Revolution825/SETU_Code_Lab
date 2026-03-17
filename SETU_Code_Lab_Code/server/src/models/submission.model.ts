@@ -2,35 +2,41 @@ import { pool } from "../infrastructure/database";
 import { Submission } from "../types/submission";
 
 export async function createSubmission(
-    client: any,
-    user_id: number,
-    problem_id: number,
-    submitted_code: string,
-    overall_status: boolean,
-    time_taken: number,
-    percentage: number,
-    points_awarded: number
+  client: any,
+  user_id: number,
+  problem_id: number,
+  submitted_code: string,
+  overall_status: boolean,
+  time_taken: number,
+  percentage: number,
+  points_awarded: number,
+  language: string,
 ): Promise<Submission> {
-    const result = await client.query(
-        `INSERT INTO submission (user_id, problem_id, submitted_code, overall_status, time_taken, percentage, points_awarded) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7) 
+  const result = await client.query(
+    `INSERT INTO submission (user_id, problem_id, submitted_code, overall_status, time_taken, percentage, points_awarded, language) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
          RETURNING *`,
-        [
-            user_id,
-            problem_id,
-            submitted_code,
-            overall_status,
-            time_taken,
-            percentage,
-            points_awarded
-        ]
-    );
-    return result.rows[0]
+    [
+      user_id,
+      problem_id,
+      submitted_code,
+      overall_status,
+      time_taken,
+      percentage,
+      points_awarded,
+      language,
+    ],
+  );
+  return result.rows[0];
 }
 
-export async function getSubmissionsForCourse(student_ids: number[], problem_ids: number[], created_at: string) {
-    const result = await pool.query(
-        `
+export async function getSubmissionsForCourse(
+  student_ids: number[],
+  problem_ids: number[],
+  created_at: string,
+) {
+  const result = await pool.query(
+    `
         SELECT DISTINCT ON (user_id, problem_id)
             *
         FROM submission
@@ -42,21 +48,27 @@ export async function getSubmissionsForCourse(student_ids: number[], problem_ids
             problem_id,
             submitted_at DESC
         `,
-        [student_ids, problem_ids, created_at]
-    );
-    return result.rows;
+    [student_ids, problem_ids, created_at],
+  );
+  return result.rows;
 }
 
 export async function getSubmissionsForUser(user_id: number) {
-    const result = await pool.query(`SELECT * FROM submission WHERE user_id = $1 ORDER BY submitted_at DESC`,
-        [user_id]
-    );
-    return result.rows;
+  const result = await pool.query(
+    `SELECT * FROM submission WHERE user_id = $1 ORDER BY submitted_at DESC`,
+    [user_id],
+  );
+  return result.rows;
 }
 
-export async function checkFirstSolve(client: any, user_id: number, problem_id: number) {
-    const result = await client.query(
-        `SELECT submission_id FROM submission WHERE user_id = $1 AND problem_id = $2 AND overall_status = true`, [user_id, problem_id]
-    )
-    return result.rows.length === 0;
+export async function checkFirstSolve(
+  client: any,
+  user_id: number,
+  problem_id: number,
+) {
+  const result = await client.query(
+    `SELECT submission_id FROM submission WHERE user_id = $1 AND problem_id = $2 AND overall_status = true`,
+    [user_id, problem_id],
+  );
+  return result.rows.length === 0;
 }

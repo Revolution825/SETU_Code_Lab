@@ -7,4 +7,5 @@ export interface Submission {
     overall_status: boolean;
     time_taken: number;
     points_awarded: number;
+    language: 'java' | 'python'
 }

@@ -1,57 +1,66 @@
 import { Request, Response } from "express";
-import { makeSubmission, fetchSubmissionsForCourse, fetchSubmissionsForUser } from "../services/submission.service";
+import {
+  makeSubmission,
+  fetchSubmissionsForCourse,
+  fetchSubmissionsForUser,
+} from "../services/submission.service";
 
 export const makeSubmissionHandler = async (req: Request, res: Response) => {
-    try {
+  try {
+    const user_id = req.user!.user_id;
 
-        const user_id = req.user!.user_id;
+    const {
+      problem_id,
+      submitted_code,
+      overall_status,
+      time_taken,
+      testCaseResults,
+      points,
+      language,
+    } = req.body;
 
-        const {
-            problem_id,
-            submitted_code,
-            overall_status,
-            time_taken,
-            testCaseResults,
-            points
-        } = req.body;
+    const submission = await makeSubmission(
+      user_id,
+      problem_id,
+      submitted_code,
+      overall_status,
+      time_taken,
+      testCaseResults,
+      points,
+      language,
+    );
 
-
-
-        const submission = await makeSubmission(
-            user_id,
-            problem_id,
-            submitted_code,
-            overall_status,
-            time_taken,
-            testCaseResults,
-            points
-        );
-
-        res.status(200).json({ message: "Submission successful", submission: submission });
-    } catch (error: any) {
-        res.status(500).json({ messsage: error.message });
-    }
-}
+    res
+      .status(200)
+      .json({ message: "Submission successful", submission: submission });
+  } catch (error: any) {
+    res.status(500).json({ messsage: error.message });
+  }
+};
 
 export const getSubmissionsForCourse = async (req: Request, res: Response) => {
-    const { student_ids, problem_ids, created_at } = req.body;
-    try {
-        const submissions = await fetchSubmissionsForCourse(student_ids, problem_ids, created_at);
-        res.status(200).json(submissions);
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
-    }
-}
+  const { student_ids, problem_ids, created_at } = req.body;
+  try {
+    const submissions = await fetchSubmissionsForCourse(
+      student_ids,
+      problem_ids,
+      created_at,
+    );
+    res.status(200).json(submissions);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const getSubmissionsForUser = async (req: Request, res: Response) => {
-    const requestedUserId = Number(req.query.userId);
-    if (req.user!.role !== "lecturer" && requestedUserId !== req.user!.user_id) {
-        return res.status(403).json({ message: "Forbidden" });
-    }
-    try {
-        const submissions = await fetchSubmissionsForUser(requestedUserId);
-        res.status(200).json(submissions);
-    } catch (error: any) {
-        res.status(500).json({ message: error.message });
-    }
+  const requestedUserId = Number(req.query.userId);
+  if (req.user!.role !== "lecturer" && requestedUserId !== req.user!.user_id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+  try {
+    const submissions = await fetchSubmissionsForUser(requestedUserId);
+    res.status(200).json(submissions);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 };
