@@ -76,7 +76,15 @@ ${code}
 
 input_data = json.load(sys.stdin)
 result = ${functionName}(**input_data)
-print(json.dumps(result))
+def make_serializable(obj):
+  if isinstance(obj, tuple):
+    return list(obj)
+  if isinstance(obj, list):
+    return [make_serializable(i) for i in obj]
+  if isinstance(obj, dict):
+    return {k: make_serializable(v) for k, v in obj.items()}
+  return obj
+print(json.dumps(make_serializable(result)))
 `;
 }
 
