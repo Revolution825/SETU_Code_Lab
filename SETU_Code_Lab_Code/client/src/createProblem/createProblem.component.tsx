@@ -53,7 +53,6 @@ true
   const [description, setDescription] = useState(
     problem?.problem_description ?? "",
   );
-  const [placeholderCode, setPlaceholderCode] = useState("");
   const [language_entries, setLanguageEntries] = useState<ProblemLanguage[]>([
     { language: "java", placeholder_code: javaPlaceholderCodePlaceholder },
   ]);
@@ -225,7 +224,6 @@ true
         setLanguageEntries(data);
         if (data.length > 0) {
           setActiveLanguageTab(data[0].language);
-          setPlaceholderCode(data[0].placeholder_code);
         } else {
           toast.error("Error fetching languages");
         }
