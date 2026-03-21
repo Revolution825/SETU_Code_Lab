@@ -27,8 +27,9 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 
   const inputFields = parsedParams
     .map((p) => {
-      const fieldType = p.type === "String" ? "Object" : p.type;
-      return `public ${fieldType} ${p.name};`;
+      if (p.type === "String") return `public Object ${p.name};`;
+      if (p.type === "char[][]") return `public String[][] ${p.name};`;
+      return `public ${p.type} ${p.name};`;
     })
     .join("\n    ");
 
@@ -40,6 +41,11 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
               .map(Object::toString)
               .collect(java.util.stream.Collectors.joining())
           : (String) input.${p.name}`;
+      }
+      if (p.type === "char[][]") {
+        return `java.util.Arrays.stream(input.${p.name})
+          .map(row -> new String(row).toCharArray())
+          .toArray(char[][]::new)`;
       }
       return `input.${p.name}`;
     })
@@ -112,6 +118,7 @@ export async function startContainer(
   testCase: TestCase,
   language: string,
 ): Promise<TestCaseResult> {
+  console.log("testCase.input_value", testCase.input_value);
   const processedInput = JSON.stringify(testCase.input_value);
   const preprocessedCode =
     language === "python"
