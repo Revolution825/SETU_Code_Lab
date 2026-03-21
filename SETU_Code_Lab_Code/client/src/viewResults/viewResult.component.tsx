@@ -14,6 +14,7 @@ import type { TestCase } from "../types/TestCase";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
 import { api, jsonToParamValues } from "../sharedUtils";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function ViewResult() {
   const { user } = useAuth();
@@ -22,6 +23,7 @@ export default function ViewResult() {
   const submission: Submission = data.submission;
   const student: User = data.student;
   const problem: Problem = data.problem;
+  const [dataLoading, setDataLoading] = useState(true);
   const [testCaseResults, setTestCaseResults] = useState<TestCaseResult[]>([]);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const submittedAt = new Date(submission.submitted_at);
@@ -54,6 +56,7 @@ export default function ViewResult() {
         toast.error("Error fetching test cases");
         console.error("Error fetching test cases: ", errorData.message);
       }
+      setDataLoading(false);
     }
     fetchData();
   }, []);
@@ -229,6 +232,12 @@ export default function ViewResult() {
           </div>
         </div>
       </div>
+      {dataLoading && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading Result...</p>
+        </div>
+      )}
     </div>
   );
 }

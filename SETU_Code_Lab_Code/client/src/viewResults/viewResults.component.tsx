@@ -10,279 +10,323 @@ import type { User } from "../types/user";
 import type { Submission } from "../types/Submission";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function ViewResults() {
-    const navigate = useNavigate();
-    const { user } = useAuth();
-    const location = useLocation();
-    const course: Course = location.state;
-    const [problems, setProblems] = useState<Problem[]>([]);
-    const [students, setStudents] = useState<User[]>([]);
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-    const submissionMap = new Map<string, Submission>();
-    submissions.forEach(submission => {
-        submissionMap.set(`${submission.user_id}-${submission.problem_id}`, submission);
-    });
-
-    function resultClicked(submission: Submission | undefined, student: User, problem: Problem) {
-        if (submission) {
-            navigate("/viewResult", { state: { submission, student, problem } });
-        } else {
-            toast.error("Submission not found");
-        }
-    }
-
-    function studentProfileClicked(student: User) {
-        navigate("/profile", { state: student });
-    }
-
-    useEffect(() => {
-        async function fetchData() {
-            const problems = await api.post('/api/problems', {
-                selectedCourse: course.course_id
-            });
-            const problemsData = problems.ok ? await problems.json() : [];
-            setProblems(problemsData);
-            const students = await api.post('/api/studentsOnCourse', {
-                course_id: course.course_id
-            });
-            const studentData = students.ok ? await students.json() : [];
-            setStudents(studentData);
-            const submissionsRes = await api.post('/api/submissionsForCourse', {
-                student_ids: studentData.map((s: User) => s.user_id), problem_ids: problemsData.map((p: Problem) => p.problem_id), created_at: course.created_at
-            });
-            const submissionsData = submissionsRes.ok ? await submissionsRes.json() : [];
-            setSubmissions(submissionsData);
-
-        }
-        fetchData();
-    }, [course.course_id]);
-
-    const problemAverages = problems.map(problem => {
-        let total = 0;
-        let count = 0;
-
-        students.forEach(student => {
-            const sub = submissionMap.get(
-                `${student.user_id}-${problem.problem_id}`
-            );
-
-            if (sub?.percentage !== undefined && sub.percentage !== null) {
-                total += sub.percentage;
-                count++;
-            }
-        });
-
-        return count > 0 ? Math.round(total / count) : null;
-    });
-
-    const overallAverage = problemAverages.filter(a => a !== null).length > 0
-        ? Math.round(
-            problemAverages
-                .filter(a => a !== null)
-                .reduce((a, b) => a + (b as number), 0) /
-            problemAverages.filter(a => a !== null).length
-        )
-        : null;
-
-    function downloadCSV() {
-        const headers = [
-            "Student",
-            ...problems.map(problem => problem.problem_title),
-            "Total"
-        ];
-        const rows: string[][] = [];
-        students.forEach(student => {
-            let total = 0;
-            let count = 0;
-
-            const row: string[] = [];
-            row.push(student.user_name);
-            problems.forEach(problem => {
-                const sub = submissionMap.get(`${student.user_id}-${problem.problem_id}`);
-
-                const percentage = sub?.percentage ?? null;
-
-                if (percentage !== null) {
-                    total += percentage;
-                    count++;
-                    row.push(`${percentage}`);
-                } else {
-                    row.push("");
-                }
-            })
-            const avg = count > 0 ? Math.round(total / count) : "";
-            row.push(String(avg));
-            rows.push(row);
-        })
-        const avgRow: string[] = ["Average"];
-        problems.forEach(problem => {
-            let total = 0;
-            let count = 0;
-
-            students.forEach(student => {
-                const sub = submissionMap.get(
-                    `${student.user_id}-${problem.problem_id}`
-                );
-                if (sub?.percentage !== null && sub?.percentage !== undefined) {
-                    total += sub.percentage;
-                    count++;
-                }
-            });
-            avgRow.push(count > 0 ? String(Math.round(total / count)) : "");
-        });
-        avgRow.push(overallAverage !== null ? String(overallAverage) : "");
-        rows.push(avgRow);
-
-        const csvData = [headers, ...rows].map(
-            row => row.map(
-                value => `"${String(value).replace(/"/g, '""')}"`
-            ).join(",")
-        ).join("\n");
-
-        const blob = new Blob(["\uFEFF", csvData], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${course.course_title}_results.csv`;
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
-
-    return (
-        <div>
-            <NavBar />
-            {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
-            <div className="resultsBody">
-                <div className="resultsHeader">
-                    <p>{course.course_title} - Results</p>
-                </div>
-                <div className="resultsContent">
-                    <div>
-                        <p style={{ fontWeight: "bold", marginLeft: 12 }}>Course Description:</p>
-                        <p style={{ marginLeft: 24 }}>{course.course_description}</p>
-                    </div>
-                    <div className="tableWrapper">
-                        <table className="resultsTable">
-                            <thead>
-                                <tr>
-                                    <th className="staticColumn stickyTop">Student</th>
-                                    {problems.map((p) => (
-                                        <th className="staticColumn stickyTop" key={p.problem_id}>{p.problem_title}</th>
-                                    ))}
-                                    <th className="lastResultTableHeading stickyRight stickyTop">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {students.map((student, index) => {
-                                    let total = 0;
-                                    let count = 0;
-
-                                    return (
-                                        <tr className="resultsRow" key={student.user_id}>
-                                            <td className="resultColumn roundedLeft">
-                                                <button onClick={() => studentProfileClicked(student)}>
-                                                    {index + 1}. {student.user_name}
-                                                </button>
-                                            </td>
-                                            {problems.map(problem => {
-                                                const sub = submissionMap.get(
-                                                    `${student.user_id}-${problem.problem_id}`
-                                                );
-
-                                                const percentage = sub?.percentage ?? null;
-
-                                                if (percentage !== null) {
-                                                    total += percentage;
-                                                    count++;
-                                                }
-
-                                                return (
-                                                    <td className="resultColumn" key={problem.problem_id}>
-                                                        <button
-                                                            onClick={() => resultClicked(sub, student, problem)}
-                                                            style={{
-                                                                color:
-                                                                    percentage === null
-                                                                        ? "grey"
-                                                                        : percentage >= 80
-                                                                            ? "green"
-                                                                            : percentage >= 50
-                                                                                ? "orange"
-                                                                                : "red",
-                                                            }} className="resultButton">
-                                                            {percentage !== null ? `${percentage}%` : "-"}
-                                                        </button>
-                                                    </td>
-                                                );
-                                            })}
-                                            <td className="totalResultColumn stickyRight" style={{
-                                                fontWeight: "bold",
-                                                color:
-                                                    count > 0 ?
-                                                        Math.round(total / count) === null
-                                                            ? "grey"
-                                                            : Math.round(total / count) >= 80
-                                                                ? "green"
-                                                                : Math.round(total / count) >= 50
-                                                                    ? "orange"
-                                                                    : "red"
-                                                        : "grey"
-                                            }}>
-                                                {count > 0 ? `${Math.round(total / count)}%` : "-"}
-                                            </td>
-                                        </tr>
-                                    );
-                                }
-                                )}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td style={{ fontWeight: "bold", paddingLeft: 12 }}>
-                                        Average
-                                    </td>
-                                    {problemAverages.map((avg, index) => (
-                                        <td
-                                            key={index}
-                                            className="staticColumn"
-                                            style={{
-                                                fontWeight: "bold",
-                                                color:
-                                                    avg === null
-                                                        ? "grey"
-                                                        : avg >= 80
-                                                            ? "green"
-                                                            : avg >= 50
-                                                                ? "orange"
-                                                                : "red",
-                                            }}
-                                        >
-                                            {avg !== null ? `${avg}%` : "-"}
-                                        </td>
-                                    ))}
-                                    <td className="totalResultColumn stickyRight" style={{
-                                        fontWeight: "bold", color:
-                                            overallAverage === null
-                                                ? "grey"
-                                                : overallAverage >= 80
-                                                    ? "green"
-                                                    : overallAverage >= 50
-                                                        ? "orange"
-                                                        : "red"
-                                    }}>
-                                        {overallAverage !== null ? `${overallAverage}%` : "-"}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <button onClick={downloadCSV} className="downloadButton">Download Results.csv</button>
-                </div>
-            </div>
-        </div>
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const location = useLocation();
+  const course: Course = location.state;
+  const [dataLoading, setDataLoading] = useState(true);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [students, setStudents] = useState<User[]>([]);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const submissionMap = new Map<string, Submission>();
+  submissions.forEach((submission) => {
+    submissionMap.set(
+      `${submission.user_id}-${submission.problem_id}`,
+      submission,
     );
+  });
+
+  function resultClicked(
+    submission: Submission | undefined,
+    student: User,
+    problem: Problem,
+  ) {
+    if (submission) {
+      navigate("/viewResult", { state: { submission, student, problem } });
+    } else {
+      toast.error("Submission not found");
+    }
+  }
+
+  function studentProfileClicked(student: User) {
+    navigate("/profile", { state: student });
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const problems = await api.post("/api/problems", {
+        selectedCourse: course.course_id,
+      });
+      const problemsData = problems.ok ? await problems.json() : [];
+      setProblems(problemsData);
+      const students = await api.post("/api/studentsOnCourse", {
+        course_id: course.course_id,
+      });
+      const studentData = students.ok ? await students.json() : [];
+      setStudents(studentData);
+      const submissionsRes = await api.post("/api/submissionsForCourse", {
+        student_ids: studentData.map((s: User) => s.user_id),
+        problem_ids: problemsData.map((p: Problem) => p.problem_id),
+        created_at: course.created_at,
+      });
+      const submissionsData = submissionsRes.ok
+        ? await submissionsRes.json()
+        : [];
+      setDataLoading(false);
+      setSubmissions(submissionsData);
+    }
+    fetchData();
+  }, [course.course_id]);
+
+  const problemAverages = problems.map((problem) => {
+    let total = 0;
+    let count = 0;
+
+    students.forEach((student) => {
+      const sub = submissionMap.get(`${student.user_id}-${problem.problem_id}`);
+
+      if (sub?.percentage !== undefined && sub.percentage !== null) {
+        total += sub.percentage;
+        count++;
+      }
+    });
+
+    return count > 0 ? Math.round(total / count) : null;
+  });
+
+  const overallAverage =
+    problemAverages.filter((a) => a !== null).length > 0
+      ? Math.round(
+          problemAverages
+            .filter((a) => a !== null)
+            .reduce((a, b) => a + (b as number), 0) /
+            problemAverages.filter((a) => a !== null).length,
+        )
+      : null;
+
+  function downloadCSV() {
+    const headers = [
+      "Student",
+      ...problems.map((problem) => problem.problem_title),
+      "Total",
+    ];
+    const rows: string[][] = [];
+    students.forEach((student) => {
+      let total = 0;
+      let count = 0;
+
+      const row: string[] = [];
+      row.push(student.user_name);
+      problems.forEach((problem) => {
+        const sub = submissionMap.get(
+          `${student.user_id}-${problem.problem_id}`,
+        );
+
+        const percentage = sub?.percentage ?? null;
+
+        if (percentage !== null) {
+          total += percentage;
+          count++;
+          row.push(`${percentage}`);
+        } else {
+          row.push("");
+        }
+      });
+      const avg = count > 0 ? Math.round(total / count) : "";
+      row.push(String(avg));
+      rows.push(row);
+    });
+    const avgRow: string[] = ["Average"];
+    problems.forEach((problem) => {
+      let total = 0;
+      let count = 0;
+
+      students.forEach((student) => {
+        const sub = submissionMap.get(
+          `${student.user_id}-${problem.problem_id}`,
+        );
+        if (sub?.percentage !== null && sub?.percentage !== undefined) {
+          total += sub.percentage;
+          count++;
+        }
+      });
+      avgRow.push(count > 0 ? String(Math.round(total / count)) : "");
+    });
+    avgRow.push(overallAverage !== null ? String(overallAverage) : "");
+    rows.push(avgRow);
+
+    const csvData = [headers, ...rows]
+      .map((row) =>
+        row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","),
+      )
+      .join("\n");
+
+    const blob = new Blob(["\uFEFF", csvData], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${course.course_title}_results.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+    <div>
+      <NavBar />
+      {user?.role == "lecturer" ? (
+        <div className="sideBar">
+          <LecturerSideBar />
+        </div>
+      ) : null}
+      <div className="resultsBody">
+        <div className="resultsHeader">
+          <p>{course.course_title} - Results</p>
+        </div>
+        <div className="resultsContent">
+          <div>
+            <p style={{ fontWeight: "bold", marginLeft: 12 }}>
+              Course Description:
+            </p>
+            <p style={{ marginLeft: 24 }}>{course.course_description}</p>
+          </div>
+          <div className="tableWrapper">
+            <table className="resultsTable">
+              <thead>
+                <tr>
+                  <th className="staticColumn stickyTop">Student</th>
+                  {problems.map((p) => (
+                    <th className="staticColumn stickyTop" key={p.problem_id}>
+                      {p.problem_title}
+                    </th>
+                  ))}
+                  <th className="lastResultTableHeading stickyRight stickyTop">
+                    Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((student, index) => {
+                  let total = 0;
+                  let count = 0;
+
+                  return (
+                    <tr className="resultsRow" key={student.user_id}>
+                      <td className="resultColumn roundedLeft">
+                        <button onClick={() => studentProfileClicked(student)}>
+                          {index + 1}. {student.user_name}
+                        </button>
+                      </td>
+                      {problems.map((problem) => {
+                        const sub = submissionMap.get(
+                          `${student.user_id}-${problem.problem_id}`,
+                        );
+
+                        const percentage = sub?.percentage ?? null;
+
+                        if (percentage !== null) {
+                          total += percentage;
+                          count++;
+                        }
+
+                        return (
+                          <td className="resultColumn" key={problem.problem_id}>
+                            <button
+                              onClick={() =>
+                                resultClicked(sub, student, problem)
+                              }
+                              style={{
+                                color:
+                                  percentage === null
+                                    ? "grey"
+                                    : percentage >= 80
+                                      ? "green"
+                                      : percentage >= 50
+                                        ? "orange"
+                                        : "red",
+                              }}
+                              className="resultButton"
+                            >
+                              {percentage !== null ? `${percentage}%` : "-"}
+                            </button>
+                          </td>
+                        );
+                      })}
+                      <td
+                        className="totalResultColumn stickyRight"
+                        style={{
+                          fontWeight: "bold",
+                          color:
+                            count > 0
+                              ? Math.round(total / count) === null
+                                ? "grey"
+                                : Math.round(total / count) >= 80
+                                  ? "green"
+                                  : Math.round(total / count) >= 50
+                                    ? "orange"
+                                    : "red"
+                              : "grey",
+                        }}
+                      >
+                        {count > 0 ? `${Math.round(total / count)}%` : "-"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td style={{ fontWeight: "bold", paddingLeft: 12 }}>
+                    Average
+                  </td>
+                  {problemAverages.map((avg, index) => (
+                    <td
+                      key={index}
+                      className="staticColumn"
+                      style={{
+                        fontWeight: "bold",
+                        color:
+                          avg === null
+                            ? "grey"
+                            : avg >= 80
+                              ? "green"
+                              : avg >= 50
+                                ? "orange"
+                                : "red",
+                      }}
+                    >
+                      {avg !== null ? `${avg}%` : "-"}
+                    </td>
+                  ))}
+                  <td
+                    className="totalResultColumn stickyRight"
+                    style={{
+                      fontWeight: "bold",
+                      color:
+                        overallAverage === null
+                          ? "grey"
+                          : overallAverage >= 80
+                            ? "green"
+                            : overallAverage >= 50
+                              ? "orange"
+                              : "red",
+                    }}
+                  >
+                    {overallAverage !== null ? `${overallAverage}%` : "-"}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <button onClick={downloadCSV} className="downloadButton">
+            Download Results.csv
+          </button>
+        </div>
+      </div>
+      {dataLoading && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading Results...</p>
+        </div>
+      )}
+    </div>
+  );
 }

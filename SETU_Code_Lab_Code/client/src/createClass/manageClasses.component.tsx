@@ -9,97 +9,128 @@ import "../viewProblems/viewProblems.scss";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
 import ToolTip from "../tooltip";
+import FadeLoader from "react-spinners/FadeLoader";
 export default function ManageClasses() {
-    const navigate = useNavigate();
-    const { user } = useAuth();
-    const [courses, setCourses] = useState<Course[]>([]);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [coursesLoading, setCoursesLoading] = useState(true);
+  const [courses, setCourses] = useState<Course[]>([]);
 
-    function courseClick(course: Course) {
-        navigate("/viewResults", { state: course });
-    }
+  function courseClick(course: Course) {
+    navigate("/viewResults", { state: course });
+  }
 
-    function createCourseClick() {
-        navigate("/createClass");
-    }
+  function createCourseClick() {
+    navigate("/createClass");
+  }
 
-    function editCourseClick(course: Course) {
-        navigate("/createClass", { state: course });
-    }
+  function editCourseClick(course: Course) {
+    navigate("/createClass", { state: course });
+  }
 
-    const deleteCourseClick = async (course_id: number) => {
-        let userConfirmed = confirm("Are you sure you want to delete this course permanently?");
-        if (userConfirmed) {
-            try {
-                const res = await api.post('/api/deleteCourse', {
-                    course_id: course_id
-                });
-                if (!res.ok) {
-                    const errorData = await res.json();
-                    console.error("Error deleting course:", errorData.message);
-                    throw new Error("Failed to delete course");
-                }
-                setCourses(prev =>
-                    prev.filter(c => c.course_id !== course_id)
-                );
-                toast.success("Course deleted successfully");
-            } catch (error: any) {
-                toast.error("Failed to delete course. Please try again.");
-                console.error("Error deleting course:", error.message);
-            }
-        }
-    }
-
-    useEffect(() => {
-        async function fetchCourses() {
-            const res = await api.get('/api/myCourses');
-            if (res.ok) {
-                setCourses(await res.json());
-            } else {
-                const errorData = await res.json();
-                console.error("Error fetching courses:", errorData.message);
-            }
-        }
-        fetchCourses();
-    }, []);
-
-    return (
-        <div>
-            <NavBar />
-            {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
-            <div className="manageProblemsBody">
-                <div>
-                    <button onClick={createCourseClick} className="createNew">
-                        <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Course
-                    </button>
-                </div>
-                <div className="manageProblems">
-                    <ul>
-                        {Array.isArray(courses)
-                            ? courses.map((c) =>
-                                <li className="manageProblemsRow" key={c.course_id}>
-                                    <button
-                                        style={{ height: 55 }}
-                                        className="problem manageProblem"
-                                        key={c.course_id}
-                                        onClick={() => courseClick(c)}
-                                    >
-                                        {courses.indexOf(c) + 1}. {c.course_title}
-                                    </button>
-                                    <ToolTip text="Edit">
-                                        <button className="manageProblemButton" onClick={() => editCourseClick(c)}>
-                                            <img className="manageIcons" src="editIcon.svg" alt="edit" />
-                                        </button>
-                                    </ToolTip>
-                                    <ToolTip text="Delete">
-                                        <button className="manageProblemButton" onClick={() => deleteCourseClick(c.course_id)}>
-                                            <img className="manageIcons" src="binIcon.svg" alt="delete" />
-                                        </button>
-                                    </ToolTip>
-                                </li>)
-                            : <li>No problems found</li>}
-                    </ul>
-                </div>
-            </div>
-        </div>
+  const deleteCourseClick = async (course_id: number) => {
+    let userConfirmed = confirm(
+      "Are you sure you want to delete this course permanently?",
     );
+    if (userConfirmed) {
+      try {
+        const res = await api.post("/api/deleteCourse", {
+          course_id: course_id,
+        });
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error("Error deleting course:", errorData.message);
+          throw new Error("Failed to delete course");
+        }
+        setCourses((prev) => prev.filter((c) => c.course_id !== course_id));
+        toast.success("Course deleted successfully");
+      } catch (error: any) {
+        toast.error("Failed to delete course. Please try again.");
+        console.error("Error deleting course:", error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    async function fetchCourses() {
+      const res = await api.get("/api/myCourses");
+      if (res.ok) {
+        setCourses(await res.json());
+      } else {
+        const errorData = await res.json();
+        console.error("Error fetching courses:", errorData.message);
+      }
+      setCoursesLoading(false);
+    }
+    fetchCourses();
+  }, []);
+
+  return (
+    <div>
+      <NavBar />
+      {user?.role == "lecturer" ? (
+        <div className="sideBar">
+          <LecturerSideBar />
+        </div>
+      ) : null}
+      <div className="manageProblemsBody">
+        <div>
+          <button onClick={createCourseClick} className="createNew">
+            <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />
+            Create New Course
+          </button>
+        </div>
+        <div className="manageProblems">
+          <ul>
+            {Array.isArray(courses) ? (
+              courses.map((c) => (
+                <li className="manageProblemsRow" key={c.course_id}>
+                  <button
+                    style={{ height: 55 }}
+                    className="problem manageProblem"
+                    key={c.course_id}
+                    onClick={() => courseClick(c)}
+                  >
+                    {courses.indexOf(c) + 1}. {c.course_title}
+                  </button>
+                  <ToolTip text="Edit">
+                    <button
+                      className="manageProblemButton"
+                      onClick={() => editCourseClick(c)}
+                    >
+                      <img
+                        className="manageIcons"
+                        src="editIcon.svg"
+                        alt="edit"
+                      />
+                    </button>
+                  </ToolTip>
+                  <ToolTip text="Delete">
+                    <button
+                      className="manageProblemButton"
+                      onClick={() => deleteCourseClick(c.course_id)}
+                    >
+                      <img
+                        className="manageIcons"
+                        src="binIcon.svg"
+                        alt="delete"
+                      />
+                    </button>
+                  </ToolTip>
+                </li>
+              ))
+            ) : (
+              <li>No problems found</li>
+            )}
+          </ul>
+        </div>
+      </div>
+      {coursesLoading && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading your Courses...</p>
+        </div>
+      )}
+    </div>
+  );
 }

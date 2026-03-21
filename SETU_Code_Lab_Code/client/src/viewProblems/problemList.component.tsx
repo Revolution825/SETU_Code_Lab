@@ -8,9 +8,14 @@ import type { Course } from "../types/course";
 import SideBar from "../sidebar.component";
 import type { Submission } from "../types/Submission";
 import { api } from "../sharedUtils";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function Problems() {
   const navigate = useNavigate();
+  const [coursesLoading, setCoursesLoading] = useState(true);
+  const [submissionsLoading, setSubmissionsLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [problemsLoading, setProblemsLoading] = useState(true);
   const [problems, setProblems] = useState<Problem[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -60,12 +65,14 @@ export default function Problems() {
       const res = await api.post("/api/problems", {
         selectedCourse: selectedCourse,
       });
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
       if (res.ok) {
         setProblems(await res.json());
       } else {
         const errorData = await res.json();
         console.error("Error fetching problems:", errorData.message);
       }
+      setProblemsLoading(false);
     }
     if (selectedCourse) {
       fetchCourseProblems();
@@ -81,6 +88,7 @@ export default function Problems() {
         const errorData = await res.json();
         console.error("Error fetching courses:", errorData.message);
       }
+      setCoursesLoading(false);
     }
     fetchCourses();
   }, []);
@@ -95,6 +103,7 @@ export default function Problems() {
         const errorData = await res.json();
         console.error("Error fetching userName:", errorData.message);
       }
+      setUserLoading(false);
     }
     fetchUserName();
   }, []);
@@ -104,7 +113,6 @@ export default function Problems() {
       const res = await api.get(
         `/api/fetchSubmissions?userId=${user?.user_id}`,
       );
-
       if (res.ok) {
         const submissions = await res.json();
         setSubmissions(submissions);
@@ -113,6 +121,7 @@ export default function Problems() {
         console.error("Error fetching submissions: ", errorData.message);
         return;
       }
+      setSubmissionsLoading(false);
     }
     fetchSubmissions();
   }, []);
@@ -206,6 +215,15 @@ export default function Problems() {
           )}
         </ul>
       </div>
+      {(coursesLoading ||
+        submissionsLoading ||
+        userLoading ||
+        problemsLoading) && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading Problems...</p>
+        </div>
+      )}
     </div>
   );
 }

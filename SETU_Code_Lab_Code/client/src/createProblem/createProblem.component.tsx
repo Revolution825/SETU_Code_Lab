@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
 import { api, jsonToParamValues } from "../sharedUtils";
 import type { ProblemLanguage } from "../types/ProblemLanguage";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function CreateProblem() {
   const descriptionPlaceholder = `eg. (markdown formatting is supported)
@@ -48,6 +49,12 @@ true
   const location = useLocation();
   const navigate = useNavigate();
   const problem: Problem = location.state;
+  const [problemLanguageLoading, setProblemLanguageLoading] = problem
+    ? useState(true)
+    : useState(false);
+  const [testCasesLoading, setTestCasesLoading] = problem
+    ? useState(true)
+    : useState(false);
   const [title, setTitle] = useState(problem?.problem_title ?? "");
   const [difficulty, setDifficulty] = useState(problem?.difficulty ?? 1);
   const [description, setDescription] = useState(
@@ -209,6 +216,7 @@ true
         expected_value: JSON.stringify(tc.expected_value),
       }));
       setTestCases(formFriendlyTestCases);
+      setTestCasesLoading(false);
     }
     fetchTestCases();
   }, [problem?.problem_id]);
@@ -228,6 +236,7 @@ true
           toast.error("Error fetching languages");
         }
       }
+      setProblemLanguageLoading(false);
     }
     fetchProblemLanguageData();
   }, [problem]);
@@ -370,6 +379,12 @@ true
           </div>
         </form>
       </div>
+      {(problemLanguageLoading || testCasesLoading) && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading Problem Details...</p>
+        </div>
+      )}
     </div>
   );
 }

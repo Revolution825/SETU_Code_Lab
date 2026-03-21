@@ -30,6 +30,7 @@ export default function Problem() {
 
   const [testCases, setTestCases] = useState<TestCase[]>([]);
   const [testCaseResults, setTestCaseResults] = useState<TestCaseResult[]>([]);
+  const [testCasesLoading, setTestCasesLoading] = useState(true);
 
   const [languages, setLanguages] = useState<ProblemLanguage[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("java");
@@ -72,6 +73,7 @@ export default function Problem() {
           toast.error("Error fetching languages");
         }
       }
+      setTestCasesLoading(false);
     }
     fetchTestCases();
     fetchProblemLanguages();
@@ -366,6 +368,12 @@ export default function Problem() {
         <div className="spinner">
           <FadeLoader color="#dedede" />
           <p style={{ margin: 24 }}>Hang tight, running test cases...</p>
+        </div>
+      )}
+      {testCasesLoading && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading Problem Details...</p>
         </div>
       )}
     </div>

@@ -9,105 +9,142 @@ import type { Problem } from "../types/problem";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
 import ToolTip from "../tooltip";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export default function ManageProblems() {
-    const navigate = useNavigate();
-    const [problems, setProblems] = useState<Problem[]>([]);
-    const { user } = useAuth();
+  const navigate = useNavigate();
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const { user } = useAuth();
+  const [problemsLoading, setProblemsLoading] = useState(true);
 
-    function problemClick(problem: Problem) {
-        navigate("/problem", { state: problem })
-    }
+  function problemClick(problem: Problem) {
+    navigate("/problem", { state: problem });
+  }
 
-    function editProblemClick(problem: Problem) {
-        navigate("/createProblem", { state: problem });
-    }
+  function editProblemClick(problem: Problem) {
+    navigate("/createProblem", { state: problem });
+  }
 
-    function createProblemClick() {
-        navigate("/createProblem");
-    }
+  function createProblemClick() {
+    navigate("/createProblem");
+  }
 
-    const deleteProblemClick = async (problem_id: number) => {
-        let userConfirmed = confirm("Are you sure you want to delete this problem and all of it's associated test cases?");
-        if (userConfirmed) {
-            try {
-                const res = await api.post('/api/deleteProblem', {
-                    problem_id: problem_id
-                });
-                if (!res.ok) {
-                    toast.error("Failed to delete problem. Please try again.");
-                    throw new Error("Failed to delete problem");
-                }
-                toast.success("Problem deleted successfully");
-                navigate("/manageProblems");
-                setProblems(prev =>
-                    prev.filter(p => p.problem_id !== problem_id)
-                );
-            } catch (error: any) {
-                toast.error("Failed to delete problem. Please try again.");
-                console.error("Error updating problem :", error.message);
-            }
-        }
-    }
-    useEffect(() => {
-        async function fetchProblems() {
-            const res = await api.get('/api/myProblems');
-            if (res.ok) {
-                setProblems(await res.json());
-            } else {
-                const errorData = await res.json();
-                console.error("Error fetching problems:", errorData.message);
-            }
-        }
-        fetchProblems();
-    }, []);
-
-    return (
-        <div className="main">
-            <NavBar />
-            {user?.role == "lecturer" ? <div className="sideBar"><LecturerSideBar /></div> : null}
-            <div className="manageProblemsBody">
-                <div>
-                    <button onClick={createProblemClick} className="createNew">
-                        <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />Create New Problem
-                    </button>
-                </div>
-                <div className="manageProblems">
-                    <ul>
-                        {Array.isArray(problems)
-                            ? problems.map((p) =>
-                                <li className="manageProblemsRow" key={p.problem_id}>
-                                    <button
-                                        className="problem manageProblem"
-                                        key={p.problem_id}
-                                        onClick={() => problemClick(p)}>
-                                        {problems.indexOf(p) + 1}. {p.problem_title}
-                                        <span className="problemListItem">| {p.user_name}</span>
-                                        <span className="stars">
-                                            {Array.from({ length: 5 }).map((_, i) => (
-                                                <img
-                                                    key={i}
-                                                    className="star"
-                                                    src={i < p.difficulty ? "/filledStar.svg" : "/emptyStar.svg"}
-                                                    alt="star" />
-                                            ))}
-                                        </span>
-                                    </button>
-                                    <ToolTip text="Edit">
-                                        <button onClick={() => editProblemClick(p)} className="manageProblemButton">
-                                            <img className="manageIcons" src="editIcon.svg" alt="edit" />
-                                        </button>
-                                    </ToolTip>
-                                    <ToolTip text="Delete">
-                                        <button onClick={() => deleteProblemClick(p.problem_id)} className="manageProblemButton">
-                                            <img className="manageIcons" src="binIcon.svg" alt="delete" />
-                                        </button>
-                                    </ToolTip>
-                                </li>)
-                            : <li>No problems found</li>}
-                    </ul>
-                </div>
-            </div>
-        </div>
+  const deleteProblemClick = async (problem_id: number) => {
+    let userConfirmed = confirm(
+      "Are you sure you want to delete this problem and all of it's associated test cases?",
     );
+    if (userConfirmed) {
+      try {
+        const res = await api.post("/api/deleteProblem", {
+          problem_id: problem_id,
+        });
+        if (!res.ok) {
+          toast.error("Failed to delete problem. Please try again.");
+          throw new Error("Failed to delete problem");
+        }
+        toast.success("Problem deleted successfully");
+        navigate("/manageProblems");
+        setProblems((prev) => prev.filter((p) => p.problem_id !== problem_id));
+      } catch (error: any) {
+        toast.error("Failed to delete problem. Please try again.");
+        console.error("Error updating problem :", error.message);
+      }
+    }
+  };
+  useEffect(() => {
+    async function fetchProblems() {
+      const res = await api.get("/api/myProblems");
+      if (res.ok) {
+        setProblems(await res.json());
+      } else {
+        const errorData = await res.json();
+        console.error("Error fetching problems:", errorData.message);
+      }
+      setProblemsLoading(false);
+    }
+    fetchProblems();
+  }, []);
+
+  return (
+    <div className="main">
+      <NavBar />
+      {user?.role == "lecturer" ? (
+        <div className="sideBar">
+          <LecturerSideBar />
+        </div>
+      ) : null}
+      <div className="manageProblemsBody">
+        <div>
+          <button onClick={createProblemClick} className="createNew">
+            <img className="plusIcon" src="plusIcon.svg" alt="Plus Icon" />
+            Create New Problem
+          </button>
+        </div>
+        <div className="manageProblems">
+          <ul>
+            {Array.isArray(problems) ? (
+              problems.map((p) => (
+                <li className="manageProblemsRow" key={p.problem_id}>
+                  <button
+                    className="problem manageProblem"
+                    key={p.problem_id}
+                    onClick={() => problemClick(p)}
+                  >
+                    {problems.indexOf(p) + 1}. {p.problem_title}
+                    <span className="problemListItem">| {p.user_name}</span>
+                    <span className="stars">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <img
+                          key={i}
+                          className="star"
+                          src={
+                            i < p.difficulty
+                              ? "/filledStar.svg"
+                              : "/emptyStar.svg"
+                          }
+                          alt="star"
+                        />
+                      ))}
+                    </span>
+                  </button>
+                  <ToolTip text="Edit">
+                    <button
+                      onClick={() => editProblemClick(p)}
+                      className="manageProblemButton"
+                    >
+                      <img
+                        className="manageIcons"
+                        src="editIcon.svg"
+                        alt="edit"
+                      />
+                    </button>
+                  </ToolTip>
+                  <ToolTip text="Delete">
+                    <button
+                      onClick={() => deleteProblemClick(p.problem_id)}
+                      className="manageProblemButton"
+                    >
+                      <img
+                        className="manageIcons"
+                        src="binIcon.svg"
+                        alt="delete"
+                      />
+                    </button>
+                  </ToolTip>
+                </li>
+              ))
+            ) : (
+              <li>No problems found</li>
+            )}
+          </ul>
+        </div>
+      </div>
+      {problemsLoading && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Loading your Problems...</p>
+        </div>
+      )}
+    </div>
+  );
 }
