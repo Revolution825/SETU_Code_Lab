@@ -27,13 +27,25 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 
   const inputFields = parsedParams
     .map((p) => {
-      return `public ${p.type} ${p.name};`;
+      const fieldType = p.type === "String" ? "Object" : p.type;
+      return `public ${fieldType} ${p.name};`;
     })
     .join("\n    ");
 
-  const paramNames = parsedParams.map((p) => p.name);
+  const args = parsedParams
+    .map((p) => {
+      if (p.type === "String") {
+        return `input.${p.name} instanceof java.util.List
+          ? ((java.util.List<?>) input.${p.name}).stream()
+              .map(Object::toString)
+              .collect(java.util.stream.Collectors.joining())
+          : (String) input.${p.name}`;
+      }
+      return `input.${p.name}`;
+    })
+    .join(", ");
 
-  const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map((n) => "input." + n).join(", ")});`;
+  const functionCallLine = `${returnType} result = ${functionName}(${args});`;
 
   // console.log("return type: ", returnType);
   // console.log("function name: ", functionName);
