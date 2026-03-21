@@ -35,6 +35,11 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 
   const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map((n) => "input." + n).join(", ")});`;
 
+  // console.log("return type: ", returnType);
+  // console.log("function name: ", functionName);
+  // console.log("paramNames: ", paramNames);
+  // console.log("input fields: ", inputFields);
+
   return `
     import com.fasterxml.jackson.databind.ObjectMapper;
     import java.util.*;
@@ -108,15 +113,27 @@ export async function startContainer(
 cat << 'EOF' > main.py
 ${preprocessedCode}
 EOF
-echo ${JSON.stringify(processedInput)} | python3 main.py
+cat << 'ENDINPUT' > input.json
+${processedInput}
+ENDINPUT
+python3 main.py < input.json
 `
       : `
 cat << 'EOF' > Main.java
 ${preprocessedCode}
 EOF
+cat << 'ENDINPUT' > input.json
+${processedInput}
+ENDINPUT
 javac Main.java
-echo ${JSON.stringify(processedInput)} | java -cp ".:/app/*" Main
+java -cp ".:/app/*" Main < input.json
 `;
+
+  // console.log("processedInput: ", processedInput);
+  // console.log(
+  //   "JSON.Stringifyed processedInput: ",
+  //   JSON.stringify(processedInput),
+  // );
 
   const container = await docker.createContainer({
     Image: image,
