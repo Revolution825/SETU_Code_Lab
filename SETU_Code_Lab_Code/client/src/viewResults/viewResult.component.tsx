@@ -13,8 +13,9 @@ import type { TestCaseResult } from "../types/TestCaseResult";
 import type { TestCase } from "../types/TestCase";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
-import { api, jsonToParamValues } from "../sharedUtils";
+import { api, getParamNames, jsonToParamValues } from "../sharedUtils";
 import FadeLoader from "react-spinners/FadeLoader";
+import type { ProblemLanguage } from "../types/ProblemLanguage";
 
 export default function ViewResult() {
   const { user } = useAuth();
@@ -26,6 +27,9 @@ export default function ViewResult() {
   const [dataLoading, setDataLoading] = useState(true);
   const [testCaseResults, setTestCaseResults] = useState<TestCaseResult[]>([]);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
+  const [problemLanguages, setProblemLanguages] = useState<ProblemLanguage[]>(
+    [],
+  );
   const submittedAt = new Date(submission.submitted_at);
   const submittedAtFormatted = new Intl.DateTimeFormat("en-IE", {
     dateStyle: "medium",
@@ -34,28 +38,39 @@ export default function ViewResult() {
 
   useEffect(() => {
     async function fetchData() {
-      const testCaseResults = await api.get(
-        "/api/testCaseResults?submission_id=" + submission.submission_id,
-      );
+      const [tcResultsRes, tcRes, langRes] = await Promise.all([
+        api.get(
+          "/api/testCaseResults?submission_id=" + submission.submission_id,
+        ),
+        api.get("api/testCases?problem_id=" + problem.problem_id),
+        api.get("api/problemLanguages?problem_id=" + problem.problem_id),
+      ]);
 
-      if (testCaseResults.ok) {
-        setTestCaseResults(await testCaseResults.json());
+      if (tcResultsRes.ok) {
+        setTestCaseResults(await tcResultsRes.json());
       } else {
-        const errorData = await testCaseResults.json();
+        const errorData = await tcResultsRes.json();
         toast.error("Error fetching test case results");
         console.error("Error fetching test case results: ", errorData.message);
       }
 
-      const res = await api.get(
-        "api/testCases?problem_id=" + problem.problem_id,
-      );
-      if (res.ok) {
-        setTestCases(await res.json());
+      if (tcRes.ok) {
+        setTestCases(await tcRes.json());
       } else {
-        const errorData = await res.json();
+        const errorData = await tcRes.json();
         toast.error("Error fetching test cases");
         console.error("Error fetching test cases: ", errorData.message);
       }
+
+      if (langRes.ok) {
+        const languages: ProblemLanguage[] = await langRes.json();
+        setProblemLanguages(languages);
+      } else {
+        const errorData = await langRes.json();
+        toast.error("Error fetching languages");
+        console.error("Error fetching languages: ", errorData.message);
+      }
+
       setDataLoading(false);
     }
     fetchData();
@@ -71,6 +86,10 @@ export default function ViewResult() {
           ? 25
           : 0;
   const basePointsAwarded = totalPointsAwarded - speedBonus;
+
+  const primaryEntry =
+    problemLanguages.find((e) => e.language === "java") ?? problemLanguages[0];
+  const paramNames = primaryEntry ? getParamNames(primaryEntry) : [];
 
   return (
     <div>
@@ -175,6 +194,7 @@ export default function ViewResult() {
                             <p className="resultData">
                               {jsonToParamValues(
                                 JSON.stringify(testCases[index]?.input_value),
+                                paramNames,
                               )}
                             </p>
                           </td>
