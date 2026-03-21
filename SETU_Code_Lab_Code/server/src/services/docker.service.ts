@@ -44,8 +44,8 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
       }
       if (p.type === "char[][]") {
         return `java.util.Arrays.stream(input.${p.name})
-          .map(row -> new String(row).toCharArray())
-          .toArray(char[][]::new)`;
+      .map(row -> { char[] r = new char[row.length]; for(int i=0;i<row.length;i++) r[i]=row[i].charAt(0); return r; })
+      .toArray(char[][]::new)`;
       }
       return `input.${p.name}`;
     })
