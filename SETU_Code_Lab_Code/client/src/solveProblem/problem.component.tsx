@@ -14,7 +14,7 @@ import type { TestCaseResult } from "../types/TestCaseResult";
 import toast from "react-hot-toast";
 // import { useAntiCheat } from "../antiCheat";
 import { FadeLoader } from "react-spinners";
-import { api, jsonToParamValues } from "../sharedUtils";
+import { api, getParamNames, jsonToParamValues } from "../sharedUtils";
 import type { ProblemLanguage } from "../types/ProblemLanguage";
 
 export default function Problem() {
@@ -197,6 +197,10 @@ export default function Problem() {
     }
   };
 
+  const primaryEntry =
+    languages.find((l) => l.language === selectedLanguage) ?? languages[0];
+  const paramNames = primaryEntry ? getParamNames(primaryEntry) : [];
+
   return (
     <div>
       <NavBar />
@@ -323,6 +327,7 @@ export default function Problem() {
                             <strong>Input:</strong>{" "}
                             {jsonToParamValues(
                               JSON.stringify(testCase.input_value),
+                              paramNames,
                             )}
                           </p>
                           <p>

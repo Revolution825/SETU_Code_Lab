@@ -9,9 +9,10 @@ import type { TestCase } from "../types/TestCase";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CodeEditor from "../solveProblem/codeEditor.component";
-import { api, jsonToParamValues } from "../sharedUtils";
+import { api, getParamNames, jsonToParamValues } from "../sharedUtils";
 import type { ProblemLanguage } from "../types/ProblemLanguage";
 import FadeLoader from "react-spinners/FadeLoader";
+import ToolTip from "../tooltip";
 
 export default function CreateProblem() {
   const descriptionPlaceholder = `eg. (markdown formatting is supported)
@@ -200,46 +201,32 @@ true
 
   useEffect(() => {
     if (!problem?.problem_id) return;
-    async function fetchTestCases() {
-      const res = await api.get(
-        "api/testCases?problem_id=" + problem.problem_id,
-      );
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Error fetching test cases:", errorData.message);
-        return;
-      }
-      const dbTestCases = await res.json();
+    async function fetchData() {
+      const [langRes, tcRes] = await Promise.all([
+        api.get("api/problemLanguages?problem_id=" + problem.problem_id),
+        api.get("api/testCases?problem_id=" + problem.problem_id),
+      ]);
+      const languages: ProblemLanguage[] = await langRes.json();
+      const dbTestCases = await tcRes.json();
+      setLanguageEntries(languages);
+      setActiveLanguageTab(languages[0].language);
+      const primaryEntry =
+        languages.find((e) => e.language === "java") ?? languages[0];
+      const paramNames = getParamNames(primaryEntry);
       const formFriendlyTestCases = dbTestCases.map((tc: any) => ({
         test_case_id: tc.test_case_id,
-        input_value: jsonToParamValues(JSON.stringify(tc.input_value)),
+        input_value: jsonToParamValues(
+          JSON.stringify(tc.input_value),
+          paramNames,
+        ),
         expected_value: JSON.stringify(tc.expected_value),
       }));
       setTestCases(formFriendlyTestCases);
+      setProblemLanguageLoading(false);
       setTestCasesLoading(false);
     }
-    fetchTestCases();
+    fetchData();
   }, [problem?.problem_id]);
-
-  useEffect(() => {
-    if (!problem) return;
-    async function fetchProblemLanguageData() {
-      const res = await api.get(
-        "api/problemLanguages?problem_id=" + problem.problem_id,
-      );
-      const data: ProblemLanguage[] = await res.json();
-      if (res.ok) {
-        setLanguageEntries(data);
-        if (data.length > 0) {
-          setActiveLanguageTab(data[0].language);
-        } else {
-          toast.error("Error fetching languages");
-        }
-      }
-      setProblemLanguageLoading(false);
-    }
-    fetchProblemLanguageData();
-  }, [problem]);
 
   return (
     <div>
@@ -327,27 +314,29 @@ true
                       )}
                     </div>
                   ))}
-
-                  {SUPPORTED_LANGUAGES.filter(
-                    (l) => !language_entries.some((e) => e.language === l),
-                  ).length > 0 && (
-                    <select
-                      className="addLanguageSelect"
-                      value=""
-                      onChange={(e) => {
-                        if (e.target.value) addLanguage(e.target.value);
-                      }}
-                    >
-                      <option value="">+ Add language</option>
-                      {SUPPORTED_LANGUAGES.filter(
-                        (l) => !language_entries.some((e) => e.language === l),
-                      ).map((l) => (
-                        <option key={l} value={l}>
-                          {l}
-                        </option>
-                      ))}
-                    </select>
-                  )}
+                  <ToolTip text="parameter names must be the same across languages">
+                    {SUPPORTED_LANGUAGES.filter(
+                      (l) => !language_entries.some((e) => e.language === l),
+                    ).length > 0 && (
+                      <select
+                        className="addLanguageSelect"
+                        value=""
+                        onChange={(e) => {
+                          if (e.target.value) addLanguage(e.target.value);
+                        }}
+                      >
+                        <option value="">+ Add language</option>
+                        {SUPPORTED_LANGUAGES.filter(
+                          (l) =>
+                            !language_entries.some((e) => e.language === l),
+                        ).map((l) => (
+                          <option key={l} value={l}>
+                            {l}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </ToolTip>
                 </div>
               </div>
 

@@ -118,7 +118,7 @@ export async function startContainer(
   testCase: TestCase,
   language: string,
 ): Promise<TestCaseResult> {
-  console.log("testCase.input_value", testCase.input_value);
+  // console.log("testCase.input_value", testCase.input_value);
   const processedInput = JSON.stringify(testCase.input_value);
   const preprocessedCode =
     language === "python"
