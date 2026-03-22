@@ -251,7 +251,7 @@ export default function Problem() {
             width={Infinity}
             height={rightHeight}
             minConstraints={[window.innerWidth * 0.5, 51]}
-            maxConstraints={[Infinity, topHeight - 116]}
+            maxConstraints={[Infinity, topHeight - 60]}
             onResizeStop={(_, { size }) => setRightHeight(size.height)}
             resizeHandles={["s"]}
           >

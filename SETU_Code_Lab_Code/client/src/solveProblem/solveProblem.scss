@@ -67,6 +67,7 @@
 
 .problemDescription {
   margin: 12px;
+  height: calc(100vh - 104px);
 }
 
 .paneTitle {
@@ -84,7 +85,8 @@
 .descriptionContent {
   margin: 12px;
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .testCasesPane {
