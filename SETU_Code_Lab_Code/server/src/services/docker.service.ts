@@ -198,7 +198,17 @@ java -cp ".:/app/*" Main < input.json
   }
 
   function deepEqual(a: any, b: any): boolean {
-    return JSON.stringify(a) === JSON.stringify(b);
+    if (typeof a !== typeof b) return false;
+    if (typeof a !== "object" || a === null) return a === b;
+    if (Array.isArray(a) !== Array.isArray(b)) return false;
+    if (Array.isArray(a)) {
+      if (a.length !== b.length) return false;
+      return a.every((item, i) => deepEqual(item, b[i]));
+    }
+    const keysA = Object.keys(a).sort();
+    const keysB = Object.keys(b).sort();
+    if (keysA.join() !== keysB.join()) return false;
+    return keysA.every((key) => deepEqual(a[key], b[key]));
   }
 
   const passed = deepEqual(actualOutput, testCase.expected_value);
