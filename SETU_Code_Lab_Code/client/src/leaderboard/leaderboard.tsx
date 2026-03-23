@@ -81,9 +81,15 @@ export default function Leaderboard() {
                       }
                     >
                       <td className="roundedLeft">
+                        {index === 0 && (
+                          <img src="crown.svg" alt="crown" className="crown" />
+                        )}
                         {index + 1}. {entry.user_name}
                       </td>
-                      <td>{entry.current_streak}</td>
+                      <td>
+                        {entry.current_streak}
+                        <img src="flame.svg" alt="flame" className="flame" />
+                      </td>
                       <td className="roundedRight">{entry.total_points}</td>
                     </tr>
                   ))}

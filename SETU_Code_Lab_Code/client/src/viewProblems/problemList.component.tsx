@@ -65,7 +65,6 @@ export default function Problems() {
       const res = await api.post("/api/problems", {
         selectedCourse: selectedCourse,
       });
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
       if (res.ok) {
         setProblems(await res.json());
       } else {

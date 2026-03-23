@@ -152,13 +152,19 @@ export default function ViewProfile() {
                   <td>
                     <p>Longest Streak: </p>
                   </td>
-                  <td className="profileStats">{userData?.longest_streak}</td>
+                  <td className="profileStats">
+                    {userData?.longest_streak}{" "}
+                    <img src="flame.svg" alt="flame" className="flame" />
+                  </td>
                 </tr>
                 <tr>
                   <td>
                     <p>Current Streak: </p>
                   </td>
-                  <td className="profileStats">{userData?.current_streak}</td>
+                  <td className="profileStats">
+                    {userData?.current_streak}{" "}
+                    <img src="flame.svg" alt="flame" className="flame" />
+                  </td>
                 </tr>
                 <tr>
                   <td>

@@ -1,125 +1,135 @@
 .leaderboardScreenBody {
-    display: flex;
-    flex-direction: row;
-    height: auto;
-    width: auto;
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  width: auto;
 }
 
 .leaderboardCard {
-    margin: 24px;
-    display: flex;
-    flex-direction: column;
-    color: #dedede;
-    box-shadow: 5px 0 5px -2px #202020;
-    background-color: #363636;
-    border-radius: 15px;
-    width: 80%;
-    height: 100%;
+  margin: 24px;
+  display: flex;
+  flex-direction: column;
+  color: #dedede;
+  box-shadow: 5px 0 5px -2px #202020;
+  background-color: #363636;
+  border-radius: 15px;
+  width: 80%;
+  height: 100%;
 }
 
 .leaderboardCardHeader {
-    background-color: #454545;
-    border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
-    margin: 0px;
-    font-size: 18px;
-    box-shadow: 5px 0 5px 2px #202020;
-    display: flex;
-    flex-direction: row;
-    width: auto;
-    height: auto;
-    padding-left: 12px;
-    z-index: 9999;
+  background-color: #454545;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  margin: 0px;
+  font-size: 18px;
+  box-shadow: 5px 0 5px 2px #202020;
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: auto;
+  padding-left: 12px;
+  z-index: 9999;
 }
 
 .leaderboardSidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    height: 92vh;
-    width: 20%;
-    border-left-width: 2px;
-    border-left-style: solid;
-    border-color: #363636;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  height: 92vh;
+  width: 20%;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-color: #363636;
+  overflow-y: auto;
 }
 
 .leaderboardSetting {
-    display: flex;
-    flex-direction: column;
-    padding-left: 12px;
-    padding-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  padding-bottom: 12px;
 }
 
 .leaderboardSettingHeading {
-    color: #626262;
-    font-size: 18px;
+  color: #626262;
+  font-size: 18px;
 }
 
 .borderBottom {
-    border-radius: 0px;
-    border-bottom: 2px solid #363636;
+  border-radius: 0px;
+  border-bottom: 2px solid #363636;
 }
 
 .leaderboardWrapper {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-bottom: 24px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 24px;
 }
 
 .leaderboard {
-    margin: 24px;
-    width: calc(100% - 48px);;
-    border-collapse: separate;
-    border: none;
-    border-spacing: 0 0px;
+  margin: 24px;
+  width: calc(100% - 48px);
+  border-collapse: separate;
+  border: none;
+  border-spacing: 0 0px;
 }
 
 .leaderboardEntry:nth-child(odd) td {
-    background-color: #363636;
-    padding: 12px;
+  background-color: #363636;
+  padding: 12px;
 }
 
 .leaderboardEntry:nth-child(even) td {
-    padding: 12px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    background-color: #262626;
-    box-shadow: none;
+  padding: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  background-color: #262626;
+  box-shadow: none;
 }
 
 .highlighted td {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 .roundedLeft {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 .roundedRight {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .leaderboardHeadings {
-    text-align: left;
-    position: sticky;
-    top: 0;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: #363636;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #363636;
 }
 
 .radioButton {
-    width: 12px;
+  width: 12px;
 }
 
 .noUsersFoundMessage {
-    display: flex;
-    width: 100%;
-    height: calc(100vh - 220px);
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 220px);
+  align-items: center;
+  justify-content: center;
+}
+
+.crown {
+  height: 20px;
+  width: 20px;
+  margin-right: 9px;
+}
+
+.flame {
+  margin-left: 6px;
 }

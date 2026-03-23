@@ -46,6 +46,11 @@ ul button.problem:nth-child(even) {
   font-size: 16px;
 }
 
+.searchBar:hover {
+  transition: background-color 0.2s ease;
+  background-color: #323232;
+}
+
 .searchIcon {
   position: absolute;
   margin-top: 10px;
@@ -86,6 +91,7 @@ ul button.problem:nth-child(even) {
 }
 
 .difficultyButton:hover {
+  transition: background-color 0.2s ease;
   background-color: #626262;
 }
 
@@ -109,8 +115,16 @@ ul button.problem:nth-child(even) {
   width: 100%;
   text-align: left;
   display: flex;
+  transition: background-color 0.2s ease;
 }
 
+.problem:hover {
+  background-color: #323232;
+}
+
+ul button.problem:nth-child(even):hover {
+  background-color: #242424;
+}
 .completedTick {
   margin-left: 6px;
   margin-right: 12px;

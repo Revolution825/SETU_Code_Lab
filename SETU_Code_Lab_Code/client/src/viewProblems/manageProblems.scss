@@ -1,89 +1,101 @@
 .manageProblemsBody {
-    margin-left: 225px;
+  margin-left: 225px;
 }
 
 .manageProblems {
-    margin-top: 16px;
-    overflow-y: auto;
-    height: 81vh;
+  margin-top: 16px;
+  overflow-y: auto;
+  height: 81vh;
 }
 
 .manageProblemRow {
-    display: flex;
-    width: 60%;
+  display: flex;
+  width: 60%;
 }
 
 .manageProblemsRow {
-    display: flex;
-    width: 80%;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  width: 80%;
+  align-items: center;
+  gap: 8px;
 }
 
 .manageProblem {
-    padding-left: 48px;
+  padding-left: 48px;
 }
 
 .manageProblemsRow:nth-child(odd) .problem {
-    background-color: #363636;
+  background-color: #363636;
 }
 
 .manageProblemsRow:nth-child(even) .problem {
-    background-color: #262626;
-    box-shadow: none;
+  background-color: #262626;
+  box-shadow: none;
+}
+
+.manageProblemsRow:nth-child(odd) .problem:hover {
+  background-color: #323232;
+}
+
+.manageProblemsRow:nth-child(even) .problem:hover {
+  background-color: #242424;
 }
 
 .createNew {
-    align-items: center;
-    height: 50px;
-    margin-top: 24px;
-    background-color: #363636;
-    box-shadow: 5px 0 5px 2px #202020;
-    border-radius: 15px;
-    font-size: 18px;
-    padding: 12px;
-    text-align: left;
-    display: flex;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  align-items: center;
+  height: 50px;
+  margin-top: 24px;
+  background-color: #363636;
+  box-shadow: 5px 0 5px 2px #202020;
+  border-radius: 15px;
+  font-size: 18px;
+  padding: 12px;
+  text-align: left;
+  display: flex;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .createNew:hover {
-    transform: translateY(-2px);
-    box-shadow: 7px 4px 10px 3px #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 7px 4px 10px 3px #1a1a1a;
 }
 
 .plusIcon {
-    width: 24px;
-    height: 24px;
-    color: #dedede;
-    margin-right: 12px;
+  width: 24px;
+  height: 24px;
+  color: #dedede;
+  margin-right: 12px;
 }
 
 .manageIcons {
-    width: 24px;
-    height: 24px;
-    color: #dedede;
+  width: 24px;
+  height: 24px;
+  color: #dedede;
 }
 
 .manageProblemButton {
-    width: 42px;
-    height: 42px;
-    padding: 0px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    margin-right: 0px;
-    margin-left: 12px;
-    background-color: #363636;
-    box-shadow: 5px 0 5px 2px #202020;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 42px;
+  height: 42px;
+  padding: 0px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  margin-right: 0px;
+  margin-left: 12px;
+  background-color: #363636;
+  box-shadow: 5px 0 5px 2px #202020;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .manageProblemButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 7px 4px 10px 3px #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 7px 4px 10px 3px #1a1a1a;
 }
