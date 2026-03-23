@@ -27,36 +27,13 @@ function preprocessJavaInput(placeholder_code: string, code: string): string {
 
   const inputFields = parsedParams
     .map((p) => {
-      if (p.type === "String") return `public Object ${p.name};`;
-      if (p.type === "char[][]") return `public String[][] ${p.name};`;
       return `public ${p.type} ${p.name};`;
     })
     .join("\n    ");
 
-  const args = parsedParams
-    .map((p) => {
-      if (p.type === "String") {
-        return `input.${p.name} instanceof java.util.List
-          ? ((java.util.List<?>) input.${p.name}).stream()
-              .map(Object::toString)
-              .collect(java.util.stream.Collectors.joining())
-          : (String) input.${p.name}`;
-      }
-      if (p.type === "char[][]") {
-        return `java.util.Arrays.stream(input.${p.name})
-      .map(row -> { char[] r = new char[row.length]; for(int i=0;i<row.length;i++) r[i]=row[i].charAt(0); return r; })
-      .toArray(char[][]::new)`;
-      }
-      return `input.${p.name}`;
-    })
-    .join(", ");
+  const paramNames = parsedParams.map((p) => p.name);
 
-  const functionCallLine = `${returnType} result = ${functionName}(${args});`;
-
-  // console.log("return type: ", returnType);
-  // console.log("function name: ", functionName);
-  // console.log("paramNames: ", paramNames);
-  // console.log("input fields: ", inputFields);
+  const functionCallLine = `${returnType} result = ${functionName}(${paramNames.map((n) => "input." + n).join(", ")});`;
 
   return `
     import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,15 +76,7 @@ ${code}
 
 input_data = json.load(sys.stdin)
 result = ${functionName}(**input_data)
-def make_serializable(obj):
-  if isinstance(obj, tuple):
-    return list(obj)
-  if isinstance(obj, list):
-    return [make_serializable(i) for i in obj]
-  if isinstance(obj, dict):
-    return {k: make_serializable(v) for k, v in obj.items()}
-  return obj
-print(json.dumps(make_serializable(result)))
+print(json.dumps(result))
 `;
 }
 
@@ -118,7 +87,6 @@ export async function startContainer(
   testCase: TestCase,
   language: string,
 ): Promise<TestCaseResult> {
-  // console.log("testCase.input_value", testCase.input_value);
   const processedInput = JSON.stringify(testCase.input_value);
   const preprocessedCode =
     language === "python"
@@ -147,12 +115,6 @@ ENDINPUT
 javac Main.java
 java -cp ".:/app/*" Main < input.json
 `;
-
-  // console.log("processedInput: ", processedInput);
-  // console.log(
-  //   "JSON.Stringifyed processedInput: ",
-  //   JSON.stringify(processedInput),
-  // );
 
   const container = await docker.createContainer({
     Image: image,
@@ -197,20 +159,6 @@ java -cp ".:/app/*" Main < input.json
     actualOutput = combinedOutput;
   }
 
-  function deepEqual(a: any, b: any): boolean {
-    if (typeof a !== typeof b) return false;
-    if (typeof a !== "object" || a === null) return a === b;
-    if (Array.isArray(a) !== Array.isArray(b)) return false;
-    if (Array.isArray(a)) {
-      if (a.length !== b.length) return false;
-      return a.every((item, i) => deepEqual(item, b[i]));
-    }
-    const keysA = Object.keys(a).sort();
-    const keysB = Object.keys(b).sort();
-    if (keysA.join() !== keysB.join()) return false;
-    return keysA.every((key) => deepEqual(a[key], b[key]));
-  }
-
   const passed = deepEqual(actualOutput, testCase.expected_value);
 
   return {
@@ -233,4 +181,18 @@ function stripDockerHeader(buffer: Buffer): string {
     i = payloadEnd;
   }
   return result.trim();
+}
+
+function deepEqual(a: any, b: any): boolean {
+  if (typeof a !== typeof b) return false;
+  if (typeof a !== "object" || a === null) return a === b;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) return false;
+    return a.every((item, i) => deepEqual(item, b[i]));
+  }
+  const keysA = Object.keys(a).sort();
+  const keysB = Object.keys(b).sort();
+  if (keysA.join() !== keysB.join()) return false;
+  return keysA.every((key) => deepEqual(a[key], b[key]));
 }
