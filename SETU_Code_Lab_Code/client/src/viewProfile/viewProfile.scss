@@ -1,117 +1,117 @@
 .profileScreenBody {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 124px);
 }
 
 .profileCard {
-    margin-top: 24px;
-    margin-right: 24px;
-    display: flex;
-    flex-direction: column;
-    color: #dedede;
-    box-shadow: 5px 0 5px -2px #202020;
-    background-color: #363636;
-    border-radius: 15px;
-    width: 400px;
-    height: 600px;
+  margin-top: 24px;
+  margin-right: 24px;
+  display: flex;
+  flex-direction: column;
+  color: #dedede;
+  box-shadow: 5px 0 5px -2px #202020;
+  background-color: #363636;
+  border-radius: 15px;
+  width: 400px;
+  height: 600px;
 }
 
 .profileContent {
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-    align-items: center;
-    border-bottom: #262626;
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  align-items: center;
+  border-bottom: #262626;
+  border-bottom-width: 3px;
+  border-bottom-style: solid;
 }
 
 .avatar {
-    height: 100px;
-    width: 100px;
+  height: 100px;
+  width: 100px;
 }
 
 .userName {
-    margin-top: 12px;
-    margin-bottom: 0px;
-    font-size: 18px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  font-size: 18px;
 }
 
 .userRole {
-    font-size: 14px;
-    color: #626262;
-    margin-top: 6px;
-    margin-bottom: 0px;
+  font-size: 14px;
+  color: #626262;
+  margin-top: 6px;
+  margin-bottom: 0px;
 }
 
 .profileStats {
-    padding: 12px;
+  padding: 12px;
 }
 
 .deleteAccountButton {
-    width: 276px;
-    height: 46px;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    display: flex;
-    background-color: #e74751;
-    margin-top: 69px;
-    margin-bottom: 12px;
+  width: 276px;
+  height: 46px;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  display: flex;
+  background-color: #e74751;
+  margin-top: 69px;
+  margin-bottom: 12px;
 }
 
 .submissionTable {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
 }
 
 .profileTableHeading {
-    font-size: 16px;
-    font-weight: 600;
-    text-align: left;
-    padding: 12px 0 12px 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 0 12px 12px;
 }
 
 .submissionRow {
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .submissionRow:nth-child(odd) .submissionCell {
-    background-color: #363636;
+  background-color: #363636;
 }
 
 .submissionRow:nth-child(even) .submissionCell {
-    background-color: #262626;
+  background-color: #262626;
 }
 
 .submissionRow:nth-child(odd):hover .submissionCell {
-    background-color: #3a3a3a;
+  background-color: #3a3a3a;
 }
 
 .submissionRow:nth-child(even):hover .submissionCell {
-    background-color: #2a2a2a;
+  background-color: #2a2a2a;
 }
 
 .submissionCell {
-    padding: 12px;
+  padding: 12px;
 }
 
 .submissionCell.start {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    min-width: unset;
-    width: 100%;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  min-width: unset;
+  width: 100%;
 }
 
 .submissionCell.middle {
-    min-width: 200px;
+  min-width: 200px;
 }
 
 .submissionCell.end {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }

@@ -253,9 +253,9 @@ export default function ViewProfile() {
               <p
                 style={{
                   textAlign: "center",
-                  height: "600px",
+                  marginTop: "25%",
                   alignContent: "center",
-                  fontSize: "20px",
+                  fontSize: "18px",
                 }}
               >
                 This user has not made any submsisions yet :(
