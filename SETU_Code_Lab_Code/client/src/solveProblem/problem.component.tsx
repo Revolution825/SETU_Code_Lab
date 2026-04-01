@@ -16,6 +16,7 @@ import { useAntiCheat } from "../antiCheat";
 import { FadeLoader } from "react-spinners";
 import { api, getParamNames, jsonToParamValues } from "../sharedUtils";
 import type { ProblemLanguage } from "../types/ProblemLanguage";
+import type { Badge } from "../types/badge";
 
 export default function Problem() {
   const { shouldAutoSubmit } = useAntiCheat();
@@ -45,6 +46,7 @@ export default function Problem() {
     time_taken: number;
     points_awarded: number;
   } | null>(null);
+  const [newBadges, setNewBadges] = useState<Badge[]>([]);
 
   useEffect(() => {
     async function fetchTestCases() {
@@ -184,6 +186,7 @@ export default function Problem() {
           time_taken: timeTaken,
           points_awarded: data.submission.points_awarded,
         });
+        setNewBadges(data.newBadges);
         setShowSubmissionAlert(true);
       } else {
         setIsRunning(false);
@@ -363,6 +366,7 @@ export default function Problem() {
         <SubmissionAlert
           isOpen={showSubmissionAlert}
           summary={submissionSummary}
+          newBadges={newBadges}
           onClose={() => {
             setShowSubmissionAlert(false);
             navigate("/problems");

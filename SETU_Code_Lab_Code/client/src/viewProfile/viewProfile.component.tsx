@@ -1,15 +1,16 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext";
-import LecturerSideBar from "../lecturerSideBar.component";
 import NavBar from "../navBar.component";
 import { useEffect, useState } from "react";
 import "./viewProfile.scss";
 import type { User } from "../types/user";
 import type { Submission } from "../types/Submission";
 import type { Problem } from "../types/problem";
+import type { Badge } from "../types/badge";
 import toast from "react-hot-toast";
 import { api } from "../sharedUtils";
 import FadeLoader from "react-spinners/FadeLoader";
+import ToolTip from "../tooltip";
 
 export default function ViewProfile() {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ export default function ViewProfile() {
   const [userData, setUserData] = useState<User | undefined>(undefined);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [problems, setSubmittedProblems] = useState<Problem[]>([]);
+  const [badges, setBadges] = useState<Badge[]>([]);
 
   async function deleteAccount() {
     let userConfirmed = confirm(
@@ -108,7 +110,18 @@ export default function ViewProfile() {
             errorData.message,
           );
         }
+
+        const badgesRes = await api.get(
+          `/api/fetchUserBadges?userId=${activeUserId}`,
+        );
+        if (badgesRes.ok) {
+          setBadges(await badgesRes.json());
+        } else {
+          const errorData = await badgesRes.json();
+          console.error("Error fetching badges: ", errorData.message);
+        }
       } catch (error: any) {
+        console.error("Error fetching profile data: ", error.message);
       } finally {
         setDataLoading(false);
       }
@@ -117,21 +130,13 @@ export default function ViewProfile() {
     fetchData();
   }, [otherUser, user, navigate]);
 
+  console.log("badges: ", badges);
+
   return (
     <div>
       <NavBar />
-      {user?.role == "lecturer" ? (
-        <div className="sideBar">
-          <LecturerSideBar />
-        </div>
-      ) : null}
       <div className="profileScreenBody">
-        <div
-          className="profileCard"
-          style={
-            user?.role == "lecturer" ? { marginLeft: 212 } : { marginLeft: 24 }
-          }
-        >
+        <div className="profileCard" style={{ marginLeft: 24 }}>
           <div className="profileContent">
             <img src="/profileIcon.svg" alt="profileIcon" className="avatar" />
             <p className="userName">{userData?.user_name}</p>
@@ -263,6 +268,40 @@ export default function ViewProfile() {
             )}
           </div>
         </div>
+        {userData?.role === "student" ? (
+          <div className="badgeBody">
+            <div className="resultHeader">
+              <p>Badges</p>
+            </div>
+            <div className="badgesContent">
+              {badges.length === 0 ? (
+                <p
+                  style={{
+                    textAlign: "center",
+                    marginTop: "100%",
+                    alignContent: "center",
+                    fontSize: "18px",
+                  }}
+                >
+                  This user has not earned any badges yet :(
+                </p>
+              ) : (
+                badges.map((badge) => (
+                  <ToolTip text={badge.description}>
+                    <div className="badgeContainer">
+                      <img
+                        src={badge.icon}
+                        alt={badge.badge_name}
+                        className="badge"
+                      />
+                      <p>{badge.badge_name}</p>
+                    </div>
+                  </ToolTip>
+                ))
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
       {dataLoading && (
         <div className="spinner">

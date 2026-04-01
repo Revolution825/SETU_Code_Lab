@@ -6,7 +6,8 @@ import submissionRouter from "./routes/submission.route";
 import dockerRouter from "./routes/docker.routes";
 import courseRouter from "./routes/course.routes";
 import userRouter from "./routes/user.routes";
-import leaderboardRouter from "./routes/leaderboard.routes"
+import leaderboardRouter from "./routes/leaderboard.routes";
+import badgeRouter from "./routes/badge.routes";
 import errorHandler from "./middlewares/errorHandler";
 import { verifyToken } from "./middlewares/auth";
 import cookieParser from "cookie-parser";
@@ -15,8 +16,8 @@ const app: Application = express();
 const port: number = 3000;
 
 app.use((req, _res, next) => {
-    console.log("Incoming request:", req.method, req.originalUrl);
-    next();
+  console.log("Incoming request:", req.method, req.originalUrl);
+  next();
 });
 
 app.use(express.json());
@@ -29,9 +30,10 @@ app.use("/api", verifyToken, submissionRouter);
 app.use("/api", verifyToken, courseRouter);
 app.use("/api", verifyToken, userRouter);
 app.use("/api", verifyToken, leaderboardRouter);
+app.use("/api", verifyToken, badgeRouter);
 app.use("/docker", dockerRouter);
 app.use(errorHandler);
 
 app.listen(3000, () => {
-    console.log(`HTTP running on http://localhost:${port}`);
+  console.log(`HTTP running on http://localhost:${port}`);
 });

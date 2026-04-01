@@ -12,6 +12,7 @@ import {
   updateStreak,
 } from "../models/user.model";
 import { TestCaseResult } from "../types/testCase";
+import * as badgeService from "../services/badge.service";
 
 export const makeSubmission = async (
   user_id: number,
@@ -94,7 +95,10 @@ export const makeSubmission = async (
     }
 
     await client.query("COMMIT");
-    return submission;
+
+    const newBadges = await badgeService.checkAndAwardBadges(user_id);
+
+    return { submission, newBadges };
   } catch (error: any) {
     await client.query("ROLLBACK");
     throw error;

@@ -115,3 +115,47 @@
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
+
+.badgeBody {
+  margin-top: 24px;
+  margin-right: 24px;
+  display: flex;
+  flex-direction: column;
+  color: #dedede;
+  box-shadow: 5px 0 5px -2px #202020;
+  background-color: #363636;
+  border-radius: 15px;
+  width: 20%;
+  height: 100%;
+}
+
+.badgesContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  gap: 48px;
+  margin-top: 36px;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+}
+
+.badge {
+  height: 72px;
+  width: 72px;
+  transition: transform 0.2s ease;
+}
+
+.badge:hover {
+  transform: translateY(-3px);
+}

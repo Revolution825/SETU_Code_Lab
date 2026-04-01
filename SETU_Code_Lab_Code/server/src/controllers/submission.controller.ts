@@ -19,7 +19,7 @@ export const makeSubmissionHandler = async (req: Request, res: Response) => {
       language,
     } = req.body;
 
-    const submission = await makeSubmission(
+    const { submission, newBadges } = await makeSubmission(
       user_id,
       problem_id,
       submitted_code,
@@ -32,7 +32,11 @@ export const makeSubmissionHandler = async (req: Request, res: Response) => {
 
     res
       .status(200)
-      .json({ message: "Submission successful", submission: submission });
+      .json({
+        message: "Submission successful",
+        submission: submission,
+        newBadges: newBadges,
+      });
   } catch (error: any) {
     res.status(500).json({ messsage: error.message });
   }
