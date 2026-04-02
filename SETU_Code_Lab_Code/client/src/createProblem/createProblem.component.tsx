@@ -87,8 +87,11 @@ true
       toast.error("At least one language is required");
       return;
     }
-    setLanguageEntries((prev) => prev.filter((e) => e.language !== language));
-    setActiveLanguageTab(language_entries[0].language);
+    const updated_entries = language_entries.filter(
+      (e) => e.language !== language,
+    );
+    setLanguageEntries(updated_entries);
+    setActiveLanguageTab(updated_entries[0].language);
   };
 
   const updatePlaceholderCode = (language: string, code: string) => {
