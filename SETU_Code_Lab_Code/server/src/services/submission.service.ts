@@ -43,17 +43,18 @@ export const makeSubmission = async (
     const isFirstSolve = await checkFirstSolve(client, user_id, problem_id);
     const points_awarded =
       percentage < 100 || !isFirstSolve ? 0 : points + speedBonus;
+
+    const todaysDate = new Date();
+    todaysDate.setHours(0, 0, 0, 0);
+    const yesterdaysDate = new Date(todaysDate);
+    yesterdaysDate.setDate(todaysDate.getDate() - 1);
+
+    const { last_solved_date, current_streak } = await getStreakData(
+      client,
+      user_id,
+    );
+
     if (overall_status && isFirstSolve) {
-      const todaysDate = new Date();
-      todaysDate.setHours(0, 0, 0, 0);
-      const yesterdaysDate = new Date(todaysDate);
-      yesterdaysDate.setDate(todaysDate.getDate() - 1);
-
-      const { last_solved_date, current_streak } = await getStreakData(
-        client,
-        user_id,
-      );
-
       if (last_solved_date == null) {
         await updateStreak(client, user_id, 1);
       } else {
@@ -61,14 +62,22 @@ export const makeSubmission = async (
         lastSolvedDate.setHours(0, 0, 0, 0);
 
         if (lastSolvedDate.getTime() === todaysDate.getTime()) {
+          // Do nothing
         } else if (lastSolvedDate.getTime() === yesterdaysDate.getTime()) {
           await updateStreak(client, user_id, current_streak + 1);
         } else {
           await updateStreak(client, user_id, 1);
         }
       }
-
       await updateUserPoints(client, user_id, points_awarded);
+    } else if (!overall_status && last_solved_date != null) {
+      const lastSolvedDate = new Date(last_solved_date);
+      lastSolvedDate.setHours(0, 0, 0, 0);
+      const isStreakBroken =
+        lastSolvedDate.getTime() < yesterdaysDate.getTime();
+      if (isStreakBroken) {
+        await updateStreak(client, user_id, 0);
+      }
     }
 
     const submission = await createSubmission(
