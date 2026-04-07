@@ -5,7 +5,7 @@
 .manageProblems {
   margin-top: 16px;
   overflow-y: auto;
-  height: 81vh;
+  height: calc(100vh - 200px);
 }
 
 .manageProblemRow {

@@ -186,11 +186,11 @@ export default function ViewProfile() {
             ) : null}
           </div>
         </div>
-        <div className="resultBody">
+        <div className="submissionsBody">
           <div className="resultHeader">
             <p>Submission History</p>
           </div>
-          <div className="resultsContent">
+          <div className="submissionsContent">
             {submissions.length > 0 ? (
               <table className="submissionTable">
                 <thead>
