@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict MdnkSaWg8ZXNGACSMf9xxFnoCgkwuAMK9pyM3Kq5g6OwJYOjzWGZGO4Xz8wrdyb
+\restrict i34lQe0NcnMBJpeowD8H9JmQ7FwJfghbLQf4Y5ChJPszhDGGM8vikvVhIImktPn
 
 -- Dumped from database version 17.9
 -- Dumped by pg_dump version 17.9
@@ -22,6 +22,38 @@ SET row_security = off;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: badge; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.badge (
+    badge_id integer NOT NULL,
+    badge_name character varying(100) NOT NULL,
+    description text,
+    icon character varying(255)
+);
+
+
+--
+-- Name: badge_badge_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.badge_badge_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: badge_badge_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.badge_badge_id_seq OWNED BY public.badge.badge_id;
+
 
 --
 -- Name: course; Type: TABLE; Schema: public; Owner: -
@@ -228,6 +260,17 @@ ALTER SEQUENCE public.test_case_test_case_id_seq OWNED BY public.test_case.test_
 
 
 --
+-- Name: user_badge; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_badge (
+    user_id integer NOT NULL,
+    badge_id integer NOT NULL,
+    earned_at timestamp without time zone DEFAULT now()
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -263,6 +306,13 @@ CREATE SEQUENCE public.users_user_id_seq
 --
 
 ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
+
+
+--
+-- Name: badge badge_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.badge ALTER COLUMN badge_id SET DEFAULT nextval('public.badge_badge_id_seq'::regclass);
 
 
 --
@@ -305,6 +355,17 @@ ALTER TABLE ONLY public.test_case_result ALTER COLUMN test_case_result_id SET DE
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
+
+
+--
+-- Data for Name: badge; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.badge (badge_id, badge_name, description, icon) FROM stdin;
+1	First Steps	Submit your first solution	firstSteps.svg
+2	On Fire	Achieve a 3 day streak	streakBadge.svg
+3	Problem Solver	Solve 5 problems	problemSolver.svg
+\.
 
 
 --
@@ -374,6 +435,7 @@ COPY public.problem (problem_id, problem_title, problem_description, difficulty,
 9	Find All Duplicates in an Array	# Find All Duplicates in an Array\n\nGiven an array of integers `nums`, return a list of all elements that appear **more than once**. The result can be returned in **any order**.\n\n## Examples\n\n**Input:** `nums = [4, 3, 2, 7, 8, 2, 3, 1]`\n**Output:** `[2, 3]`\n\n**Input:** `nums = [1, 1, 2]`\n**Output:** `[1]`\n\n## Constraints\n`1 <= nums.length <= 10^5`\n`-10^9 <= nums[i] <= 10^9`	3	1	300
 8	Merge Two Sorted Arrays	# Merge Two Sorted Arrays\n\nGiven two sorted arrays of integers `nums1` and `nums2`, return a **single sorted array** containing all elements from both arrays.\n\n## Examples\n\n**Input:** `nums1 = [1, 3, 5]`, `nums2 = [2, 4, 6]`\n**Output:** `[1, 2, 3, 4, 5, 6]`\n\n**Input:** `nums1 = [1, 2, 3]`, `nums2 = []`\n**Output:** `[1, 2, 3]`\n\n## Constraints\n`0 <= nums1.length, nums2.length <= 10^5`\n`-10^9 <= nums1[i], nums2[i] <= 10^9`\nBoth `nums1` and `nums2` are sorted in **non-decreasing** order	2	1	200
 7	Find the largest element in an array	# Find the Largest Element in an Array\n\nGiven an array of integers `nums`, return the **largest element** in the array.\n\n## Examples\n\n**Input:** `nums = [3, 1, 4, 1, 5, 9, 2, 6]`\n**Output:** `9`\n\n**Input:** `nums = [-10, -3, -7, -1]`\n**Output:** `-1`\n\n## Constraints\n- `1 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`	1	1	100
+14	NEW ADD	NEW ADD	1	1	100
 \.
 
 
@@ -393,6 +455,7 @@ COPY public.problem_language (problem_id, language, placeholder_code) FROM stdin
 6	java	public static int add(int x, int y) {\n\n}
 6	python	def add(x: int, y: int) -> int:\n    \n
 13	java	public static int add(int x, int y) {\n\n}
+14	java	public static int add(int a, int b) {\n}
 \.
 
 
@@ -428,6 +491,30 @@ COPY public.submission (submission_id, user_id, problem_id, submitted_code, subm
 26	1	5	public static Map<String, Double> averageGradeBySubject(List<Map<String, Integer>> students) {\n\n}	2026-03-23 18:26:09.092633	f	44	0	0	java
 27	19	6	public static int add(int x, int y) {\n\n}	2026-03-25 19:33:26.326734	f	28	0	0	java
 28	20	6	public static int add(int x, int y) {\n  return x+y;\n}	2026-03-25 20:57:28.27631	t	89	100	200	java
+29	10	13	public static int add(int x, int y) {\n  return x+y;\n}	2026-04-01 13:04:33.061981	t	25	100	200	java
+30	10	6	public static int add(int x, int y) {\n  return x+y;\n}	2026-04-01 13:11:10.794824	t	9	100	200	java
+31	10	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 14:49:43.480076	t	8	100	0	java
+32	10	13	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 14:54:21.030432	t	6	100	0	java
+33	10	6	public static int add(int x, int y) {\n\n}	2026-04-01 18:11:27.977648	f	3	0	0	java
+34	10	6	public static int add(int x, int y) {\n\n}	2026-04-01 18:18:50.151966	f	444	0	0	java
+35	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 18:41:40.741191	t	12	100	200	java
+36	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 18:47:08.240445	t	340	100	0	java
+37	9	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:04:36.155915	t	11	100	200	java
+38	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:06:07.762275	t	6	100	200	java
+39	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:08:41.962982	t	159	100	0	java
+40	10	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:11:04.510234	t	15	100	0	java
+41	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:20:12.482447	t	7	100	0	java
+42	9	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:22:59.747772	t	9	100	0	java
+43	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:24:45.138052	t	6	100	0	java
+44	11	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:27:13.590076	t	9	100	0	java
+45	11	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:28:14.232381	t	8	100	0	java
+46	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:37:17.735452	t	5	100	0	java
+47	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:37:42.931917	t	5	100	0	java
+48	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:38:04.532555	t	6	100	0	java
+49	1	6	public static int add(int x, int y) {\n\n}	2026-04-04 10:47:04.028822	f	21	0	0	java
+50	1	6	public static int add(int x, int y) {\n  return 1\n}	2026-04-04 15:50:57.361573	f	7	0	0	java
+51	1	14	public static int add(int a, int b) {\nreturn a+b;\n}	2026-04-04 15:56:40.505304	t	14	100	200	java
+52	1	12	public static int[] twoSum(int[] nums, int target) {\n    \n}	2026-04-07 12:20:30.520149	f	1	0	0	java
 \.
 
 
@@ -485,6 +572,7 @@ COPY public.test_case (test_case_id, problem_id, input_value, expected_value) FR
 36	9	{"nums": [1, 1, 1, 1]}	[1]
 37	9	{"nums": [-1, -1, 2, 3, 2]}	[-1, 2]
 38	9	{"nums": [1]}	[]
+58	14	{"a": 1, "b": 2}	3
 \.
 
 
@@ -617,6 +705,129 @@ COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, 
 124	28	15	t	-3	5182
 125	28	16	t	-10	5303
 126	28	17	t	300	5467
+127	29	57	t	3	2368
+128	30	13	t	3	2760
+129	30	14	t	1	2265
+130	30	15	t	-3	2319
+131	30	16	t	-10	2326
+132	30	17	t	300	2295
+133	31	13	t	3	2647
+134	31	14	t	1	2314
+135	31	15	t	-3	2283
+136	31	16	t	-10	1237
+137	31	17	t	300	2315
+138	32	57	t	3	2667
+139	33	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2195
+140	33	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1839
+141	33	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1838
+142	33	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1861
+143	33	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1839
+144	34	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2208
+145	34	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1925
+146	34	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1905
+147	34	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1908
+148	34	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1818
+149	35	13	t	3	2870
+150	35	14	t	1	2367
+151	35	15	t	-3	2394
+152	35	16	t	-10	2410
+153	35	17	t	300	2349
+154	36	13	t	3	2712
+155	36	14	t	1	892
+156	36	15	t	-3	2409
+157	36	16	t	-10	2470
+158	36	17	t	300	2455
+159	37	13	t	3	2708
+160	37	14	t	1	2412
+161	37	15	t	-3	2401
+162	37	16	t	-10	2302
+163	37	17	t	300	847
+164	38	13	t	3	2414
+165	38	14	t	1	2297
+166	38	15	t	-3	873
+167	38	16	t	-10	2360
+168	38	17	t	300	2348
+169	39	13	t	3	2506
+170	39	14	t	1	2486
+171	39	15	t	-3	2395
+172	39	16	t	-10	2352
+173	39	17	t	300	2349
+174	40	13	t	3	2394
+175	40	14	t	1	2340
+176	40	15	t	-3	2416
+177	40	16	t	-10	2408
+178	40	17	t	300	2348
+179	41	13	t	3	2653
+180	41	14	t	1	2369
+181	41	15	t	-3	2376
+182	41	16	t	-10	2373
+183	41	17	t	300	2354
+184	42	13	t	3	2400
+185	42	14	t	1	2402
+186	42	15	t	-3	2433
+187	42	16	t	-10	2452
+188	42	17	t	300	2418
+189	43	13	t	3	2393
+190	43	14	t	1	2406
+191	43	15	t	-3	2409
+192	43	16	t	-10	2412
+193	43	17	t	300	2301
+194	44	13	t	3	2287
+195	44	14	t	1	2391
+196	44	15	t	-3	2386
+197	44	16	t	-10	2511
+198	44	17	t	300	2367
+199	45	13	t	3	2331
+200	45	14	t	1	2399
+201	45	15	t	-3	2369
+202	45	16	t	-10	2379
+203	45	17	t	300	2386
+204	46	13	t	3	2793
+205	46	14	t	1	2309
+206	46	15	t	-3	2470
+207	46	16	t	-10	2401
+208	46	17	t	300	2379
+209	47	13	t	3	2329
+210	47	14	t	1	2283
+211	47	15	t	-3	2359
+212	47	16	t	-10	2392
+213	47	17	t	300	2366
+214	48	13	t	3	2385
+215	48	14	t	1	2415
+216	48	15	t	-3	2357
+217	48	16	t	-10	2470
+218	48	17	t	300	2404
+219	49	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2212
+220	49	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1860
+221	49	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1850
+222	49	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2720
+223	49	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1867
+224	50	13	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1423
+225	50	14	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1694
+226	50	15	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1096
+227	50	16	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1146
+228	50	17	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1141
+229	51	58	t	3	2324
+230	52	51	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2354
+231	52	52	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1892
+232	52	53	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1812
+233	52	54	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1808
+234	52	55	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1878
+235	52	56	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1791
+\.
+
+
+--
+-- Data for Name: user_badge; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.user_badge (user_id, badge_id, earned_at) FROM stdin;
+11	2	2026-04-01 10:22:17.41378
+10	3	2026-04-01 19:11:04.536811
+11	1	2026-04-01 19:28:14.253889
+8	1	2026-04-01 19:37:17.760868
+1	1	2026-04-04 10:47:04.048411
+1	3	2026-04-04 10:47:04.055276
 \.
 
 
@@ -625,22 +836,29 @@ COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, 
 --
 
 COPY public.users (user_id, user_name, email, password, role, total_points, current_streak, longest_streak, last_solved_date) FROM stdin;
-8	Isaiah Andres	ia@gmail.com	$2b$10$WKWkFU6xywpH38JsQDCKTu.R3t58.VPNpPyBSDqRDxy3IFRklH2Re	student	0	0	0	\N
-9	Stuart Rossiter	sa@gmail.com	$2b$10$6kCnvMzuMtr8ZObmULIgQO2U5znTjmqecQpoxyauW/iF13Ipqj4a2	student	0	0	0	\N
-10	Conor Hendley	ch@gmail.com	$2b$10$0aaI9r6EUuXTxPVFyhtOQOjraBppzKjrYUmaBj3WhJKk5QZ0P83ou	student	0	0	0	\N
 11	Diarmuid O'Neill	don@gmail.com	$2b$10$Mhtc0aViZ7Ae3qrh71eqWuzufYyVyhysUxzrQPIRkBxjBOAEMRXci	student	0	0	0	\N
-12	Dorian Nowicki	dn@gmail.com	$2b$10$4.7hObIZe7lRYzmejdf1c.2slGfgM5L0HJ4HyULIkLvE3kZrx7H16	student	0	0	0	\N
 13	agabagoo	c00284845@setu.ie	$2b$10$A.6sDGcy4GJEY0iVXTya/eTjNmaHSRXsRGh4ce/zphVSxXHA13.Ma	student	200	1	1	2026-03-09
 14	CIAN	cianj230@gmail.com	$2b$10$/K2bqdm.Qm8s6VvW9LBD/.AOa51OdHqs65zj9/YW3lxG.3DS4UxqK	lecturer	200	1	1	2026-03-09
 7	Dr Tim	tim@gmail.com	$2b$10$Fusxpi7UXafgI1h3j16jD.KBsh/aRnXHqvViwXYR4EIW7VSs9lS5C	lecturer	200	1	1	2026-03-10
 15	Emmanuel A	e.a.test@live.com	$2b$10$hvK3twk4iqSIS40hPBKmleTK5ZiPPUWphae539O8U2GssuRlvKM3C	student	200	1	1	2026-03-21
 16	Ryan Dunne	ryanjd123@hotmail.com	$2b$10$9jreSY9/amzNvcnp3HPUJuVJ6o3ojdFhP4mENNRRyrKmRv0A1ICIW	student	500	1	1	2026-03-21
 17	Jamie Byrne	c00282009@setu.ie	$2b$10$Gtlrf0Rkp7IaAmkp6.rE1.G16j7Q6TCt.mTwmMow3ng2FheswFwW6	student	0	0	0	\N
-1	Dr. Don	d@gmail.com	$2b$10$2sTIgwdYLCu6Ybw95a0zhuDtDIOsqZzlDLfFkuQgI5BPe3rEfZ6tG	lecturer	2000	2	2	2026-03-22
 18	tester	testemail@email.com	$2b$10$/f8NGrB2LrtgQt7yhZBvwe7B6W3JaVPzgAskVMosuDByWlrAqcgKC	student	0	0	0	\N
 19	Dr John Doe	jd@gmail.com	$2b$10$qx1KjYplz1XLfKhOk3XFd.58ZeboU9YV5gc3Sp5oLR.vopmkMvepC	lecturer	0	0	0	\N
 20	Dr Jane Doe	janedoe@gmail.com	$2b$10$3giDN02.FQGzHAElTZhsouE09vPrIrtzMwLnc1ZBu1qd79SlJbU4y	lecturer	200	1	1	2026-03-25
+10	Conor Hendley	ch@gmail.com	$2b$10$0aaI9r6EUuXTxPVFyhtOQOjraBppzKjrYUmaBj3WhJKk5QZ0P83ou	student	400	1	1	2026-04-01
+8	Isaiah Andres	ia@gmail.com	$2b$10$WKWkFU6xywpH38JsQDCKTu.R3t58.VPNpPyBSDqRDxy3IFRklH2Re	student	200	1	1	2026-04-01
+9	Stuart Rossiter	sa@gmail.com	$2b$10$6kCnvMzuMtr8ZObmULIgQO2U5znTjmqecQpoxyauW/iF13Ipqj4a2	student	200	1	1	2026-04-01
+12	Dorian Nowicki	dn@gmail.com	$2b$10$4.7hObIZe7lRYzmejdf1c.2slGfgM5L0HJ4HyULIkLvE3kZrx7H16	student	200	1	1	2026-04-01
+1	Dr. Don	d@gmail.com	$2b$10$2sTIgwdYLCu6Ybw95a0zhuDtDIOsqZzlDLfFkuQgI5BPe3rEfZ6tG	lecturer	2200	0	2	2026-04-07
 \.
+
+
+--
+-- Name: badge_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.badge_badge_id_seq', 3, true);
 
 
 --
@@ -654,28 +872,28 @@ SELECT pg_catalog.setval('public.course_course_id_seq', 2, true);
 -- Name: problem_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.problem_problem_id_seq', 13, true);
+SELECT pg_catalog.setval('public.problem_problem_id_seq', 14, true);
 
 
 --
 -- Name: submission_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.submission_submission_id_seq', 28, true);
+SELECT pg_catalog.setval('public.submission_submission_id_seq', 52, true);
 
 
 --
 -- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.test_case_result_test_case_result_id_seq', 126, true);
+SELECT pg_catalog.setval('public.test_case_result_test_case_result_id_seq', 235, true);
 
 
 --
 -- Name: test_case_test_case_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.test_case_test_case_id_seq', 57, true);
+SELECT pg_catalog.setval('public.test_case_test_case_id_seq', 58, true);
 
 
 --
@@ -683,6 +901,14 @@ SELECT pg_catalog.setval('public.test_case_test_case_id_seq', 57, true);
 --
 
 SELECT pg_catalog.setval('public.users_user_id_seq', 20, true);
+
+
+--
+-- Name: badge badge_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.badge
+    ADD CONSTRAINT badge_pkey PRIMARY KEY (badge_id);
 
 
 --
@@ -747,6 +973,22 @@ ALTER TABLE ONLY public.test_case
 
 ALTER TABLE ONLY public.test_case_result
     ADD CONSTRAINT test_case_result_pkey PRIMARY KEY (test_case_result_id);
+
+
+--
+-- Name: user_badge unique_user_badge; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_badge
+    ADD CONSTRAINT unique_user_badge UNIQUE (user_id, badge_id);
+
+
+--
+-- Name: user_badge user_badge_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_badge
+    ADD CONSTRAINT user_badge_pkey PRIMARY KEY (user_id, badge_id);
 
 
 --
@@ -862,8 +1104,24 @@ ALTER TABLE ONLY public.test_case_result
 
 
 --
+-- Name: user_badge user_badge_badge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_badge
+    ADD CONSTRAINT user_badge_badge_id_fkey FOREIGN KEY (badge_id) REFERENCES public.badge(badge_id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_badge user_badge_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_badge
+    ADD CONSTRAINT user_badge_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict MdnkSaWg8ZXNGACSMf9xxFnoCgkwuAMK9pyM3Kq5g6OwJYOjzWGZGO4Xz8wrdyb
+\unrestrict i34lQe0NcnMBJpeowD8H9JmQ7FwJfghbLQf4Y5ChJPszhDGGM8vikvVhIImktPn
 
