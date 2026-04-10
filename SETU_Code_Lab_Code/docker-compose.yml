@@ -61,6 +61,8 @@ services:
 
   # Client
   client:
+    environment:
+      - BACKEND_HOST=server
     build:
       context: ./client
       dockerfile: Dockerfile

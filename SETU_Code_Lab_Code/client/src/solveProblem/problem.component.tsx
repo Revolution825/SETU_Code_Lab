@@ -117,7 +117,6 @@ export default function Problem() {
   ): Promise<TestCaseResult | null> {
     try {
       const res = await api.post("docker/start", {
-        image: selectedLanguage === "java" ? "java-sandbox" : "python-sandbox",
         placeholder_code:
           languages.find((l) => l.language === selectedLanguage)
             ?.placeholder_code ?? "",

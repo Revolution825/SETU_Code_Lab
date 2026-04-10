@@ -20,9 +20,8 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy the built React app from the builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Get custom Nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
+# Copy nginx template, envsubst will replace ${BACKEND_HOST} at container startup
+COPY default.conf.template /etc/nginx/templates/default.conf.template
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

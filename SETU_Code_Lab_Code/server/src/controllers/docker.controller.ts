@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { startContainer } from "../services/docker.service";
 
 export async function startContainerHandler(req: Request, res: Response) {
-  const { image, placeholder_code, code, testCase, language } = req.body;
+  const { placeholder_code, code, testCase, language } = req.body;
+  const image = language === "java"
+    ? process.env.JAVA_EXECUTION_IMAGE!
+    : process.env.PYTHON_EXECUTION_IMAGE!;
   try {
     const output = await startContainer(
       image,

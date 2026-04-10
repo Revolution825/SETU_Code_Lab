@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codelab-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codelab-backend
+  template:
+    metadata:
+      labels:
+        app: codelab-backend
+    spec:
+      imagePullSecrets:
+        - name: acr-secret
+      containers:
+      # Node.js backend
+      - name: backend
+        image: setucodelab.azurecr.io/codelab-backend:v3
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          value: "setu-codelab-db.postgres.database.azure.com"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: DB_PASSWORD
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: DATABASE_URL
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: JWT_SECRET
+        - name: JWT_EXPIRY
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: JWT_EXPIRY
+        - name: JWT_REFRESH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: JWT_REFRESH_SECRET
+        - name: JAVA_EXECUTION_IMAGE
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: JAVA_EXECUTION_IMAGE
+        - name: PYTHON_EXECUTION_IMAGE
+          valueFrom:
+            secretKeyRef:
+              name: codelab-secrets
+              key: PYTHON_EXECUTION_IMAGE
+        - name: DOCKER_HOST
+          value: "tcp://localhost:2375"
+        - name: COOKIE_SECURE
+          value: "false"
+
+      # DinD sidecar
+      - name: dind-sidecar
+        image: docker:24-dind
+        securityContext:
+          privileged: true
+        env:
+          - name: DOCKER_TLS_CERTDIR
+            value: ""
+          - name: ACR_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: acr-auth
+                key: username
+          - name: ACR_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: acr-auth
+                key: password
+        command: ["sh", "-c"]
+        args:
+          - |
+            dockerd-entrypoint.sh &
+            echo "Waiting for Docker..."
+            until docker info > /dev/null 2>&1; do sleep 1; done
+            echo "Docker ready"
+        
+            docker login setucodelab.azurecr.io -u $ACR_USERNAME -p $ACR_PASSWORD
+        
+            echo "Pulling runner images..."
+            docker pull setucodelab.azurecr.io/setu-codelab-java-runner:v1
+            docker pull setucodelab.azurecr.io/setu-codelab-python-runner:v1
+        
+            echo "Ready to execute code"
+            wait
+        volumeMounts:
+          - name: dind-storage
+            mountPath: /var/lib/docker
+
+      volumes:
+        - name: dind-storage
+          emptyDir: {}

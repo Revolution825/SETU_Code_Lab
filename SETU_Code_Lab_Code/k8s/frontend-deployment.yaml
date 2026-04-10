@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codelab-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: codelab-frontend
+  template:
+    metadata:
+      labels:
+        app: codelab-frontend
+    spec:
+      imagePullSecrets:
+        - name: acr-secret
+      containers:
+      - name: frontend
+        image: setucodelab.azurecr.io/codelab-frontend:v4
+        ports:
+        - containerPort: 80
+        env:
+          - name: BACKEND_HOST
+            value: "codelab-backend-svc"
+
+---
+# LoadBalancer gives this a public IP - this is the app's entry point
+apiVersion: v1
+kind: Service
+metadata:
+  name: codelab-frontend-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: codelab-frontend
+  ports:
+  - port: 80
+    targetPort: 80
