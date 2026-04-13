@@ -4,6 +4,20 @@ import { pool } from "../infrastructure/database";
 import type { TestCase } from "../types/testCase";
 import { splitParams, getParamNames } from "./sharedUtils";
 import { ProblemLanguage } from "../types/problemLanguage";
+import { startContainer } from "./docker.service";
+
+function injectJavaCode(code: String, placeholder: String) {
+  const index = placeholder.lastIndexOf("}");
+  return (
+    placeholder.slice(0, index) +
+    `\n    return ${code};\n` +
+    placeholder.slice(index)
+  );
+}
+
+function injectPythonCode(code: String, placeholder: String) {
+  return placeholder + `\n    return ${code}\n`;
+}
 
 export const getAllCourseProblems = async (selectedCourseId: Number) => {
   const problems = await ProblemModel.fetchCourseProblems(selectedCourseId);
@@ -46,6 +60,38 @@ export const createProblem = async (
               " parameter(s) but test case has " +
               inputValues.length +
               " input value(s).",
+          );
+        }
+        const image =
+          entry.language === "java"
+            ? process.env.JAVA_EXECUTION_IMAGE!
+            : process.env.PYTHON_EXECUTION_IMAGE!;
+
+        const inputValuesJson: Record<string, any> = {};
+        paramNames.forEach((name, i) => {
+          inputValuesJson[name] = JSON.parse(inputValues[i].trim());
+        });
+
+        const code =
+          entry.language === "java"
+            ? injectJavaCode(testCase.expected_value, entry.placeholder_code)
+            : injectPythonCode(testCase.expected_value, entry.placeholder_code);
+
+        const output = await startContainer(
+          image,
+          entry.placeholder_code,
+          code,
+          {
+            ...testCase,
+            input_value: inputValuesJson as any,
+            expected_value: JSON.parse(testCase.expected_value),
+          },
+          entry.language,
+        );
+
+        if (!output.passed) {
+          throw new Error(
+            `Test failed for ${entry.language} : ${output.actual_output}`,
           );
         }
       }
@@ -122,7 +168,6 @@ export const updateProblem = async (
   try {
     const points = difficulty * 100;
 
-    // Validate all language entries before touching the database
     for (const entry of language_entries) {
       const paramNames = getParamNames(entry);
       for (const testCase of testCases) {
@@ -137,6 +182,38 @@ export const updateProblem = async (
               " parameter(s) but test case has " +
               inputValues.length +
               " input value(s).",
+          );
+        }
+        const image =
+          entry.language === "java"
+            ? process.env.JAVA_EXECUTION_IMAGE!
+            : process.env.PYTHON_EXECUTION_IMAGE!;
+
+        const inputValuesJson: Record<string, any> = {};
+        paramNames.forEach((name, i) => {
+          inputValuesJson[name] = JSON.parse(inputValues[i].trim());
+        });
+
+        const code =
+          entry.language === "java"
+            ? injectJavaCode(testCase.expected_value, entry.placeholder_code)
+            : injectPythonCode(testCase.expected_value, entry.placeholder_code);
+
+        const output = await startContainer(
+          image,
+          entry.placeholder_code,
+          code,
+          {
+            ...testCase,
+            input_value: inputValuesJson as any,
+            expected_value: JSON.parse(testCase.expected_value),
+          },
+          entry.language,
+        );
+
+        if (!output.passed) {
+          throw new Error(
+            `Test failed for ${entry.language} : ${output.actual_output}`,
           );
         }
       }

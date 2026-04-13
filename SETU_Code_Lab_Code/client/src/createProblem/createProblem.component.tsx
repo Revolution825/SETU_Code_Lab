@@ -56,6 +56,7 @@ true
   const [testCasesLoading, setTestCasesLoading] = problem
     ? useState(true)
     : useState(false);
+  const [validatingProblem, setValidatingProblem] = useState(false);
   const [title, setTitle] = useState(problem?.problem_title ?? "");
   const [difficulty, setDifficulty] = useState(problem?.difficulty ?? 1);
   const [description, setDescription] = useState(
@@ -149,6 +150,7 @@ true
   };
 
   const handleSubmit = async () => {
+    setValidatingProblem(true);
     const preparedTestCases = testCases.map((testCase) => {
       let id, input, output, deleted;
       try {
@@ -193,11 +195,13 @@ true
         }
       }
       if (problem?.problem_id) {
-        updateProblem(preparedTestCases);
+        await updateProblem(preparedTestCases);
       } else {
-        createNewProblem(preparedTestCases);
+        await createNewProblem(preparedTestCases);
       }
+      setValidatingProblem(false);
     } catch (error: any) {
+      setValidatingProblem(false);
       console.error(error.message);
     }
   };
@@ -375,6 +379,12 @@ true
         <div className="spinner">
           <FadeLoader color="#dedede" />
           <p style={{ margin: 24 }}>Hang tight, Loading Problem Details...</p>
+        </div>
+      )}
+      {validatingProblem && (
+        <div className="spinner">
+          <FadeLoader color="#dedede" />
+          <p style={{ margin: 24 }}>Hang tight, Validating Problem...</p>
         </div>
       )}
     </div>
