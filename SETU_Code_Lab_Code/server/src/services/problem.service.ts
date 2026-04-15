@@ -6,16 +6,65 @@ import { splitParams, getParamNames } from "./sharedUtils";
 import { ProblemLanguage } from "../types/problemLanguage";
 import { startContainer } from "./docker.service";
 
-function injectJavaCode(code: String, placeholder: String) {
-  const index = placeholder.lastIndexOf("}");
+function injectJavaCode(code: string, placeholder: string) {
+  const finalIndex = placeholder.lastIndexOf("}");
+  const signitureEndIndex = placeholder.indexOf("{");
+  const signatureRegex =
+    /public\s+static\s+([\w<>\[\], ?]+)\s+(\w+)\s*\(([^)]*)\)/;
+  const match = placeholder.match(signatureRegex);
+  if (!match) {
+    throw new Error("Could not find return type in placeholder code.");
+  }
+  const returnType = match[1];
+
+  function processJavaType(returnType: string): string {
+    returnType = returnType.trim();
+
+    if (
+      [
+        "int",
+        "double",
+        "boolean",
+        "long",
+        "float",
+        "short",
+        "byte",
+        "char",
+        "String",
+        "Integer",
+        "Double",
+        "Boolean",
+        "Character",
+      ].includes(returnType)
+    ) {
+      return `${returnType}.class`;
+    }
+
+    if (returnType.endsWith("[]")) {
+      return `${returnType}.class`;
+    }
+
+    return `new com.fasterxml.jackson.core.type.TypeReference<${returnType}>() {}`;
+  }
+
+  const processedType = processJavaType(returnType);
+
+  function escapeJavaString(str: string) {
+    return str.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
+
+  const escapedCode = escapeJavaString(code);
+
   return (
-    placeholder.slice(0, index) +
-    `\n    return ${code};\n` +
-    placeholder.slice(index)
+    placeholder.slice(0, signitureEndIndex) +
+    (placeholder.includes("throws") ? "" : " throws Exception ") +
+    placeholder.slice(signitureEndIndex, finalIndex) +
+    `\n    return mapper.readValue("${escapedCode}", ${processedType});\n` +
+    placeholder.slice(finalIndex)
   );
 }
 
-function injectPythonCode(code: String, placeholder: String) {
+function injectPythonCode(code: string, placeholder: string) {
   return placeholder + `\n    return ${code}\n`;
 }
 
