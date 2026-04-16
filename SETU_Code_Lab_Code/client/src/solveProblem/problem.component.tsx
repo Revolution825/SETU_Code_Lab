@@ -19,7 +19,10 @@ import type { ProblemLanguage } from "../types/ProblemLanguage";
 import type { Badge } from "../types/badge";
 
 export default function Problem() {
-  const { shouldAutoSubmit } = useAntiCheat();
+  const [submitted, setSubmitted] = useState(false);
+  const { shouldAutoSubmit, setShouldAutoSubmit } = useAntiCheat(submitted);
+  const isSubmitting = useRef(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const problem: Problem = location.state;
@@ -82,10 +85,11 @@ export default function Problem() {
   }, []);
 
   useEffect(() => {
-    if (shouldAutoSubmit) {
+    if (shouldAutoSubmit && !submitted && !isRunning) {
       handleSubmit();
+      setShouldAutoSubmit(false);
     }
-  }, [shouldAutoSubmit]);
+  }, [shouldAutoSubmit, submitted, isRunning]);
 
   const handleLanguageChange = (language: string) => {
     const selected = languages.find((l) => l.language === language);
@@ -156,6 +160,8 @@ export default function Problem() {
   }
 
   const handleSubmit = async () => {
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
     if (!stopwatchRef.current) return;
     try {
       const timeTaken = stopwatchRef.current.getTotalSeconds();
@@ -186,6 +192,7 @@ export default function Problem() {
           points_awarded: data.submission.points_awarded,
         });
         setNewBadges(data.newBadges);
+        setSubmitted(true);
         setShowSubmissionAlert(true);
       } else {
         setIsRunning(false);
