@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict i34lQe0NcnMBJpeowD8H9JmQ7FwJfghbLQf4Y5ChJPszhDGGM8vikvVhIImktPn
+\restrict 0bWTerdaNYBGdQGPhldABtfb3pRgscy0rqWLxLKs7roCna4fUQDhbLuPySeCc6d
 
 -- Dumped from database version 17.9
 -- Dumped by pg_dump version 17.9
@@ -24,7 +24,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: badge; Type: TABLE; Schema: public; Owner: -
+-- Name: badge; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.badge (
@@ -35,8 +35,10 @@ CREATE TABLE public.badge (
 );
 
 
+ALTER TABLE public.badge OWNER TO setu_user;
+
 --
--- Name: badge_badge_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: badge_badge_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.badge_badge_id_seq
@@ -48,15 +50,17 @@ CREATE SEQUENCE public.badge_badge_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.badge_badge_id_seq OWNER TO setu_user;
+
 --
--- Name: badge_badge_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: badge_badge_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.badge_badge_id_seq OWNED BY public.badge.badge_id;
 
 
 --
--- Name: course; Type: TABLE; Schema: public; Owner: -
+-- Name: course; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.course (
@@ -68,8 +72,10 @@ CREATE TABLE public.course (
 );
 
 
+ALTER TABLE public.course OWNER TO setu_user;
+
 --
--- Name: course_course_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: course_course_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.course_course_id_seq
@@ -81,15 +87,17 @@ CREATE SEQUENCE public.course_course_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.course_course_id_seq OWNER TO setu_user;
+
 --
--- Name: course_course_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: course_course_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.course_course_id_seq OWNED BY public.course.course_id;
 
 
 --
--- Name: course_problem; Type: TABLE; Schema: public; Owner: -
+-- Name: course_problem; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.course_problem (
@@ -98,8 +106,10 @@ CREATE TABLE public.course_problem (
 );
 
 
+ALTER TABLE public.course_problem OWNER TO setu_user;
+
 --
--- Name: enrollment; Type: TABLE; Schema: public; Owner: -
+-- Name: enrollment; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.enrollment (
@@ -108,8 +118,10 @@ CREATE TABLE public.enrollment (
 );
 
 
+ALTER TABLE public.enrollment OWNER TO setu_user;
+
 --
--- Name: problem; Type: TABLE; Schema: public; Owner: -
+-- Name: problem; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.problem (
@@ -122,8 +134,10 @@ CREATE TABLE public.problem (
 );
 
 
+ALTER TABLE public.problem OWNER TO setu_user;
+
 --
--- Name: problem_language; Type: TABLE; Schema: public; Owner: -
+-- Name: problem_language; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.problem_language (
@@ -134,8 +148,10 @@ CREATE TABLE public.problem_language (
 );
 
 
+ALTER TABLE public.problem_language OWNER TO setu_user;
+
 --
--- Name: problem_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: problem_problem_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.problem_problem_id_seq
@@ -147,15 +163,17 @@ CREATE SEQUENCE public.problem_problem_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.problem_problem_id_seq OWNER TO setu_user;
+
 --
--- Name: problem_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: problem_problem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.problem_problem_id_seq OWNED BY public.problem.problem_id;
 
 
 --
--- Name: submission; Type: TABLE; Schema: public; Owner: -
+-- Name: submission; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.submission (
@@ -173,8 +191,10 @@ CREATE TABLE public.submission (
 );
 
 
+ALTER TABLE public.submission OWNER TO setu_user;
+
 --
--- Name: submission_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: submission_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.submission_submission_id_seq
@@ -186,15 +206,17 @@ CREATE SEQUENCE public.submission_submission_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.submission_submission_id_seq OWNER TO setu_user;
+
 --
--- Name: submission_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: submission_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.submission_submission_id_seq OWNED BY public.submission.submission_id;
 
 
 --
--- Name: test_case; Type: TABLE; Schema: public; Owner: -
+-- Name: test_case; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.test_case (
@@ -205,8 +227,10 @@ CREATE TABLE public.test_case (
 );
 
 
+ALTER TABLE public.test_case OWNER TO setu_user;
+
 --
--- Name: test_case_result; Type: TABLE; Schema: public; Owner: -
+-- Name: test_case_result; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.test_case_result (
@@ -219,8 +243,10 @@ CREATE TABLE public.test_case_result (
 );
 
 
+ALTER TABLE public.test_case_result OWNER TO setu_user;
+
 --
--- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.test_case_result_test_case_result_id_seq
@@ -232,15 +258,17 @@ CREATE SEQUENCE public.test_case_result_test_case_result_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.test_case_result_test_case_result_id_seq OWNER TO setu_user;
+
 --
--- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.test_case_result_test_case_result_id_seq OWNED BY public.test_case_result.test_case_result_id;
 
 
 --
--- Name: test_case_test_case_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: test_case_test_case_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.test_case_test_case_id_seq
@@ -252,15 +280,17 @@ CREATE SEQUENCE public.test_case_test_case_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.test_case_test_case_id_seq OWNER TO setu_user;
+
 --
--- Name: test_case_test_case_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: test_case_test_case_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.test_case_test_case_id_seq OWNED BY public.test_case.test_case_id;
 
 
 --
--- Name: user_badge; Type: TABLE; Schema: public; Owner: -
+-- Name: user_badge; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.user_badge (
@@ -270,8 +300,10 @@ CREATE TABLE public.user_badge (
 );
 
 
+ALTER TABLE public.user_badge OWNER TO setu_user;
+
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
+-- Name: users; Type: TABLE; Schema: public; Owner: setu_user
 --
 
 CREATE TABLE public.users (
@@ -288,8 +320,10 @@ CREATE TABLE public.users (
 );
 
 
+ALTER TABLE public.users OWNER TO setu_user;
+
 --
--- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: setu_user
 --
 
 CREATE SEQUENCE public.users_user_id_seq
@@ -301,64 +335,66 @@ CREATE SEQUENCE public.users_user_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.users_user_id_seq OWNER TO setu_user;
+
 --
--- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: setu_user
 --
 
 ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
--- Name: badge badge_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: badge badge_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.badge ALTER COLUMN badge_id SET DEFAULT nextval('public.badge_badge_id_seq'::regclass);
 
 
 --
--- Name: course course_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: course course_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course ALTER COLUMN course_id SET DEFAULT nextval('public.course_course_id_seq'::regclass);
 
 
 --
--- Name: problem problem_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: problem problem_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.problem ALTER COLUMN problem_id SET DEFAULT nextval('public.problem_problem_id_seq'::regclass);
 
 
 --
--- Name: submission submission_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: submission submission_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.submission ALTER COLUMN submission_id SET DEFAULT nextval('public.submission_submission_id_seq'::regclass);
 
 
 --
--- Name: test_case test_case_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: test_case test_case_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case ALTER COLUMN test_case_id SET DEFAULT nextval('public.test_case_test_case_id_seq'::regclass);
 
 
 --
--- Name: test_case_result test_case_result_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: test_case_result test_case_result_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case_result ALTER COLUMN test_case_result_id SET DEFAULT nextval('public.test_case_result_test_case_result_id_seq'::regclass);
 
 
 --
--- Name: users user_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
 
 
 --
--- Data for Name: badge; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: badge; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.badge (badge_id, badge_name, description, icon) FROM stdin;
@@ -369,7 +405,7 @@ COPY public.badge (badge_id, badge_name, description, icon) FROM stdin;
 
 
 --
--- Data for Name: course; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: course; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.course (course_id, owner_id, course_title, course_description, created_at) FROM stdin;
@@ -379,7 +415,7 @@ COPY public.course (course_id, owner_id, course_title, course_description, creat
 
 
 --
--- Data for Name: course_problem; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: course_problem; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.course_problem (course_id, problem_id) FROM stdin;
@@ -397,7 +433,7 @@ COPY public.course_problem (course_id, problem_id) FROM stdin;
 
 
 --
--- Data for Name: enrollment; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: enrollment; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.enrollment (course_id, user_id) FROM stdin;
@@ -411,17 +447,17 @@ COPY public.enrollment (course_id, user_id) FROM stdin;
 1	20
 2	12
 2	13
-2	10
 1	8
 1	9
-1	10
 1	11
 1	12
+1	21
+1	22
 \.
 
 
 --
--- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.problem (problem_id, problem_title, problem_description, difficulty, user_id, points) FROM stdin;
@@ -435,12 +471,13 @@ COPY public.problem (problem_id, problem_title, problem_description, difficulty,
 9	Find All Duplicates in an Array	# Find All Duplicates in an Array\n\nGiven an array of integers `nums`, return a list of all elements that appear **more than once**. The result can be returned in **any order**.\n\n## Examples\n\n**Input:** `nums = [4, 3, 2, 7, 8, 2, 3, 1]`\n**Output:** `[2, 3]`\n\n**Input:** `nums = [1, 1, 2]`\n**Output:** `[1]`\n\n## Constraints\n`1 <= nums.length <= 10^5`\n`-10^9 <= nums[i] <= 10^9`	3	1	300
 8	Merge Two Sorted Arrays	# Merge Two Sorted Arrays\n\nGiven two sorted arrays of integers `nums1` and `nums2`, return a **single sorted array** containing all elements from both arrays.\n\n## Examples\n\n**Input:** `nums1 = [1, 3, 5]`, `nums2 = [2, 4, 6]`\n**Output:** `[1, 2, 3, 4, 5, 6]`\n\n**Input:** `nums1 = [1, 2, 3]`, `nums2 = []`\n**Output:** `[1, 2, 3]`\n\n## Constraints\n`0 <= nums1.length, nums2.length <= 10^5`\n`-10^9 <= nums1[i], nums2[i] <= 10^9`\nBoth `nums1` and `nums2` are sorted in **non-decreasing** order	2	1	200
 7	Find the largest element in an array	# Find the Largest Element in an Array\n\nGiven an array of integers `nums`, return the **largest element** in the array.\n\n## Examples\n\n**Input:** `nums = [3, 1, 4, 1, 5, 9, 2, 6]`\n**Output:** `9`\n\n**Input:** `nums = [-10, -3, -7, -1]`\n**Output:** `-1`\n\n## Constraints\n- `1 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`	1	1	100
-14	NEW ADD	NEW ADD	1	1	100
+15	Security Test	Security Test	1	1	100
+16	test	test	1	1	100
 \.
 
 
 --
--- Data for Name: problem_language; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: problem_language; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.problem_language (problem_id, language, placeholder_code) FROM stdin;
@@ -455,12 +492,13 @@ COPY public.problem_language (problem_id, language, placeholder_code) FROM stdin
 6	java	public static int add(int x, int y) {\n\n}
 6	python	def add(x: int, y: int) -> int:\n    \n
 13	java	public static int add(int x, int y) {\n\n}
-14	java	public static int add(int a, int b) {\n}
+15	java	public static String hello(int x) {\n\n}
+16	java	public static int isPalindrome(int x) {\n\n}
 \.
 
 
 --
--- Data for Name: submission; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: submission; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.submission (submission_id, user_id, problem_id, submitted_code, submitted_at, overall_status, time_taken, percentage, points_awarded, language) FROM stdin;
@@ -491,18 +529,11 @@ COPY public.submission (submission_id, user_id, problem_id, submitted_code, subm
 26	1	5	public static Map<String, Double> averageGradeBySubject(List<Map<String, Integer>> students) {\n\n}	2026-03-23 18:26:09.092633	f	44	0	0	java
 27	19	6	public static int add(int x, int y) {\n\n}	2026-03-25 19:33:26.326734	f	28	0	0	java
 28	20	6	public static int add(int x, int y) {\n  return x+y;\n}	2026-03-25 20:57:28.27631	t	89	100	200	java
-29	10	13	public static int add(int x, int y) {\n  return x+y;\n}	2026-04-01 13:04:33.061981	t	25	100	200	java
-30	10	6	public static int add(int x, int y) {\n  return x+y;\n}	2026-04-01 13:11:10.794824	t	9	100	200	java
-31	10	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 14:49:43.480076	t	8	100	0	java
-32	10	13	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 14:54:21.030432	t	6	100	0	java
-33	10	6	public static int add(int x, int y) {\n\n}	2026-04-01 18:11:27.977648	f	3	0	0	java
-34	10	6	public static int add(int x, int y) {\n\n}	2026-04-01 18:18:50.151966	f	444	0	0	java
 35	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 18:41:40.741191	t	12	100	200	java
 36	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 18:47:08.240445	t	340	100	0	java
 37	9	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:04:36.155915	t	11	100	200	java
 38	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:06:07.762275	t	6	100	200	java
 39	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:08:41.962982	t	159	100	0	java
-40	10	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:11:04.510234	t	15	100	0	java
 41	12	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:20:12.482447	t	7	100	0	java
 42	9	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:22:59.747772	t	9	100	0	java
 43	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:24:45.138052	t	6	100	0	java
@@ -513,13 +544,24 @@ COPY public.submission (submission_id, user_id, problem_id, submitted_code, subm
 48	8	6	public static int add(int x, int y) {\nreturn x+y;\n}	2026-04-01 19:38:04.532555	t	6	100	0	java
 49	1	6	public static int add(int x, int y) {\n\n}	2026-04-04 10:47:04.028822	f	21	0	0	java
 50	1	6	public static int add(int x, int y) {\n  return 1\n}	2026-04-04 15:50:57.361573	f	7	0	0	java
-51	1	14	public static int add(int a, int b) {\nreturn a+b;\n}	2026-04-04 15:56:40.505304	t	14	100	200	java
 52	1	12	public static int[] twoSum(int[] nums, int target) {\n    \n}	2026-04-07 12:20:30.520149	f	1	0	0	java
+53	11	7	public static int findLargest(int[] nums) {\n\n}	2026-04-07 13:26:15.169415	f	0	0	0	java
+54	11	6	public static int add(int x, int y) {\n\n}	2026-04-07 13:27:07.286378	f	1	0	0	java
+55	11	6	public static int add(int x, int y) {\n  return x+y;\n}	2026-04-07 13:30:43.33913	t	33	100	0	java
+56	21	6	def add(x: int, y: int) -> int:\n    return x+y\n	2026-04-07 15:09:18.559898	t	87	100	200	python
+57	13	2	public static boolean isPalindrome(int x) {\n    if (int == 4) {\n        return True;\n    } else {\n        return False;\n    }\n}	2026-04-07 15:16:15.564923	f	30	0	0	java
+58	13	2	public static boolean isPalindrome(int x) {\n    if (int == 4) {\n        return True;\n    } else {\n        return False;\n    }\n}	2026-04-07 15:16:29.485089	f	44	0	0	java
+59	13	2	public static boolean isPalindrome(int x) {\n\n}	2026-04-07 15:18:21.753862	f	2	0	0	java
+60	13	11	public static double findMedianSortedArrays(int[] nums1, int[] nums2) {\n\n}	2026-04-07 15:18:33.936369	f	1	0	0	java
+61	13	11	public static double findMedianSortedArrays(int[] nums1, int[] nums2) {\n\n}	2026-04-07 15:19:02.795037	f	31	0	0	java
+62	13	9	public static List<Integer> findDuplicates(int[] nums) {\n\n}	2026-04-07 15:19:33.710377	f	13	0	0	java
+63	13	9	public static List<Integer> findDuplicates(int[] nums) {\n\n}	2026-04-07 15:20:09.651497	f	48	0	0	java
+64	1	6	def add(x: int, y: int) -> int:\n    \n	2026-04-14 14:02:49.528848	f	98	0	0	python
 \.
 
 
 --
--- Data for Name: test_case; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: test_case; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.test_case (test_case_id, problem_id, input_value, expected_value) FROM stdin;
@@ -572,12 +614,13 @@ COPY public.test_case (test_case_id, problem_id, input_value, expected_value) FR
 36	9	{"nums": [1, 1, 1, 1]}	[1]
 37	9	{"nums": [-1, -1, 2, 3, 2]}	[-1, 2]
 38	9	{"nums": [1]}	[]
-58	14	{"a": 1, "b": 2}	3
+59	15	{"x": 2}	"Hello World"
+60	16	{"x": 1}	1
 \.
 
 
 --
--- Data for Name: test_case_result; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: test_case_result; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, passed, actual_output, runtime_ms) FROM stdin;
@@ -705,28 +748,6 @@ COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, 
 124	28	15	t	-3	5182
 125	28	16	t	-10	5303
 126	28	17	t	300	5467
-127	29	57	t	3	2368
-128	30	13	t	3	2760
-129	30	14	t	1	2265
-130	30	15	t	-3	2319
-131	30	16	t	-10	2326
-132	30	17	t	300	2295
-133	31	13	t	3	2647
-134	31	14	t	1	2314
-135	31	15	t	-3	2283
-136	31	16	t	-10	1237
-137	31	17	t	300	2315
-138	32	57	t	3	2667
-139	33	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2195
-140	33	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1839
-141	33	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1838
-142	33	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1861
-143	33	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1839
-144	34	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2208
-145	34	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1925
-146	34	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1905
-147	34	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1908
-148	34	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1818
 149	35	13	t	3	2870
 150	35	14	t	1	2367
 151	35	15	t	-3	2394
@@ -752,11 +773,6 @@ COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, 
 171	39	15	t	-3	2395
 172	39	16	t	-10	2352
 173	39	17	t	300	2349
-174	40	13	t	3	2394
-175	40	14	t	1	2340
-176	40	15	t	-3	2416
-177	40	16	t	-10	2408
-178	40	17	t	300	2348
 179	41	13	t	3	2653
 180	41	14	t	1	2369
 181	41	15	t	-3	2376
@@ -807,37 +823,101 @@ COPY public.test_case_result (test_case_result_id, submission_id, test_case_id, 
 226	50	15	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1096
 227	50	16	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1146
 228	50	17	f	Main.java:8: error: ';' expected\n  return 1\n          ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1141
-229	51	58	t	3	2324
 230	52	51	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2354
 231	52	52	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1892
 232	52	53	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1812
 233	52	54	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1808
 234	52	55	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1878
 235	52	56	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	1791
+236	53	21	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4186
+237	53	22	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4101
+238	53	23	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4249
+239	53	24	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4077
+240	53	25	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	3998
+241	53	26	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	3973
+242	54	13	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4036
+243	54	14	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4009
+244	54	15	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	3809
+245	54	16	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4188
+246	54	17	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4098
+247	55	13	t	3	5378
+248	55	14	t	1	5777
+249	55	15	t	-3	5197
+250	55	16	t	-10	5402
+251	55	17	t	300	4922
+252	56	13	t	3	528
+253	56	14	t	1	435
+254	56	15	t	-3	443
+255	56	16	t	-10	430
+256	56	17	t	300	436
+257	57	5	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2342
+258	57	6	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2305
+259	57	18	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2166
+260	57	19	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2205
+261	57	20	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2191
+262	58	5	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2257
+263	58	6	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2313
+264	58	18	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2110
+265	58	19	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2523
+266	58	20	f	Main.java:8: error: '.class' expected\n    if (int == 4) {\n            ^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	2362
+267	59	5	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4804
+268	59	6	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4842
+269	59	18	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4760
+270	59	19	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4615
+271	59	20	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4575
+272	60	47	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4832
+273	60	48	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4726
+274	60	49	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4577
+275	60	50	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4137
+276	60	45	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4350
+277	60	46	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4216
+278	61	47	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4281
+279	61	48	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4098
+280	61	49	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4194
+281	61	50	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4313
+282	61	45	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4481
+283	61	46	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4662
+284	62	33	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4119
+285	62	34	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4131
+286	62	35	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4220
+287	62	36	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4815
+288	62	37	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4520
+289	62	38	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4761
+290	63	33	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4393
+291	63	34	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4149
+292	63	35	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4101
+293	63	36	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	4194
+294	63	37	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	5673
+295	63	38	f	Main.java:9: error: missing return statement\n}\n^\n1 error\nError: Could not find or load main class Main\nCaused by: java.lang.ClassNotFoundException: Main	5467
+296	64	13	f	File "/app/main.py", line 9\n    input_data = json.load(sys.stdin)\n    ^\nIndentationError: expected an indented block after function definition on line 5	317
+297	64	14	f	File "/app/main.py", line 9\n    input_data = json.load(sys.stdin)\n    ^\nIndentationError: expected an indented block after function definition on line 5	275
+298	64	15	f	File "/app/main.py", line 9\n    input_data = json.load(sys.stdin)\n    ^\nIndentationError: expected an indented block after function definition on line 5	345
+299	64	16	f	File "/app/main.py", line 9\n    input_data = json.load(sys.stdin)\n    ^\nIndentationError: expected an indented block after function definition on line 5	295
+300	64	17	f	File "/app/main.py", line 9\n    input_data = json.load(sys.stdin)\n    ^\nIndentationError: expected an indented block after function definition on line 5	273
 \.
 
 
 --
--- Data for Name: user_badge; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_badge; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.user_badge (user_id, badge_id, earned_at) FROM stdin;
 11	2	2026-04-01 10:22:17.41378
-10	3	2026-04-01 19:11:04.536811
 11	1	2026-04-01 19:28:14.253889
 8	1	2026-04-01 19:37:17.760868
 1	1	2026-04-04 10:47:04.048411
 1	3	2026-04-04 10:47:04.055276
+21	1	2026-04-07 15:09:18.595226
+13	1	2026-04-07 15:16:15.602409
 \.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: setu_user
 --
 
 COPY public.users (user_id, user_name, email, password, role, total_points, current_streak, longest_streak, last_solved_date) FROM stdin;
 11	Diarmuid O'Neill	don@gmail.com	$2b$10$Mhtc0aViZ7Ae3qrh71eqWuzufYyVyhysUxzrQPIRkBxjBOAEMRXci	student	0	0	0	\N
-13	agabagoo	c00284845@setu.ie	$2b$10$A.6sDGcy4GJEY0iVXTya/eTjNmaHSRXsRGh4ce/zphVSxXHA13.Ma	student	200	1	1	2026-03-09
 14	CIAN	cianj230@gmail.com	$2b$10$/K2bqdm.Qm8s6VvW9LBD/.AOa51OdHqs65zj9/YW3lxG.3DS4UxqK	lecturer	200	1	1	2026-03-09
 7	Dr Tim	tim@gmail.com	$2b$10$Fusxpi7UXafgI1h3j16jD.KBsh/aRnXHqvViwXYR4EIW7VSs9lS5C	lecturer	200	1	1	2026-03-10
 15	Emmanuel A	e.a.test@live.com	$2b$10$hvK3twk4iqSIS40hPBKmleTK5ZiPPUWphae539O8U2GssuRlvKM3C	student	200	1	1	2026-03-21
@@ -846,65 +926,67 @@ COPY public.users (user_id, user_name, email, password, role, total_points, curr
 18	tester	testemail@email.com	$2b$10$/f8NGrB2LrtgQt7yhZBvwe7B6W3JaVPzgAskVMosuDByWlrAqcgKC	student	0	0	0	\N
 19	Dr John Doe	jd@gmail.com	$2b$10$qx1KjYplz1XLfKhOk3XFd.58ZeboU9YV5gc3Sp5oLR.vopmkMvepC	lecturer	0	0	0	\N
 20	Dr Jane Doe	janedoe@gmail.com	$2b$10$3giDN02.FQGzHAElTZhsouE09vPrIrtzMwLnc1ZBu1qd79SlJbU4y	lecturer	200	1	1	2026-03-25
-10	Conor Hendley	ch@gmail.com	$2b$10$0aaI9r6EUuXTxPVFyhtOQOjraBppzKjrYUmaBj3WhJKk5QZ0P83ou	student	400	1	1	2026-04-01
 8	Isaiah Andres	ia@gmail.com	$2b$10$WKWkFU6xywpH38JsQDCKTu.R3t58.VPNpPyBSDqRDxy3IFRklH2Re	student	200	1	1	2026-04-01
 9	Stuart Rossiter	sa@gmail.com	$2b$10$6kCnvMzuMtr8ZObmULIgQO2U5znTjmqecQpoxyauW/iF13Ipqj4a2	student	200	1	1	2026-04-01
 12	Dorian Nowicki	dn@gmail.com	$2b$10$4.7hObIZe7lRYzmejdf1c.2slGfgM5L0HJ4HyULIkLvE3kZrx7H16	student	200	1	1	2026-04-01
-1	Dr. Don	d@gmail.com	$2b$10$2sTIgwdYLCu6Ybw95a0zhuDtDIOsqZzlDLfFkuQgI5BPe3rEfZ6tG	lecturer	2200	0	2	2026-04-07
+21	Conor	c00257508@setu.ie	$2b$10$XNRmybwGix.GRwPJxvM.cu1YMMflAgcAmBT7YzwMAWOYSbVA87.eW	student	200	1	1	2026-04-07
+13	agabagoo	c00284845@setu.ie	$2b$10$A.6sDGcy4GJEY0iVXTya/eTjNmaHSRXsRGh4ce/zphVSxXHA13.Ma	student	200	0	1	2026-04-07
+1	Dr. Don	d@gmail.com	$2b$10$2sTIgwdYLCu6Ybw95a0zhuDtDIOsqZzlDLfFkuQgI5BPe3rEfZ6tG	lecturer	2200	0	2	2026-04-14
+22	utest	utest@gmail.com	$2b$10$KxKLWNpwOU2WvCH4WWuBeuAYtELTE1CVEfbTXEXpFtIC52wI44SKO	lecturer	0	0	0	\N
 \.
 
 
 --
--- Name: badge_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: badge_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
 --
 
 SELECT pg_catalog.setval('public.badge_badge_id_seq', 3, true);
 
 
 --
--- Name: course_course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: course_course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
 --
 
 SELECT pg_catalog.setval('public.course_course_id_seq', 2, true);
 
 
 --
--- Name: problem_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: problem_problem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
 --
 
-SELECT pg_catalog.setval('public.problem_problem_id_seq', 14, true);
-
-
---
--- Name: submission_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.submission_submission_id_seq', 52, true);
+SELECT pg_catalog.setval('public.problem_problem_id_seq', 16, true);
 
 
 --
--- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: submission_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
 --
 
-SELECT pg_catalog.setval('public.test_case_result_test_case_result_id_seq', 235, true);
-
-
---
--- Name: test_case_test_case_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.test_case_test_case_id_seq', 58, true);
+SELECT pg_catalog.setval('public.submission_submission_id_seq', 64, true);
 
 
 --
--- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: test_case_result_test_case_result_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 20, true);
+SELECT pg_catalog.setval('public.test_case_result_test_case_result_id_seq', 300, true);
 
 
 --
--- Name: badge badge_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case_test_case_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
+--
+
+SELECT pg_catalog.setval('public.test_case_test_case_id_seq', 60, true);
+
+
+--
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: setu_user
+--
+
+SELECT pg_catalog.setval('public.users_user_id_seq', 22, true);
+
+
+--
+-- Name: badge badge_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.badge
@@ -912,7 +994,7 @@ ALTER TABLE ONLY public.badge
 
 
 --
--- Name: course course_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: course course_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course
@@ -920,7 +1002,7 @@ ALTER TABLE ONLY public.course
 
 
 --
--- Name: course_problem course_problem_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: course_problem course_problem_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course_problem
@@ -928,7 +1010,7 @@ ALTER TABLE ONLY public.course_problem
 
 
 --
--- Name: enrollment enrollment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: enrollment enrollment_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.enrollment
@@ -936,7 +1018,7 @@ ALTER TABLE ONLY public.enrollment
 
 
 --
--- Name: problem_language problem_language_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: problem_language problem_language_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.problem_language
@@ -944,7 +1026,7 @@ ALTER TABLE ONLY public.problem_language
 
 
 --
--- Name: problem problem_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: problem problem_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.problem
@@ -952,7 +1034,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- Name: submission submission_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: submission submission_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.submission
@@ -960,7 +1042,7 @@ ALTER TABLE ONLY public.submission
 
 
 --
--- Name: test_case test_case_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case test_case_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case
@@ -968,7 +1050,7 @@ ALTER TABLE ONLY public.test_case
 
 
 --
--- Name: test_case_result test_case_result_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case_result test_case_result_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case_result
@@ -976,7 +1058,7 @@ ALTER TABLE ONLY public.test_case_result
 
 
 --
--- Name: user_badge unique_user_badge; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_badge unique_user_badge; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.user_badge
@@ -984,7 +1066,7 @@ ALTER TABLE ONLY public.user_badge
 
 
 --
--- Name: user_badge user_badge_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_badge user_badge_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.user_badge
@@ -992,7 +1074,7 @@ ALTER TABLE ONLY public.user_badge
 
 
 --
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.users
@@ -1000,7 +1082,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.users
@@ -1008,7 +1090,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: course course_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: course course_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course
@@ -1016,7 +1098,7 @@ ALTER TABLE ONLY public.course
 
 
 --
--- Name: course_problem course_problem_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: course_problem course_problem_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course_problem
@@ -1024,7 +1106,7 @@ ALTER TABLE ONLY public.course_problem
 
 
 --
--- Name: course_problem course_problem_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: course_problem course_problem_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.course_problem
@@ -1032,7 +1114,7 @@ ALTER TABLE ONLY public.course_problem
 
 
 --
--- Name: enrollment enrollment_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: enrollment enrollment_course_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.enrollment
@@ -1040,7 +1122,7 @@ ALTER TABLE ONLY public.enrollment
 
 
 --
--- Name: enrollment enrollment_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: enrollment enrollment_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.enrollment
@@ -1048,7 +1130,7 @@ ALTER TABLE ONLY public.enrollment
 
 
 --
--- Name: problem_language problem_language_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: problem_language problem_language_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.problem_language
@@ -1056,7 +1138,7 @@ ALTER TABLE ONLY public.problem_language
 
 
 --
--- Name: problem problem_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: problem problem_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.problem
@@ -1064,7 +1146,7 @@ ALTER TABLE ONLY public.problem
 
 
 --
--- Name: submission submission_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: submission submission_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.submission
@@ -1072,15 +1154,15 @@ ALTER TABLE ONLY public.submission
 
 
 --
--- Name: submission submission_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: submission submission_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.submission
-    ADD CONSTRAINT submission_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+    ADD CONSTRAINT submission_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
 
 
 --
--- Name: test_case test_case_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case test_case_problem_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case
@@ -1088,7 +1170,7 @@ ALTER TABLE ONLY public.test_case
 
 
 --
--- Name: test_case_result test_case_result_submission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case_result test_case_result_submission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case_result
@@ -1096,7 +1178,7 @@ ALTER TABLE ONLY public.test_case_result
 
 
 --
--- Name: test_case_result test_case_result_test_case_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: test_case_result test_case_result_test_case_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.test_case_result
@@ -1104,7 +1186,7 @@ ALTER TABLE ONLY public.test_case_result
 
 
 --
--- Name: user_badge user_badge_badge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: user_badge user_badge_badge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.user_badge
@@ -1112,7 +1194,7 @@ ALTER TABLE ONLY public.user_badge
 
 
 --
--- Name: user_badge user_badge_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: user_badge user_badge_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: setu_user
 --
 
 ALTER TABLE ONLY public.user_badge
@@ -1123,5 +1205,5 @@ ALTER TABLE ONLY public.user_badge
 -- PostgreSQL database dump complete
 --
 
-\unrestrict i34lQe0NcnMBJpeowD8H9JmQ7FwJfghbLQf4Y5ChJPszhDGGM8vikvVhIImktPn
+\unrestrict 0bWTerdaNYBGdQGPhldABtfb3pRgscy0rqWLxLKs7roCna4fUQDhbLuPySeCc6d
 
