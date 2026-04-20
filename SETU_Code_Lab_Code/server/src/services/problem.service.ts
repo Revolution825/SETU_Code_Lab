@@ -5,6 +5,7 @@ import type { TestCase } from "../types/testCase";
 import { splitParams, getParamNames } from "./sharedUtils";
 import { ProblemLanguage } from "../types/problemLanguage";
 import { startContainer } from "./docker.service";
+import { error } from "console";
 
 function injectJavaCode(code: string, placeholder: string) {
   const finalIndex = placeholder.lastIndexOf("}");
@@ -65,7 +66,17 @@ function injectJavaCode(code: string, placeholder: string) {
 }
 
 function injectPythonCode(code: string, placeholder: string) {
-  return placeholder + `\n    return ${code}\n`;
+  try {
+    const parsed = JSON.parse(code);
+    const pythonCode = JSON.stringify(parsed)
+      .replace(/\btrue\b/g, "True")
+      .replace(/\bfalse\b/g, "False")
+      .replace(/\bnull\b/g, "None");
+
+    return placeholder + `\n    return ${pythonCode}\n`;
+  } catch {
+    return placeholder + `\n    return ${code}\n`;
+  }
 }
 
 export const getAllCourseProblems = async (selectedCourseId: Number) => {
@@ -356,6 +367,9 @@ export const deleteProblem = async (problem_id: number) => {
   const client = await pool.connect();
   await client.query("BEGIN");
   try {
+    if (problem_id == 1) {
+      throw new Error("You cannont delete Global Problems");
+    }
     const problem = await ProblemModel.deleteProblem(client, problem_id);
     await client.query("COMMIT");
     return problem;

@@ -29,6 +29,10 @@ export default function ManageClasses() {
   }
 
   const deleteCourseClick = async (course_id: number) => {
+    if (course_id == 1) {
+      alert("You cannot delete the Global Problems course");
+      return;
+    }
     let userConfirmed = confirm(
       "Are you sure you want to delete this course permanently?",
     );
