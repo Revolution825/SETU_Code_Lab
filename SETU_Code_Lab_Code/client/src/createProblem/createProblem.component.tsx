@@ -302,48 +302,50 @@ true
                 <div style={{ marginRight: "12px" }}>Placeholder Code</div>
                 <div className="languageTabs">
                   {language_entries.map((entry) => (
-                    <div
-                      key={entry.language}
-                      className={`languageTab ${activeLanguageTab === entry.language ? "active" : ""}`}
-                      onClick={() => setActiveLanguageTab(entry.language)}
-                    >
-                      {entry.language}
-                      {language_entries.length > 1 && (
-                        <span
-                          className="removeLanguage"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            removeLanguage(entry.language);
-                          }}
-                        >
-                          ✕
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                  <ToolTip text="parameter names must be the same across languages">
-                    {SUPPORTED_LANGUAGES.filter(
-                      (l) => !language_entries.some((e) => e.language === l),
-                    ).length > 0 && (
-                      <select
-                        className="addLanguageSelect"
-                        value=""
-                        onChange={(e) => {
-                          if (e.target.value) addLanguage(e.target.value);
-                        }}
+                    <ToolTip text="parameter names must be the same across languages">
+                      <div
+                        key={entry.language}
+                        className={`languageTab ${activeLanguageTab === entry.language ? "active" : ""}`}
+                        onClick={() => setActiveLanguageTab(entry.language)}
                       >
-                        <option value="">+ Add language</option>
-                        {SUPPORTED_LANGUAGES.filter(
-                          (l) =>
-                            !language_entries.some((e) => e.language === l),
-                        ).map((l) => (
-                          <option key={l} value={l}>
-                            {l}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-                  </ToolTip>
+                        {entry.language}
+                        {language_entries.length > 1 && (
+                          <span
+                            className="removeLanguage"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeLanguage(entry.language);
+                            }}
+                          >
+                            ✕
+                          </span>
+                        )}
+                      </div>
+                    </ToolTip>
+                  ))}
+
+                  {SUPPORTED_LANGUAGES.filter(
+                    (l) => !language_entries.some((e) => e.language === l),
+                  ).length > 0 && (
+                    <select
+                      className="addLanguageSelect"
+                      value=""
+                      onChange={(e) => {
+                        if (e.target.value) addLanguage(e.target.value);
+                      }}
+                    >
+                      <option value="" disabled hidden>
+                        + Add language
+                      </option>
+                      {SUPPORTED_LANGUAGES.filter(
+                        (l) => !language_entries.some((e) => e.language === l),
+                      ).map((l) => (
+                        <option key={l} value={l}>
+                          {l}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
               </div>
 
