@@ -308,7 +308,11 @@ export default function Problem() {
           <div className="testCasesPane">
             <div className="pane">
               <div className="paneContent">
-                <div className="paneTitle">Test cases</div>
+                <div className="paneTitle">
+                  Test cases -{" "}
+                  {testCaseResults.filter((tcr) => tcr.passed).length}/
+                  {testCases.length} Test cases passed
+                </div>
                 <div className="testCases">
                   {Array.isArray(testCases) && testCases.length > 0 ? (
                     testCases.slice(0, 4).map((testCase, idx) => {
