@@ -2,7 +2,7 @@
 
 ## Project Summary
 
-**SETU Code Lab** is an in-browser learning and assessment platform developed for students and lecturers in SETU. It allows students to solve programming problems directly in the browser, run their code against automated test cases, and receive immediate feedback. Submissions are stored with performance data so students can track their progress over time.
+**SETU Code Lab** is an in-browser learning and assessment platform developed for students and lecturers in SETU (South East Technological University). It allows students to solve programming problems directly in the browser, run their code against automated test cases, and receive immediate feedback. Submissions are stored with performance data so students can track their progress over time.
 
 Lecturers can create coding problems, define test cases, and assign work to groups of students. Submissions are automatically evaluated, and results can be viewed or exported in CSV format for grading and analysis.
 
