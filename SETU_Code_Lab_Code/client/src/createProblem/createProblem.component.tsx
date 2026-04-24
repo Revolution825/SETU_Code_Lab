@@ -38,11 +38,13 @@ true
 // **EXAMPLE**
 // public static boolean isPalindrome(int x) {
 //     **student code goes here**
+//     DO NOT INCLUDE A RETURN STATEMENT
 // }`;
 
   const pythonPlaceholderCodePlaceholder = `
 # def isPalindrome(x: int) -> bool:
     # student code goes here
+    # DO NOT INCLUDE A RETURN STATEMENT
 `;
 
   const SUPPORTED_LANGUAGES = ["java", "python"] as const;

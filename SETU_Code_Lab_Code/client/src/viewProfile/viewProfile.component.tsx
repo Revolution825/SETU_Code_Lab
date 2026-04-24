@@ -168,7 +168,9 @@ export default function ViewProfile() {
                   </td>
                   <td className="profileStats">
                     {userData?.current_streak}{" "}
-                    <img src="flame.svg" alt="flame" className="flame" />
+                    <ToolTip text="Correctly complete a new problem every day to extend your streak">
+                      <img src="flame.svg" alt="flame" className="flame" />
+                    </ToolTip>
                   </td>
                 </tr>
                 <tr>
