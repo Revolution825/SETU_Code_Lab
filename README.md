@@ -1,9 +1,5 @@
 # SETU Code Lab
 
-**In-Browser Coding Study & Assessment Platform**
-
----
-
 ## Project Summary
 
 **SETU Code Lab** is an in-browser learning and assessment platform developed for students and lecturers in SETU. It allows students to solve programming problems directly in the browser, run their code against automated test cases, and receive immediate feedback. Submissions are stored with performance data so students can track their progress over time.
@@ -13,8 +9,6 @@ Lecturers can create coding problems, define test cases, and assign work to grou
 The platform also includes a **Global Problems** section for independent practice, along with gamification features such as points, badges, streaks, and leaderboards to increase student engagement.
 
 **Try it out:** http://www.setucodelab.com
-
----
 
 ## Technologies
 
@@ -26,8 +20,6 @@ The platform also includes a **Global Problems** section for independent practic
   - Java (primary language aligned with SETU curriculum)
   - Python (additional supported language)
 
----
-
 ## About Me
 
 **Diarmuid O’Neill**
@@ -37,8 +29,8 @@ Final Year Software Development student at SETU, Carlow, with a strong interest 
 
 ## Documentation
 
-- [Functional Specification]()
-- [Research Document]()
-- [Design Document]()
-- [Final Report]()
-- [User Guide]()
+- [Functional Specification](https://github.com/Revolution825/SETU_Code_Lab/blob/main/Documentation/SETU%20Code%20Lab%20Functional%20Specification.pdf)
+- [Research Document](https://github.com/Revolution825/SETU_Code_Lab/blob/main/Documentation/SETU%20Code%20Lab%20Research%20Document.pdf)
+- [Design Document](https://github.com/Revolution825/SETU_Code_Lab/blob/main/Documentation/SETU%20Code%20Lab%20Design%20Doument.pdf)
+- [Final Report](https://github.com/Revolution825/SETU_Code_Lab/blob/main/Documentation/SETU%20Code%20Lab%20Final%20Report.pdf)
+- [User Guide](https://github.com/Revolution825/SETU_Code_Lab/blob/main/Documentation/SETU%20Code%20Lab%20User%20Manual.pdf)
