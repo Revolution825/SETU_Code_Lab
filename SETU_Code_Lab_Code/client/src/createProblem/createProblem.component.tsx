@@ -123,7 +123,22 @@ true
       toast.success("Problem updated successfully");
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to update problem : " + error.message);
+      toast.error(
+        (t) => (
+          <div className="toastMessage">
+            <div style={{ marginRight: "6px" }}>{error.message}</div>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="testCaseXButton"
+            >
+              ✕
+            </button>
+          </div>
+        ),
+        {
+          duration: Infinity,
+        },
+      );
       console.error("Error updating problem :", error.message);
     }
   };
@@ -146,7 +161,22 @@ true
       toast.success("Problem created successfully");
       navigate("/manageProblems");
     } catch (error: any) {
-      toast.error("Failed to create problem : " + error.message);
+      toast.error(
+        (t) => (
+          <div className="toastMessage">
+            <div style={{ marginRight: "6px" }}>{error.message}</div>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="testCaseXButton"
+            >
+              ✕
+            </button>
+          </div>
+        ),
+        {
+          duration: Infinity,
+        },
+      );
       console.error("Error creating problem :", error.message);
     }
   };

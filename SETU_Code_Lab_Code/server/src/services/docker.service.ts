@@ -134,14 +134,21 @@ java -cp ".:/app/*" Main < input.json
 
   await container.start();
 
+  let timedOut = false;
+
   const timeout = setTimeout(async () => {
+    timedOut = true;
     try {
       await container.kill();
     } catch {}
-  }, 100000);
+  }, 50000);
 
   try {
     await container.wait();
+
+    if (timedOut) {
+      throw new Error("Execution timed out, possible infinite loop detected");
+    }
   } finally {
     clearTimeout(timeout);
   }

@@ -188,3 +188,8 @@
     border-color: #dedede;
   }
 }
+
+.toastMessage {
+  display: flex;
+  flex-direction: row;
+}

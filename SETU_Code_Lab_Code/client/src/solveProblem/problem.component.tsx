@@ -148,9 +148,22 @@ export default function Problem() {
         });
         return testCaseResult;
       } else {
-        toast.error("Error running code");
-        setIsRunning(false);
-        console.error("Error running code: ", data.message);
+        toast.error(
+          (t) => (
+            <div className="toastMessage">
+              <div style={{ marginRight: "6px" }}>{data.message}</div>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="testCaseXButton"
+              >
+                ✕
+              </button>
+            </div>
+          ),
+          {
+            duration: Infinity,
+          },
+        );
         return null;
       }
     } catch (error: any) {
